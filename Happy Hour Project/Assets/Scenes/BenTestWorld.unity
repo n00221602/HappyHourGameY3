@@ -667,6 +667,7 @@ GameObject:
   - component: {fileID: 831612899}
   - component: {fileID: 831612898}
   - component: {fileID: 831612897}
+  - component: {fileID: 831612900}
   m_Layer: 0
   m_Name: PlayerObj
   m_TagString: Untagged
@@ -684,7 +685,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 1, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1182043865}
@@ -696,7 +697,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 831612895}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: e7fc74280f8b2884d85704ce7244080c, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -762,6 +763,30 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 831612895}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &831612900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 831612895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f46998ca0d3bf2847b84c916425ab005, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 5
+  groundDrag: 6
+  jumpForce: 6
+  jumpCooldown: 0.25
+  airMultiplier: 0.4
+  jumpKey: 304
+  sprintKey: 304
+  playerHeight: 2
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 8
+  orientation: {fileID: 716996050}
 --- !u!1 &1182043864
 GameObject:
   m_ObjectHideFlags: 0
@@ -772,6 +797,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1182043865}
   - component: {fileID: 1182043866}
+  - component: {fileID: 1182043867}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -824,6 +850,30 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &1182043867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1182043864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f46998ca0d3bf2847b84c916425ab005, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 5
+  groundDrag: 5
+  jumpForce: 6
+  jumpCooldown: 0.25
+  airMultiplier: 0.4
+  jumpKey: 32
+  sprintKey: 304
+  playerHeight: 2
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 8
+  orientation: {fileID: 716996050}
 --- !u!1 &1223801119
 GameObject:
   m_ObjectHideFlags: 0
@@ -1035,7 +1085,7 @@ GameObject:
   - component: {fileID: 1535697593}
   - component: {fileID: 1535697592}
   - component: {fileID: 1535697591}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}

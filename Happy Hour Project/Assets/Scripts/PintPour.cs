@@ -20,14 +20,14 @@ public class PintPour : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))  
+        if ((other.gameObject.CompareTag("Player")) && PintOnPlayer.activeSelf)  
         {
             if (Input.GetMouseButtonDown(0))
             {
                 PlaceholderPint.SetActive(true);
                 PintOnPlayer.SetActive(false);
                 FlowingBeer.SetActive(true);
-                Invoke(nameof(CompletePour), 5f); 
+                Invoke(nameof(CompletePour), 4f); 
             }
         }
     }

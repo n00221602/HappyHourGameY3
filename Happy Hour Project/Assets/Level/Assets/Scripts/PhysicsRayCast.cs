@@ -13,18 +13,23 @@ public class PhysicsRayCast : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, 3f))
-        {
-            Debug.Log(hit.collider.name);
-        }
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("Clicked on: " + hit.collider.name);
-        }
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, transform.forward, out hit, 3f))
+            {
+            Debug.Log(hit.collider.name);
+            }
+        
+            //Debug.Log("Clicked on: " + hit.collider.name);
+        
+            //if (hit.collider.CompareTag("Timer")) 
+            //{
+            //    hit.collider.GetComponent<LevelTimer>().startTimer();
+            //}
 
         Debug.DrawLine(transform.position, transform.forward * 10f);
 
-        
+        }
     }
 }

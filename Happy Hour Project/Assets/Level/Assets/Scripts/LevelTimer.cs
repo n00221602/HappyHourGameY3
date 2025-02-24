@@ -5,26 +5,33 @@ using UnityEngine;
 public class LevelTimer : MonoBehaviour
 {
     float elapsedTime = 10f;
+    bool timerRunning = false;
 
     public GameObject timecube;
     void Start()
     {
-      
         timecube.SetActive(true);
     }
 
     void Update()
     {
-       
-        if (!timecube.activeSelf)
+        if (Input.GetMouseButtonDown(1) && !timerRunning) // Ensure the timer doesn't start again if it's already running
         {
-            startTimer();
+            timecube.SetActive(false);
+            timerRunning = true; // Start the timer
         }
+
+        if (timerRunning)
+        {
+            StartTimer();
+        }
+
     }
 
-    public void startTimer()
+    void StartTimer()
     {
-        if (elapsedTime >= 0f)
+        
+        if (elapsedTime > 0f)
         {
             elapsedTime -= Time.deltaTime; 
             int seconds = Mathf.FloorToInt(elapsedTime % 60f); 
@@ -32,14 +39,14 @@ public class LevelTimer : MonoBehaviour
         }
         else
         {
-            noTimer(); 
+            NoTimer();
         }
     }
-
-   
-   public void noTimer()
+    void NoTimer()
     {
         Debug.Log("Timer ended");
         timecube.SetActive(true);
+        elapsedTime = 10f;
+        timerRunning = false;
     }
 }

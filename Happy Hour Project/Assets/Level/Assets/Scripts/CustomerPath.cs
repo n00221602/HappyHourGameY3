@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class CustomerPath : MonoBehaviour
 {
-    [SerializeField] Transform destination;
+    Transform destination;
 
     NavMeshAgent agent;
     void Start()
@@ -28,10 +28,13 @@ public class CustomerPath : MonoBehaviour
 
     private void SetDestination()
     {
+        if (destination == null)
+        {
+            destination = GameObject.Find("npcDestination").transform;
+        }
         if (destination != null)
         {
             Vector3 targetVector = destination.transform.position;
-
             agent.SetDestination(targetVector);
         }
     }

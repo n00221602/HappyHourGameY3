@@ -8,15 +8,23 @@ public class CustomerNPC : MonoBehaviour
 
     private NavMeshAgent agent;
     Transform destination;
-    public Vector3 exitPosition;
+    Transform exit;
     public float waitTime = 5f;
     private float waitTimer;
+
+    private GameObject customerBeer;
+    private GameObject playerBeer;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         currentState = State.Moving;  // Start in moving state
         MoveToCounter();
+
+        // Find the CustomerBeer GameObject
+        customerBeer = GameObject.Find("CustomerBeerFull");
+        playerBeer = GameObject.Find("FullPlayerPintGlass");
+        
     }
 
     void Update()
@@ -38,21 +46,29 @@ public class CustomerNPC : MonoBehaviour
 
     void MoveToCounter()
     {
+        // Assigns destination to the position of the npcDestination object
         if (destination == null)
         {
             destination = GameObject.Find("npcDestination").transform;
+            if (destination == null)
+            {
+                Debug.LogError("npcDestination GameObject not found!");
+                return;
+            }
         }
+
+        // If destination is assigned, move towards the destination position
         if (destination != null)
         {
             Vector3 targetVector = destination.transform.position;
             agent.SetDestination(targetVector);
         }
 
-        // If the NPC is close to the counter, switch to the waiting state
+        // If the NPC reaches the counter, switch to the waiting state
         if (Vector3.Distance(agent.transform.position, destination.transform.position) < 1f)
         {
             currentState = State.Waiting;
-            waitTimer = 0f;  // Reset the waiting timer
+            waitTimer = 0f;  // Sets the waiting timer to 0
         }
     }
 
@@ -61,7 +77,14 @@ public class CustomerNPC : MonoBehaviour
         // Increment the wait timer
         waitTimer += Time.deltaTime;
 
-        // If the wait time is over, switch to leaving state
+        // Check if CustomerBeer is active
+        if (customerBeer.activeSelf)
+        {
+            Debug.Log("YEAHHHHHHHHHHHHH");
+            currentState = State.Leaving;
+        }
+
+        // If the wait time hits 0, switch to leaving state
         if (waitTimer >= waitTime)
         {
             currentState = State.Leaving;
@@ -70,15 +93,24 @@ public class CustomerNPC : MonoBehaviour
 
     void LeaveCounter()
     {
-        // Start moving towards the exit
-        agent.SetDestination(exitPosition);
-
-        // Once the NPC has left the area, you can stop or reset the behavior
-        if (Vector3.Distance(agent.transform.position, exitPosition) < 1f)
+        // Assigns exit to the position of the npcExit object
+        if (exit == null)
         {
-            // The NPC has left the area. You can implement any cleanup or reset logic here.
-            Debug.Log("Customer has left.");
-            // Optionally, you can reset the state machine to restart the cycle or disable the NPC.
+            exit = GameObject.Find("npcExit").transform;
+        }
+
+        // If exit is assigned, move towards the exit position
+        if (exit != null)
+        {
+            Vector3 targetVector = exit.transform.position;
+            agent.SetDestination(targetVector);
+        }
+
+        // if the exit position is reached, the customer is despawned
+        if (Vector3.Distance(agent.transform.position, exit.transform.position) < 1f)
+        {
+            Debug.Log("BYEEEEE");
+            Destroy(gameObject);
         }
     }
 }

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -12,15 +14,14 @@ public class PlayerMovement : MonoBehaviour
     public float jumpForce;
     public float jumpCooldown;
     public float airMultiplier;
+    public GameObject ExitMenu;
     bool readyToJump;
 
     [Header("KeyBinds")]
     public KeyCode jumpKey = KeyCode.Space;
+    public KeyCode exitKey = KeyCode.Escape;
+
     public KeyCode sprintKey = KeyCode.LeftShift;
-
-
-
-
 
     [Header("Ground Check")]
     public float playerHeight;
@@ -43,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         readyToJump = true;
+        ExitMenu.SetActive(false);
     }
 
      private void Update()
@@ -51,6 +53,7 @@ public class PlayerMovement : MonoBehaviour
 
       MyInput();  
       SpeedControl();
+      NoMenu();
 
       if(grounded)
             rb.drag = groundDrag;
@@ -69,6 +72,16 @@ public class PlayerMovement : MonoBehaviour
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
+        if(Input.GetKey(exitKey) && !ExitMenu.activeSelf)
+        {
+            ExitMenu.SetActive(true);
+            Cursor.lockState = CursorLockMode.None;
+
+        }
+
+
+
+
         if(Input.GetKey(jumpKey) && readyToJump && grounded)
         {
             readyToJump = false;
@@ -83,7 +96,16 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f * 1.1f, ForceMode.Force);
         }
 
-    }
+     }
+
+     private void NoMenu()
+     {
+                
+        if(Input.GetKeyUp(exitKey) && ExitMenu.activeSelf)
+        {
+            ExitMenu.SetActive(false);
+        }
+     }
 
      private void MovePlayer()
      {
@@ -117,6 +139,18 @@ public class PlayerMovement : MonoBehaviour
      {
          readyToJump = true;
      }
+
+
+     public void Escape()
+     {
+       if(Input.GetKey(exitKey))
+        {
+            SceneManager.LoadScene("MainMenu"); 
+        }
+         
+     }
+         
+
 
 
 

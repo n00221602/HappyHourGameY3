@@ -10,18 +10,18 @@ public class CustomerSpawner : MonoBehaviour
 
     void Update()
     {
-        // Increment elapsed time by the time passed between frames
+        // Adds elapsed time by the time passed between frames
         elapsedTime += Time.deltaTime;
 
         // Check if 4 seconds have passed
         if (elapsedTime >= spawnInterval)
         {
-            // Reset the timer
+            // Resets the timer to 0 seconds
             elapsedTime = 0f;
 
-            // Spawn a customer
+            // Randomly spawns a customer from the customer index
             int randomIndex = Random.Range(0, customers.Length);
-            Vector3 spawnPosition = new Vector3(20, 1, 51); // Adjust spawn position as needed
+            Vector3 spawnPosition = new Vector3(20, 1, 51); // Sets the XYZ spawn position
             Instantiate(customers[randomIndex], spawnPosition, Quaternion.identity);
 
             Debug.Log("Customer Spawned!");

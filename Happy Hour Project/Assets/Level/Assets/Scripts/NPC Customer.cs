@@ -9,11 +9,14 @@ public class CustomerNPC : MonoBehaviour
     private NavMeshAgent agent;
     Transform destination;
     Transform exit;
-    public float waitTime = 5f;
+    private float waitTime = 10f;
     private float waitTimer;
 
     private GameObject customerBeer;
-    private GameObject playerBeer;
+    private GameObject iconBeer;
+
+    private string[] drinks = { "Beer", "RedWine", "WhiteWine" };
+    private string selectedDrink;
 
     void Start()
     {
@@ -23,8 +26,11 @@ public class CustomerNPC : MonoBehaviour
 
         // Find the CustomerBeer GameObject
         customerBeer = GameObject.Find("CustomerBeerFull");
-        playerBeer = GameObject.Find("FullPlayerPintGlass");
-        
+        iconBeer = GameObject.Find("BeerUI");
+        iconBeer.SetActive(false);
+
+        // Decide the drink once at the start
+        DecideDrink();
     }
 
     void Update()
@@ -36,7 +42,7 @@ public class CustomerNPC : MonoBehaviour
                 MoveToCounter();
                 break;
             case State.Waiting:
-                WaitAtCounter();
+                OrderDrink();
                 break;
             case State.Leaving:
                 LeaveCounter();
@@ -72,14 +78,25 @@ public class CustomerNPC : MonoBehaviour
         }
     }
 
-    void WaitAtCounter()
+    void DecideDrink()
     {
+        // Randomly select a drink from the array
+        int randomIndex = Random.Range(0,0);
+        selectedDrink = drinks[randomIndex];
+        
+    }
+
+    void OrderDrink()
+    {
+        iconBeer.SetActive(true);
+        Debug.Log("I WANT " + selectedDrink);
         // Increment the wait timer
         waitTimer += Time.deltaTime;
 
         // Check if CustomerBeer is active
         if (customerBeer.activeSelf)
         {
+            iconBeer.SetActive(false);
             Debug.Log("YEAHHHHHHHHHHHHH");
             currentState = State.Leaving;
         }
@@ -87,6 +104,7 @@ public class CustomerNPC : MonoBehaviour
         // If the wait time hits 0, switch to leaving state
         if (waitTimer >= waitTime)
         {
+            iconBeer.SetActive(false);
             currentState = State.Leaving;
         }
     }
@@ -114,3 +132,4 @@ public class CustomerNPC : MonoBehaviour
         }
     }
 }
+

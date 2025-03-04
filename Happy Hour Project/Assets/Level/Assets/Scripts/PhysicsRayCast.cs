@@ -11,7 +11,7 @@ public class PhysicsRayCast : MonoBehaviour
     private GameObject PlayerPint;
     private GameObject FullPlayerPint;
     private GameObject BeerFlow;
-    private GameObject PourPint;
+    public GameObject PourPint;
 
     //Wine game objects
     private GameObject PlayerWineGlass;
@@ -32,6 +32,8 @@ public class PhysicsRayCast : MonoBehaviour
 
     //CustomerNPC script
     private CustomerNPC customerNPC;
+
+    public ProgressBar progressBar;
 
     // Start is called before the first frame update
     void Start()
@@ -56,13 +58,8 @@ public class PhysicsRayCast : MonoBehaviour
         WhiteWineLiquid = GameObject.Find("WhiteWineLiquidPouring");
         PourWineGlass = GameObject.Find("PlaceholderWineGlass");
 
-        //Customer
-        //CustomerBeer = GameObject.Find("CustomerBeerFull");
-        //CustomerRedWine = GameObject.Find("CustomerRedWineFull");
-        //CustomerWhiteWine = GameObject.Find("CustomerWhiteWineFull");
-
-        //Calling the CustomerNPC script
-        
+        //Setting player active hand to false
+        if (FullHand != null) FullHand.SetActive(false);
 
         //Setting the beer game objects to false
         if (PlayerPint != null) PlayerPint.SetActive(false);
@@ -82,14 +79,11 @@ public class PhysicsRayCast : MonoBehaviour
         if (WhiteWineLiquid != null) WhiteWineLiquid.SetActive(false);
         if (PourWineGlass != null) PourWineGlass.SetActive(false);
 
-        //Setting the customer game objects to false
-        //if (CustomerBeer != null) CustomerBeer.SetActive(false);
-        //if (CustomerRedWine != null) CustomerRedWine.SetActive(false);
-        //if (CustomerWhiteWine != null) CustomerWhiteWine.SetActive(false);
+        //progressBar = GameObject.Find("Progress Bar").GetComponent<ProgressBar>();
 
-        if (FullHand != null) FullHand.SetActive(false);
+
+
     }
-
 
     // Update is called once per frame
     void Update()
@@ -156,6 +150,7 @@ public class PhysicsRayCast : MonoBehaviour
             PlayerPint.SetActive(false);
             BeerFlow.SetActive(true);
             Invoke(nameof(CompleteBeerPour), 4f);
+            progressBar.FillBeerProgressBar();
         }
     }
 
@@ -170,7 +165,6 @@ public class PhysicsRayCast : MonoBehaviour
     //Wine Functions
     private void HandleWine()
     {
-
         if (PlayerWineGlass != null && !FullHand.activeSelf)
         {
             Debug.Log("PICKED");
@@ -257,6 +251,4 @@ public class PhysicsRayCast : MonoBehaviour
             FullHand.SetActive(false);
         }
     }
-
-
 }

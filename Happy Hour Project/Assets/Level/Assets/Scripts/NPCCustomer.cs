@@ -11,6 +11,7 @@ public class CustomerNPC : MonoBehaviour
     Transform exit;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     private float waitTime = 30f;
     private float waitTimer;
 
@@ -40,12 +41,20 @@ public class CustomerNPC : MonoBehaviour
 >>>>>>> parent of 2d444de (tried money system(failed))
 =======
 >>>>>>> parent of 2d444de (tried money system(failed))
+=======
+    private float waitTime = 10f;
+    private float waitTimer;
+
+    public GameObject customerBeer;
+    private GameObject iconBeer;
+>>>>>>> parent of 3dad36e (fixed my errors in thomas level)
 
     private string[] drinks = { "Beer", "RedWine", "WhiteWine" };
     private string selectedDrink;
 
     void Start()
     {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
         //Destinations
@@ -62,10 +71,13 @@ public class CustomerNPC : MonoBehaviour
 >>>>>>> parent of 2d444de (tried money system(failed))
 =======
 >>>>>>> parent of 2d444de (tried money system(failed))
+=======
+>>>>>>> parent of 3dad36e (fixed my errors in thomas level)
         agent = GetComponent<NavMeshAgent>();
         currentState = State.Moving;  // Start in moving state
         MoveToCounter();
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
         // Customer Drink Objects
@@ -89,14 +101,19 @@ public class CustomerNPC : MonoBehaviour
 =======
 =======
 >>>>>>> parent of 2d444de (tried money system(failed))
+=======
+>>>>>>> parent of 3dad36e (fixed my errors in thomas level)
         // Find the CustomerBeer GameObject
         customerBeer = GameObject.Find("CustomerBeerFull");
         iconBeer = GameObject.Find("BeerUI");
         iconBeer.SetActive(false);
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> parent of 2d444de (tried money system(failed))
 =======
 >>>>>>> parent of 2d444de (tried money system(failed))
+=======
+>>>>>>> parent of 3dad36e (fixed my errors in thomas level)
 
         // Decide the drink once at the start
         DecideDrink();
@@ -126,6 +143,7 @@ public class CustomerNPC : MonoBehaviour
         {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             destination = GameObject.Find("npcDestination 1").transform;
             
         }
@@ -146,6 +164,8 @@ public class CustomerNPC : MonoBehaviour
 =======
 =======
 >>>>>>> parent of 2d444de (tried money system(failed))
+=======
+>>>>>>> parent of 3dad36e (fixed my errors in thomas level)
             destination = GameObject.Find("npcDestination").transform;
             if (destination == null)
             {
@@ -154,9 +174,12 @@ public class CustomerNPC : MonoBehaviour
             }
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> parent of 2d444de (tried money system(failed))
 =======
 >>>>>>> parent of 2d444de (tried money system(failed))
+=======
+>>>>>>> parent of 3dad36e (fixed my errors in thomas level)
 
         // If destination is assigned, move towards the destination position
         if (destination != null)
@@ -170,11 +193,14 @@ public class CustomerNPC : MonoBehaviour
         {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             //destinationTrigger1.SetActive(true);
 =======
 >>>>>>> parent of 2d444de (tried money system(failed))
 =======
 >>>>>>> parent of 2d444de (tried money system(failed))
+=======
+>>>>>>> parent of 3dad36e (fixed my errors in thomas level)
             currentState = State.Waiting;
             waitTimer = 0f;  // Sets the waiting timer to 0
         }
@@ -185,6 +211,7 @@ public class CustomerNPC : MonoBehaviour
         // Randomly select a drink from the array
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         int randomIndex = Random.Range(0,2);
 =======
         int randomIndex = Random.Range(0,0);
@@ -192,12 +219,16 @@ public class CustomerNPC : MonoBehaviour
 =======
         int randomIndex = Random.Range(0,0);
 >>>>>>> parent of 2d444de (tried money system(failed))
+=======
+        int randomIndex = Random.Range(0,0);
+>>>>>>> parent of 3dad36e (fixed my errors in thomas level)
         selectedDrink = drinks[randomIndex];
         
     }
 
     void OrderDrink()
     {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
         if (selectedDrink == "Beer")
@@ -236,6 +267,8 @@ public class CustomerNPC : MonoBehaviour
 =======
 =======
 >>>>>>> parent of 2d444de (tried money system(failed))
+=======
+>>>>>>> parent of 3dad36e (fixed my errors in thomas level)
         iconBeer.SetActive(true);
         Debug.Log("I WANT " + selectedDrink);
         // Increment the wait timer
@@ -247,15 +280,22 @@ public class CustomerNPC : MonoBehaviour
             iconBeer.SetActive(false);
             Debug.Log("YEAHHHHHHHHHHHHH");
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> parent of 2d444de (tried money system(failed))
 =======
 >>>>>>> parent of 2d444de (tried money system(failed))
             currentState = State.Leaving;
         }
+=======
+            currentState = State.Leaving;
+        }
+      
+>>>>>>> parent of 3dad36e (fixed my errors in thomas level)
 
         // If the wait time hits 0, switch to leaving state
         if (waitTimer >= waitTime)
         {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
             //allIcons.SetActive(false);
@@ -265,6 +305,9 @@ public class CustomerNPC : MonoBehaviour
 =======
             iconBeer.SetActive(false);
 >>>>>>> parent of 2d444de (tried money system(failed))
+=======
+            iconBeer.SetActive(false);
+>>>>>>> parent of 3dad36e (fixed my errors in thomas level)
             currentState = State.Leaving;
         }
     }

@@ -4,5 +4,26 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 5f7301cde56e9d846a5441f9baafeada
+  - enabled: 1
+    path: Assets/Level/Scenes/Level.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/BenTestWorld.unity
+    guid: 7e896dccf72bb3b4caff9777d3872986
+  - enabled: 1
+    path: Assets/Scenes/Credits.unity
+    guid: 9d47ddd2a95253f4d952b8713e25912c
+  - enabled: 1
+    path: Assets/Scenes/Game Over.unity
+    guid: b69cc403a982e754bb7911bab32f9584
+  - enabled: 1
+    path: Assets/Scenes/You Win!.unity
+    guid: a52beadd32668834a929388a77ced183
+  - enabled: 1
+    path: Assets/Scenes/OptionsMenu(Home).unity
+    guid: 992e040530bb95542b8352cde1080827
   m_configObjects: {}

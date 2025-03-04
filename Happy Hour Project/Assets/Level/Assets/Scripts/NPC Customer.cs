@@ -12,7 +12,6 @@ public class CustomerNPC : MonoBehaviour
     private float waitTime = 30f;
     private float waitTimer;
 
-
     public GameObject CustomerBeer;
     public GameObject CustomerRedWine;
     public GameObject CustomerWhiteWine;
@@ -171,7 +170,6 @@ public class CustomerNPC : MonoBehaviour
             iconWhiteWine.SetActive(false);
             currentState = State.Leaving;
         }
-      
 
         // If the wait time hits 0, switch to leaving state
         if (waitTimer >= waitTime)

@@ -92,7 +92,7 @@ public class CustomerNPC : MonoBehaviour
         if (destination == null)
         {
             destination = GameObject.Find("npcDestination 1").transform;
-            
+
         }
         //if (destinationTrigger1.activeSelf) {
         //    destination = GameObject.Find("npcDestination 2").transform;
@@ -128,9 +128,9 @@ public class CustomerNPC : MonoBehaviour
     void DecideDrink()
     {
         // Randomly select a drink from the array
-        int randomIndex = Random.Range(0,2);
+        int randomIndex = Random.Range(0, 2);
         selectedDrink = drinks[randomIndex];
-        
+
     }
 
     void OrderDrink()

@@ -3,16 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PhysicsRayCast : MonoBehaviour
-{  
-    public GameObject PlayerPint;
+{
+    //Player Hand
+    private GameObject FullHand;
+
+    //Beer game objects
+    private GameObject PlayerPint;
     private GameObject FullPlayerPint;
-    private GameObject CustomerBeer;
     private GameObject BeerFlow;
     private GameObject PourPint;
 
+    //Wine game objects
     private GameObject PlayerWineGlass;
-    private GameObject FullPlayerWineGlassRed;
-    private GameObject FullPlayerWineGlassWhite;
+    private GameObject FullPlayerRedWine;
+    private GameObject FullPlayerWhiteWine;
     private GameObject RedWine;
     private GameObject WhiteWine;
     private GameObject PouringRed;
@@ -20,20 +24,30 @@ public class PhysicsRayCast : MonoBehaviour
     private GameObject RedWineLiquid;
     private GameObject WhiteWineLiquid;
     private GameObject PourWineGlass;
+
+    //Customer game objects
+    private GameObject CustomerBeer;
+    private GameObject CustomerRedWine;
+    private GameObject CustomerWhiteWine;
+
+    //CustomerNPC script
+    private CustomerNPC customerNPC;
+
     // Start is called before the first frame update
     void Start()
     {
+        //Player Hand
+        FullHand = GameObject.Find("FullHand");
         //Beer
         PlayerPint = GameObject.Find("PlayerPintGlass");
         FullPlayerPint = GameObject.Find("FullPlayerPintGlass");
-        CustomerBeer = GameObject.Find("CustomerBeerFull");
         BeerFlow = GameObject.Find("flowingBeer");
         PourPint = GameObject.Find("PlaceholderPint");
 
         //Wine
         PlayerWineGlass = GameObject.Find("PlayerWineGlass");
-        FullPlayerWineGlassRed = GameObject.Find("FullPlayerWineGlassRed");
-        FullPlayerWineGlassWhite = GameObject.Find("FullPlayerWineGlassWhite");
+        FullPlayerRedWine = GameObject.Find("FullPlayerWineGlassRed");
+        FullPlayerWhiteWine = GameObject.Find("FullPlayerWineGlassWhite");
         RedWine = GameObject.Find("Red Wine");
         WhiteWine = GameObject.Find("White Wine");
         PouringRed = GameObject.Find("PouringRed");
@@ -42,15 +56,24 @@ public class PhysicsRayCast : MonoBehaviour
         WhiteWineLiquid = GameObject.Find("WhiteWineLiquidPouring");
         PourWineGlass = GameObject.Find("PlaceholderWineGlass");
 
+        //Customer
+        //CustomerBeer = GameObject.Find("CustomerBeerFull");
+        //CustomerRedWine = GameObject.Find("CustomerRedWineFull");
+        //CustomerWhiteWine = GameObject.Find("CustomerWhiteWineFull");
+
+        //Calling the CustomerNPC script
+        
+
+        //Setting the beer game objects to false
         if (PlayerPint != null) PlayerPint.SetActive(false);
         if (FullPlayerPint != null) FullPlayerPint.SetActive(false);
-        if (CustomerBeer != null) CustomerBeer.SetActive(false);
         if (BeerFlow != null) BeerFlow.SetActive(false);
         if (PourPint != null) PourPint.SetActive(false);
 
+        //Setting the wine game objects to false
         if (PlayerWineGlass != null) PlayerWineGlass.SetActive(false);
-        if (FullPlayerWineGlassRed != null) FullPlayerWineGlassRed.SetActive(false);
-        if (FullPlayerWineGlassWhite != null) FullPlayerWineGlassWhite.SetActive(false);
+        if (FullPlayerRedWine != null) FullPlayerRedWine.SetActive(false);
+        if (FullPlayerWhiteWine != null) FullPlayerWhiteWine.SetActive(false);
         if (RedWine != null) RedWine.SetActive(true);
         if (WhiteWine != null) WhiteWine.SetActive(true);
         if (PouringRed != null) PouringRed.SetActive(false);
@@ -59,9 +82,14 @@ public class PhysicsRayCast : MonoBehaviour
         if (WhiteWineLiquid != null) WhiteWineLiquid.SetActive(false);
         if (PourWineGlass != null) PourWineGlass.SetActive(false);
 
+        //Setting the customer game objects to false
+        //if (CustomerBeer != null) CustomerBeer.SetActive(false);
+        //if (CustomerRedWine != null) CustomerRedWine.SetActive(false);
+        //if (CustomerWhiteWine != null) CustomerWhiteWine.SetActive(false);
 
-
+        if (FullHand != null) FullHand.SetActive(false);
     }
+
 
     // Update is called once per frame
     void Update()
@@ -76,39 +104,33 @@ public class PhysicsRayCast : MonoBehaviour
                 // BEER
                 if (hit.collider.name == "PickupPint")
                 {
-                    Debug.Log("Picked up pint");
                     HandleBeer();
                 }
                 if (hit.collider.name == "PourPint" && PlayerPint.activeSelf)
                 {
-                    Debug.Log("POURING");
                     PourBeer();
                 }
 
                 // WINE
                 if (hit.collider.name == "PickupWine")
                 {
-                    Debug.Log("Picked up wine glass");
                     HandleWine();
                 }
 
                 if (hit.collider.name == "Red Wine" && PlayerWineGlass.activeSelf)
                 {
-                    Debug.Log("Pouring red");
                     PourRedWine();
                 }
 
                 if (hit.collider.name == "White Wine" && PlayerWineGlass.activeSelf)
                 {
-                    Debug.Log("Pouring white");
                     PourWhiteWine();
                 }
 
-
                 //CUSTOMERS
-                if (hit.collider.name == "StateTest")
+                if (hit.collider.CompareTag("Customer"))
                 {
-                    HandleCustomer();
+                    HandleCustomer(hit.collider);
                 }
             }
             // Debug.DrawLine(transform.position, transform.forward * 10f);
@@ -118,11 +140,11 @@ public class PhysicsRayCast : MonoBehaviour
     //Beer Functions
     private void HandleBeer()
     {
-        if (PlayerPint != null && !PlayerPint.activeSelf)
+        if (PlayerPint != null && !FullHand.activeSelf)
         {
             Debug.Log("PICKED");
             PlayerPint.SetActive(true);
-            
+            FullHand.SetActive(true);
         }
     }
 
@@ -134,9 +156,9 @@ public class PhysicsRayCast : MonoBehaviour
             PlayerPint.SetActive(false);
             BeerFlow.SetActive(true);
             Invoke(nameof(CompleteBeerPour), 4f);
-
-        }  
+        }
     }
+
     void CompleteBeerPour()
     {
         PourPint.SetActive(false);
@@ -145,14 +167,15 @@ public class PhysicsRayCast : MonoBehaviour
         BeerFlow.SetActive(false);
     }
 
-    //Wine Functions  
-
+    //Wine Functions
     private void HandleWine()
     {
-        if (PlayerWineGlass != null && !PlayerWineGlass.activeSelf)
+
+        if (PlayerWineGlass != null && !FullHand.activeSelf)
         {
             Debug.Log("PICKED");
             PlayerWineGlass.SetActive(true);
+            FullHand.SetActive(true);
         }
     }
 
@@ -164,6 +187,7 @@ public class PhysicsRayCast : MonoBehaviour
             PlayerWineGlass.SetActive(false);
             PouringRed.SetActive(true);
             RedWineLiquid.SetActive(true);
+            RedWine.SetActive(false);
             Invoke(nameof(CompleteRedWinePour), 4f);
         }
     }
@@ -171,9 +195,10 @@ public class PhysicsRayCast : MonoBehaviour
     void CompleteRedWinePour()
     {
         PourWineGlass.SetActive(false);
-        FullPlayerWineGlassRed.SetActive(true);
+        FullPlayerRedWine.SetActive(true);
         PouringRed.SetActive(false);
         RedWineLiquid.SetActive(false);
+        RedWine.SetActive(true);
     }
 
     private void PourWhiteWine()
@@ -184,6 +209,7 @@ public class PhysicsRayCast : MonoBehaviour
             PlayerWineGlass.SetActive(false);
             PouringWhite.SetActive(true);
             WhiteWineLiquid.SetActive(true);
+            WhiteWine.SetActive(false);
             Invoke(nameof(CompleteWhiteWinePour), 4f);
         }
     }
@@ -191,17 +217,46 @@ public class PhysicsRayCast : MonoBehaviour
     void CompleteWhiteWinePour()
     {
         PourWineGlass.SetActive(false);
-        FullPlayerWineGlassWhite.SetActive(true);
+        FullPlayerWhiteWine.SetActive(true);
         PouringWhite.SetActive(false);
         WhiteWineLiquid.SetActive(false);
+        WhiteWine.SetActive(true);
     }
-    private void HandleCustomer()
+
+    public void HandleCustomer(Collider customerCollider)
     {
-        if (CustomerBeer != null && FullPlayerPint.activeSelf)
+        CustomerNPC customerNPC = customerCollider.GetComponent<CustomerNPC>();
+        if (customerNPC == null)
         {
-            Debug.Log("HERES YOUR BEEEEER");
-            CustomerBeer.SetActive(true);
+            Debug.LogError("customerNPC is null!");
+            return;
+        }
+
+        // Handle Beers
+        if (FullPlayerPint.activeSelf && customerNPC.iconBeer.activeSelf)
+        {
+            Debug.Log("Handed beer");
+            customerNPC.CustomerBeer.SetActive(true);
             FullPlayerPint.SetActive(false);
+            FullHand.SetActive(false);
+        }
+
+        if (FullPlayerRedWine.activeSelf && customerNPC.iconRedWine.activeSelf)
+        {
+            Debug.Log("Handed red wine");
+            customerNPC.CustomerRedWine.SetActive(true);
+            FullPlayerRedWine.SetActive(false);
+            FullHand.SetActive(false);
+        }
+
+        if (FullPlayerWhiteWine.activeSelf && customerNPC.iconWhiteWine.activeSelf)
+        {
+            Debug.Log("Handed white wine");
+            customerNPC.CustomerWhiteWine.SetActive(true);
+            FullPlayerWhiteWine.SetActive(false);
+            FullHand.SetActive(false);
         }
     }
+
+
 }

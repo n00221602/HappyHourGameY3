@@ -17,6 +17,8 @@ public class FloatingUI : MonoBehaviour
         {
             Debug.LogError("World Space Canvas is not assigned.");
         }
+
+        playerCamera = GameObject.Find("PlayerCam");
     }
 
     void Update()

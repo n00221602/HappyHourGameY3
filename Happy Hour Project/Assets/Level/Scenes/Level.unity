@@ -304,6 +304,9 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 378674073}
   m_SourcePrefab: {fileID: 100100000, guid: 83c734178083fbf48b8387dbd4e26213, type: 3}
+<<<<<<< HEAD
+>>>>>>> parent of 2d444de (tried money system(failed))
+=======
 >>>>>>> parent of 2d444de (tried money system(failed))
 --- !u!1 &36652432
 GameObject:
@@ -412,6 +415,7 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 36652432}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+<<<<<<< HEAD
 <<<<<<< HEAD
 --- !u!1 &46122296
 GameObject:
@@ -608,6 +612,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a7da88014351b9f44aa3717552015060, type: 3}
   m_PrefabInstance: {fileID: 236109844}
   m_PrefabAsset: {fileID: 0}
+=======
+>>>>>>> parent of 2d444de (tried money system(failed))
 =======
 >>>>>>> parent of 2d444de (tried money system(failed))
 --- !u!1 &141952884
@@ -930,7 +936,10 @@ MeshFilter:
   m_GameObject: {fileID: 173771688}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of 2d444de (tried money system(failed))
 --- !u!224 &192728019 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6876853523831997363, guid: 1e56528f57c7d724dbcf03bd38d8ff1e, type: 3}
@@ -1061,6 +1070,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
 <<<<<<< HEAD
+<<<<<<< HEAD
   serializedVersion: 6
   m_Component:
   - component: {fileID: 273931456}
@@ -1139,6 +1149,8 @@ Transform:
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 =======
+=======
+>>>>>>> parent of 2d444de (tried money system(failed))
   m_GameObject: {fileID: 209076671}
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -1154,6 +1166,9 @@ Transform:
   serializedVersion: 3
   m_Size: {x: 0.50179857, y: 0.54641664, z: 0.5017985}
   m_Center: {x: -0.000000029802322, y: 0.27320832, z: 0}
+<<<<<<< HEAD
+>>>>>>> parent of 2d444de (tried money system(failed))
+=======
 >>>>>>> parent of 2d444de (tried money system(failed))
 --- !u!1 &305563408
 GameObject:
@@ -1549,6 +1564,7 @@ PrefabInstance:
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9351726f203ccd9498512d8b2a32a92f, type: 3}
 <<<<<<< HEAD
+<<<<<<< HEAD
 --- !u!1 &410148935
 GameObject:
   m_ObjectHideFlags: 0
@@ -1590,6 +1606,8 @@ RectTransform:
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &410148937
 =======
+=======
+>>>>>>> parent of 2d444de (tried money system(failed))
 --- !u!1 &378674054 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1710710381717337283, guid: 83c734178083fbf48b8387dbd4e26213, type: 3}
@@ -1686,6 +1704,9 @@ Canvas:
   worldSpaceCanvas: {fileID: 784416735}
   offset: {x: 0, y: 1.6, z: 0}
   playerCamera: {fileID: 1814212325}
+<<<<<<< HEAD
+>>>>>>> parent of 2d444de (tried money system(failed))
+=======
 >>>>>>> parent of 2d444de (tried money system(failed))
 --- !u!1 &442067561
 GameObject:
@@ -2287,8 +2308,11 @@ MeshFilter:
   m_GameObject: {fileID: 542455258}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 <<<<<<< HEAD
+<<<<<<< HEAD
 --- !u!1001 &573844696
 =======
+=======
+>>>>>>> parent of 2d444de (tried money system(failed))
 --- !u!1 &637648650 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 9351726f203ccd9498512d8b2a32a92f, type: 3}
@@ -2590,6 +2614,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
 <<<<<<< HEAD
+<<<<<<< HEAD
   serializedVersion: 2
   m_Radius: 0.5000001
   m_Height: 2
@@ -2703,6 +2728,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9351726f203ccd9498512d8b2a32a92f, type: 3}
   m_PrefabInstance: {fileID: 369833902}
   m_PrefabAsset: {fileID: 0}
+=======
+  serializedVersion: 3
+  m_Size: {x: 0.50179857, y: 0.54641664, z: 0.5017985}
+  m_Center: {x: -0.000000029802322, y: 0.27320832, z: 0}
+>>>>>>> parent of 2d444de (tried money system(failed))
 =======
   serializedVersion: 3
   m_Size: {x: 0.50179857, y: 0.54641664, z: 0.5017985}
@@ -2956,6 +2986,7 @@ MeshFilter:
   m_GameObject: {fileID: 747969912}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 <<<<<<< HEAD
+<<<<<<< HEAD
 --- !u!1001 &767752486
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3039,6 +3070,8 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: a7da88014351b9f44aa3717552015060, type: 3}
 --- !u!1 &826485138
 =======
+=======
+>>>>>>> parent of 2d444de (tried money system(failed))
 --- !u!1 &784416734
 >>>>>>> parent of 2d444de (tried money system(failed))
 GameObject:
@@ -3205,6 +3238,9 @@ RectTransform:
   m_AnchoredPosition: {x: 1.58, y: 5.6}
   m_SizeDelta: {x: 751.3333, y: 321.33334}
   m_Pivot: {x: 0.5, y: 0.5}
+<<<<<<< HEAD
+>>>>>>> parent of 2d444de (tried money system(failed))
+=======
 >>>>>>> parent of 2d444de (tried money system(failed))
 --- !u!1 &850587964
 GameObject:
@@ -3467,6 +3503,9 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< HEAD
+>>>>>>> parent of 2d444de (tried money system(failed))
+=======
 >>>>>>> parent of 2d444de (tried money system(failed))
 --- !u!1 &963194225
 GameObject:
@@ -5071,6 +5110,7 @@ MeshFilter:
   m_GameObject: {fileID: 1292620367}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 <<<<<<< HEAD
+<<<<<<< HEAD
 --- !u!1 &1344832289 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5563737007926460069, guid: d4ca0114c44927746a35344b8617ddfd, type: 3}
@@ -5102,6 +5142,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a7da88014351b9f44aa3717552015060, type: 3}
   m_PrefabInstance: {fileID: 1180077626}
   m_PrefabAsset: {fileID: 0}
+=======
+>>>>>>> parent of 2d444de (tried money system(failed))
 =======
 >>>>>>> parent of 2d444de (tried money system(failed))
 --- !u!1001 &1349823151
@@ -5902,6 +5944,7 @@ MeshFilter:
   m_GameObject: {fileID: 1609380688}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 <<<<<<< HEAD
+<<<<<<< HEAD
 --- !u!1001 &1618177889
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5963,6 +6006,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 83c734178083fbf48b8387dbd4e26213, type: 3}
+=======
+>>>>>>> parent of 2d444de (tried money system(failed))
 =======
 >>>>>>> parent of 2d444de (tried money system(failed))
 --- !u!1 &1625081283
@@ -6895,6 +6940,9 @@ MonoBehaviour:
 <<<<<<< HEAD
 =======
   PlayerPint: {fileID: 0}
+<<<<<<< HEAD
+>>>>>>> parent of 2d444de (tried money system(failed))
+=======
 >>>>>>> parent of 2d444de (tried money system(failed))
 --- !u!1 &1865356212
 GameObject:
@@ -7080,6 +7128,9 @@ Transform:
 =======
   - {fileID: 637648655}
   - {fileID: 209076672}
+<<<<<<< HEAD
+>>>>>>> parent of 2d444de (tried money system(failed))
+=======
 >>>>>>> parent of 2d444de (tried money system(failed))
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8297,6 +8348,9 @@ SceneRoots:
   - {fileID: 15469574}
   - {fileID: 484407971}
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 2d444de (tried money system(failed))
 =======
 >>>>>>> parent of 2d444de (tried money system(failed))

@@ -9,25 +9,61 @@ public class CustomerNPC : MonoBehaviour
     private NavMeshAgent agent;
     Transform destination;
     Transform exit;
-    private float waitTime = 10f;
+    private float waitTime = 30f;
     private float waitTimer;
 
-    private GameObject customerBeer;
-    private GameObject iconBeer;
+    public GameObject CustomerBeer;
+    public GameObject CustomerRedWine;
+    public GameObject CustomerWhiteWine;
+
+    public GameObject allIcons;
+    public GameObject iconBeer;
+    public GameObject iconRedWine;
+    public GameObject iconWhiteWine;
+
+    private GameObject destinationTrigger1;
+    private GameObject destinationTrigger2;
+    private GameObject destinationTrigger3;
+    private GameObject destinationTrigger4;
+    private GameObject destinationTrigger5;
 
     private string[] drinks = { "Beer", "RedWine", "WhiteWine" };
     private string selectedDrink;
 
     void Start()
     {
+        //Destinations
+        //destinationTrigger1 = GameObject.Find("destinationTrigger1");
+        //destinationTrigger2 = GameObject.Find("destinationTrigger2");
+        //destinationTrigger3 = GameObject.Find("destinationTrigger3");
+
+        //destinationTrigger1.SetActive(false);
+        //destinationTrigger2.SetActive(false);
+        //destinationTrigger3.SetActive(false);
+
+
         agent = GetComponent<NavMeshAgent>();
         currentState = State.Moving;  // Start in moving state
         MoveToCounter();
 
-        // Find the CustomerBeer GameObject
-        customerBeer = GameObject.Find("CustomerBeerFull");
-        iconBeer = GameObject.Find("BeerUI");
-        iconBeer.SetActive(false);
+        // Customer Drink Objects
+        CustomerBeer = GameObject.Find("CustomerBeerFull");
+        CustomerRedWine = GameObject.Find("CustomerRedWineFull");
+        CustomerWhiteWine = GameObject.Find("CustomerWhiteWineFull");
+
+        // Icon Objects
+        allIcons = GameObject.Find("DrinkIcons");
+        iconBeer = GameObject.Find("BeerIcon");
+        iconRedWine = GameObject.Find("RedWineIcon");
+        iconWhiteWine = GameObject.Find("WhiteWineIcon");
+
+        //if (allIcons != null) allIcons.SetActive(false);
+        if (iconBeer != null) iconBeer.SetActive(false);
+        if (iconRedWine != null) iconRedWine.SetActive(false);
+        if (iconWhiteWine != null) iconWhiteWine.SetActive(false);
+        if (CustomerBeer != null) CustomerBeer.SetActive(false);
+        if (CustomerRedWine != null) CustomerRedWine.SetActive(false);
+        if (CustomerWhiteWine != null) CustomerWhiteWine.SetActive(false);
 
         // Decide the drink once at the start
         DecideDrink();
@@ -55,13 +91,23 @@ public class CustomerNPC : MonoBehaviour
         // Assigns destination to the position of the npcDestination object
         if (destination == null)
         {
-            destination = GameObject.Find("npcDestination").transform;
-            if (destination == null)
-            {
-                Debug.LogError("npcDestination GameObject not found!");
-                return;
-            }
+            destination = GameObject.Find("npcDestination 1").transform;
+            
         }
+        //if (destinationTrigger1.activeSelf) {
+        //    destination = GameObject.Find("npcDestination 2").transform;
+        //    destinationTrigger2.SetActive(true);
+        //}
+        //if (destinationTrigger2.activeSelf)
+        //{
+        //    destination = GameObject.Find("npcDestination 3").transform;
+        //    destinationTrigger3.SetActive(true);
+        //}
+
+        //if (Vector3.Distance(agent.transform.position, destination.transform.position) < 1f)
+        //{
+        //    destination = GameObject.Find("npcDestination 2").transform;
+        //}
 
         // If destination is assigned, move towards the destination position
         if (destination != null)
@@ -73,6 +119,7 @@ public class CustomerNPC : MonoBehaviour
         // If the NPC reaches the counter, switch to the waiting state
         if (Vector3.Distance(agent.transform.position, destination.transform.position) < 1f)
         {
+            //destinationTrigger1.SetActive(true);
             currentState = State.Waiting;
             waitTimer = 0f;  // Sets the waiting timer to 0
         }
@@ -81,30 +128,53 @@ public class CustomerNPC : MonoBehaviour
     void DecideDrink()
     {
         // Randomly select a drink from the array
-        int randomIndex = Random.Range(0,0);
+        int randomIndex = Random.Range(0,2);
         selectedDrink = drinks[randomIndex];
         
     }
 
     void OrderDrink()
     {
-        iconBeer.SetActive(true);
-        Debug.Log("I WANT " + selectedDrink);
+        if (selectedDrink == "Beer")
+        {
+            iconBeer.SetActive(true);
+        }
+        if (selectedDrink == "RedWine")
+        {
+            iconRedWine.SetActive(true);
+        }
+        if (selectedDrink == "WhiteWine")
+        {
+            iconWhiteWine.SetActive(true);
+        }
+
+        Debug.Log("Gimme some " + selectedDrink);
         // Increment the wait timer
         waitTimer += Time.deltaTime;
 
-        // Check if CustomerBeer is active
-        if (customerBeer.activeSelf)
+        // Checks if a drink is handed to the customer, then switch to leaving state
+        if (CustomerBeer.activeSelf)
         {
             iconBeer.SetActive(false);
-            Debug.Log("YEAHHHHHHHHHHHHH");
+            currentState = State.Leaving;
+        }
+
+        if (CustomerRedWine.activeSelf)
+        {
+            iconRedWine.SetActive(false);
+            currentState = State.Leaving;
+        }
+
+        if (CustomerWhiteWine.activeSelf)
+        {
+            iconWhiteWine.SetActive(false);
             currentState = State.Leaving;
         }
 
         // If the wait time hits 0, switch to leaving state
         if (waitTimer >= waitTime)
         {
-            iconBeer.SetActive(false);
+            //allIcons.SetActive(false);
             currentState = State.Leaving;
         }
     }

@@ -12,7 +12,7 @@ public class CustomerNPC : MonoBehaviour
     private float waitTime = 10f;
     private float waitTimer;
 
-    private GameObject customerBeer;
+    public GameObject customerBeer;
     private GameObject iconBeer;
 
     private string[] drinks = { "Beer", "RedWine", "WhiteWine" };
@@ -100,6 +100,7 @@ public class CustomerNPC : MonoBehaviour
             Debug.Log("YEAHHHHHHHHHHHHH");
             currentState = State.Leaving;
         }
+      
 
         // If the wait time hits 0, switch to leaving state
         if (waitTimer >= waitTime)

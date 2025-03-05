@@ -1,16 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class MoneySystem : MonoBehaviour
 {
     private CustomerNPC customerNPC;
-    public float moneyBalance;
+    public float moneyBalance = 0f;
     public bool moneyGiven = false;
+    [SerializeField] TextMeshProUGUI moneyBalanceText;
 
     void Start()
     {
-        moneyBalance = 0f;
+
         customerNPC = GetComponent<CustomerNPC>();  // Assign once in Start()
         
         if (customerNPC == null)
@@ -21,24 +23,23 @@ public class MoneySystem : MonoBehaviour
 
     void Update()
     {
+        moneyBalanceText.text = moneyBalance.ToString();
+
         if (customerNPC == null)
         {
-            return; // Prevent null reference errors
+            return; 
         }
-
-        // Debug: Verify if moneyUpdate is being called
-        //Debug.Log("Money update is running...");
 
         if (customerNPC.CustomerBeer != null && customerNPC.CustomerBeer.activeSelf)
         {
-            if (moneyGiven == false){
+            if (!moneyGiven){
                 moneyUpdate();
             }
             
         }
         else
         {
-           // Debug.Log("CustomerBeer is not active or is null.");
+           moneyGiven = false;
         }
     }
 
@@ -50,3 +51,4 @@ public class MoneySystem : MonoBehaviour
         moneyGiven = true;
     }
 }
+

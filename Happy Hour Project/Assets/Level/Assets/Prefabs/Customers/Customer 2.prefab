@@ -275,7 +275,7 @@ GameObject:
   - component: {fileID: 509110069623133566}
   - component: {fileID: 1956648977733424315}
   m_Layer: 3
-  m_Name: StateTest
+  m_Name: Customer 2
   m_TagString: Customer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -290,7 +290,7 @@ Transform:
   m_GameObject: {fileID: 1710710381717337283}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 25.116596, y: 1.35, z: 50.96147}
+  m_LocalPosition: {x: 35.503506, y: 1.87, z: 60.90371}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -328,7 +328,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 27ea8ccc6c1113c4ab6437afe9bbf7c8, type: 2}
+  - {fileID: 2100000, guid: efb21496470a8d8459d88ffec65de23d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -383,7 +383,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 6
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -408,13 +408,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 0
-  CustomerBeer: {fileID: 0}
-  CustomerRedWine: {fileID: 0}
-  CustomerWhiteWine: {fileID: 0}
-  allIcons: {fileID: 0}
-  iconBeer: {fileID: 0}
-  iconRedWine: {fileID: 0}
-  iconWhiteWine: {fileID: 0}
+  CustomerBeer: {fileID: 8335757827288212791}
+  CustomerRedWine: {fileID: 919132149155446097}
+  CustomerWhiteWine: {fileID: 670626900157008520}
+  allIcons: {fileID: 9209871963016548210}
+  iconBeer: {fileID: 3097459696076571164}
+  iconRedWine: {fileID: 7487695951591061781}
+  iconWhiteWine: {fileID: 6169488624170082183}
 --- !u!114 &1956648977733424315
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -495,7 +495,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1c06030f5c788154e9a79dbf9ece34c1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 49f44a4664fefc94b8475ca75cb4fb36, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

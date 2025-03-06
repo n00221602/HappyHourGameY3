@@ -24,7 +24,7 @@ public class CustomerNPC : MonoBehaviour
     private string[] drinks = { "Beer", "RedWine", "WhiteWine" };
     private string selectedDrink;
 
-    private string[] destinations = { "npcDestination 1", "npcDestination 2", "npcDestination 3", "npcDestination 4", "npcDestination 5"};
+    private string[] destinations = { "npcDestination 1", "npcDestination 2", "npcDestination 3", "npcDestination 4", "npcDestination 5", "npcDestination 6" };
     //private string selectedDestination;
    
 
@@ -54,6 +54,7 @@ public class CustomerNPC : MonoBehaviour
 
         // Decide the drink once at the start
         DecideDrink();
+       
     }
 
 
@@ -72,6 +73,7 @@ public class CustomerNPC : MonoBehaviour
                 LeaveCounter();
                 break;
         }
+
     }
 
     void MoveToCounter()
@@ -79,33 +81,30 @@ public class CustomerNPC : MonoBehaviour
         // Assigns destination to the position of the npcDestination object
         if (destination == null)
         {
-            foreach (string dest in destinations)
+            for (int i = 0; i < destinations.Length; i++)
             {
-                GameObject destObject = GameObject.Find(dest);
+                //The initial destination is set to the current loop. This destination is not guaranteed to be the final destination
+                Transform initialDestination = GameObject.Find(destinations[i]).transform;
+                bool isTaken = false;
 
-                if (destObject != null)
+                // Creates an array containing all the customers in the scene
+                GameObject[] customers = GameObject.FindGameObjectsWithTag("Customer");
+
+                // For each customer, check if the destination is taken
+                foreach (GameObject customer in customers)
                 {
-                    Vector3 destPosition = destObject.transform.position;
-
-                    // Check if any customer is already at this destination
-                    GameObject[] customers = GameObject.FindGameObjectsWithTag("Customer");
-                    Debug.Log("Number of customers found: " + customers.Length);
-
-                    bool isTaken = false;
-                    foreach (GameObject customer in customers)
+                    if (customer != this.gameObject && customer.GetComponent<CustomerNPC>().destination == initialDestination)
                     {
-                        if (Vector3.Distance(customer.transform.position, destPosition) < 1.2f)
-                        {
-                            isTaken = true;
-                            break;
-                        }
-                    }
-
-                    if (!isTaken)
-                    {
-                        destination = destObject.transform;
+                        isTaken = true;
                         break;
                     }
+                }
+
+                //If the destination is not taken, assign it to the customer
+                if (!isTaken)
+                {
+                    destination = initialDestination;
+                    break;
                 }
             }
         }
@@ -175,7 +174,7 @@ public class CustomerNPC : MonoBehaviour
         // If the wait time hits 0, switch to leaving state
         if (waitTimer >= waitTime)
         {
-            //allIcons.SetActive(false);
+            allIcons.SetActive(false);
             currentState = State.Leaving;
         }
     }
@@ -191,6 +190,7 @@ public class CustomerNPC : MonoBehaviour
         // If exit is assigned, move towards the exit position
         if (exit != null)
         {
+            destination = null;
             Vector3 targetVector = exit.transform.position;
             agent.SetDestination(targetVector);
         }

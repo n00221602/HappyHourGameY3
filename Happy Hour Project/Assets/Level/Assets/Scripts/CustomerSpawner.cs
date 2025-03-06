@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CustomerSpawner : MonoBehaviour
@@ -21,10 +22,29 @@ public class CustomerSpawner : MonoBehaviour
             SpawnCustomer();
         }
 
-        if (Input.GetKeyDown(KeyCode.O))
+        
+
+        GameObject[] customers = GameObject.FindGameObjectsWithTag("Customer");
+        if (customers.Length >= 6)
+        {
+            elapsedTime = 0f;
+            Debug.Log("Too many customers!");
+
+        }
+         else if (elapsedTime >= spawnInterval)
+        {
+            // Resets the timer to 0 seconds
+            elapsedTime = 0f;
+
+            // Spawns a customer
+            SpawnCustomer();
+        }
+
+        if (Input.GetKeyDown(KeyCode.O) && customers.Length < 6)
         {
             SpawnCustomer();
         }
+
     }
 
     private void SpawnCustomer()

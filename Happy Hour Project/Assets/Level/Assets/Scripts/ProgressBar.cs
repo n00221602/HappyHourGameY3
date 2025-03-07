@@ -6,36 +6,38 @@ using UnityEngine.UI;
 public class ProgressBar : MonoBehaviour
 {
     private float progressTime;
-    public float progressInterval = 4f;
+    public float progressInterval;
     public Image mask;
-    private GameObject beerProgressBar;
+    public GameObject progressBar;
 
+    private PhysicsRayCast physicsRayCast;
 
     // Start is called before the first frame update
     void Start()
     {
-        beerProgressBar = GameObject.Find("BeerProgressBar");
-        beerProgressBar.SetActive(false);
+        physicsRayCast = GameObject.Find("PlayerCam").GetComponent<PhysicsRayCast>();
+        progressBar = this.gameObject;
+        progressBar.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-            FillBeerProgressBar();
+        FillProgressBar();
     }
 
-    public void FillBeerProgressBar()
+    public void FillProgressBar()
     {
-        beerProgressBar.SetActive(true);
+        progressBar.SetActive(true);
         progressTime += Time.deltaTime;
-        float fillAmount = progressTime / progressInterval;
+        float fillAmount = progressTime / physicsRayCast.drinksInterval;
         mask.fillAmount = fillAmount;
 
         if (progressTime >= progressInterval)
         {
             progressTime = 0f;
             mask.fillAmount = 0f;
-            beerProgressBar.SetActive(false);
+            progressBar.SetActive(false);
         }
 
     }

@@ -87,7 +87,7 @@ public class CustomerNPC : MonoBehaviour
                 Transform initialDestination = GameObject.Find(destinations[i]).transform;
                 bool isTaken = false;
 
-                // Creates an array containing all the customers in the scene
+                // Creates a temporary array containing all the customers in the scene
                 GameObject[] customers = GameObject.FindGameObjectsWithTag("Customer");
 
                 // For each customer, check if the destination is taken

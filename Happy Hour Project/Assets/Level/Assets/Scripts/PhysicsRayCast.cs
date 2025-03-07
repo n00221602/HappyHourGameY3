@@ -25,6 +25,8 @@ public class PhysicsRayCast : MonoBehaviour
     private GameObject WhiteWineLiquid;
     private GameObject PourWineGlass;
 
+    public float drinksInterval;
+
     //Customer game objects
     private GameObject CustomerBeer;
     private GameObject CustomerRedWine;
@@ -33,7 +35,8 @@ public class PhysicsRayCast : MonoBehaviour
     //CustomerNPC script
     private CustomerNPC customerNPC;
 
-    public ProgressBar progressBar;
+    public ProgressBar BeerProgressBar;
+    public ProgressBar WineProgressBar;
 
     // Start is called before the first frame update
     void Start()
@@ -149,8 +152,9 @@ public class PhysicsRayCast : MonoBehaviour
             PourPint.SetActive(true);
             PlayerPint.SetActive(false);
             BeerFlow.SetActive(true);
-            Invoke(nameof(CompleteBeerPour), 4f);
-            progressBar.FillBeerProgressBar();
+            drinksInterval = 4f;
+            Invoke(nameof(CompleteBeerPour), drinksInterval);
+            BeerProgressBar.FillProgressBar();
         }
     }
 
@@ -182,7 +186,9 @@ public class PhysicsRayCast : MonoBehaviour
             PouringRed.SetActive(true);
             RedWineLiquid.SetActive(true);
             RedWine.SetActive(false);
-            Invoke(nameof(CompleteRedWinePour), 4f);
+            drinksInterval = 2.5f;
+            Invoke(nameof(CompleteRedWinePour), drinksInterval);
+            WineProgressBar.FillProgressBar();
         }
     }
 
@@ -204,7 +210,9 @@ public class PhysicsRayCast : MonoBehaviour
             PouringWhite.SetActive(true);
             WhiteWineLiquid.SetActive(true);
             WhiteWine.SetActive(false);
-            Invoke(nameof(CompleteWhiteWinePour), 4f);
+            drinksInterval = 2.5f;
+            Invoke(nameof(CompleteWhiteWinePour), drinksInterval);
+            WineProgressBar.FillProgressBar();
         }
     }
 
@@ -226,7 +234,7 @@ public class PhysicsRayCast : MonoBehaviour
             return;
         }
 
-        // Handle Beers
+        // Handle Drinks
         if (FullPlayerPint.activeSelf && customerNPC.iconBeer.activeSelf)
         {
             Debug.Log("Handed beer");

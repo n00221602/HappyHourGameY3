@@ -7,13 +7,17 @@ public class MoneySystem : MonoBehaviour
 {
     private CustomerNPC customerNPC;
     public float moneyBalance = 0f;
-    public bool moneyGiven = false;
+    public bool beerMoneyGiven = false;
+    public bool whiteWineMoneyGiven = false;
+    public bool redWineMoneyGiven = false;
+
     [SerializeField] TextMeshProUGUI moneyBalanceText;
+    public string displayedMoney;
 
     void Start()
     {
 
-        customerNPC = GetComponent<CustomerNPC>();  // Assign once in Start()
+        customerNPC = GetComponent<CustomerNPC>();  
         
         if (customerNPC == null)
         {
@@ -23,32 +27,76 @@ public class MoneySystem : MonoBehaviour
 
     void Update()
     {
-        moneyBalanceText.text = moneyBalance.ToString();
-
+        moneyBalanceText.text = ("$" + moneyBalance.ToString());
+        
         if (customerNPC == null)
         {
             return; 
         }
-
+        //---------------BEER MONEY SYSTEM--------------------
         if (customerNPC.CustomerBeer != null && customerNPC.CustomerBeer.activeSelf)
         {
-            if (!moneyGiven){
-                moneyUpdate();
+            if (!beerMoneyGiven){
+                beerMoneyUpdate();
             }
             
         }
         else
         {
-           moneyGiven = false;
+           beerMoneyGiven = false;
+        }
+
+                //---------------WHITE WINE MONEY SYSTEM--------------------
+
+                if (customerNPC.CustomerWhiteWine != null && customerNPC.CustomerWhiteWine.activeSelf)
+        {
+            if (!whiteWineMoneyGiven){
+                whiteWineMoneyUpdate();
+            }
+            
+        }
+        else
+        {
+           whiteWineMoneyGiven = false;
+        }
+
+                        //---------------RED WINE MONEY SYSTEM--------------------
+
+                if (customerNPC.CustomerRedWine != null && customerNPC.CustomerRedWine.activeSelf)
+        {
+            if (!redWineMoneyGiven){
+                redWineMoneyUpdate();
+            }
+            
+        }
+        else
+        {
+           redWineMoneyGiven = false;
         }
     }
 
-    void moneyUpdate()
+    void beerMoneyUpdate()
     {
         Debug.Log("CustomerBeer is active.");
-        moneyBalance += 1f;
+        moneyBalance += 5f;
         Debug.Log("Your Total Balance Is: " + moneyBalance);
-        moneyGiven = true;
+        beerMoneyGiven = true;
+    }
+
+        void whiteWineMoneyUpdate()
+    {
+        Debug.Log("CustomerWhiteWine is active.");
+        moneyBalance += 8f;
+        Debug.Log("Your Total Balance Is: " + moneyBalance);
+        whiteWineMoneyGiven = true;
+    }
+
+        void redWineMoneyUpdate()
+    {
+        Debug.Log("CustomerRedWine is active.");
+        moneyBalance += 8f;
+        Debug.Log("Your Total Balance Is: " + moneyBalance);
+        redWineMoneyGiven = true;
     }
 }
 

@@ -2194,6 +2194,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e70a6e87af250b5468c08c6e6d027736, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PourPint: {fileID: 0}
+  drinksInterval: 0
+  BeerProgressBar: {fileID: 0}
+  WineProgressBar: {fileID: 0}
 --- !u!114 &256803879
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5348,7 +5352,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customers:
-  - {fileID: 1710710381717337283, guid: 83c734178083fbf48b8387dbd4e26213, type: 3}
+  - {fileID: 3888452991032070665, guid: 83c734178083fbf48b8387dbd4e26213, type: 3}
+  - {fileID: 8054219716313421085, guid: e1bf3b81a89c94746a0335480d7a5c2b, type: 3}
+  - {fileID: 8920798606357571656, guid: 6066cf8ee25e3e14cb05de88fae97498, type: 3}
+  - {fileID: 2278583530237125200, guid: 6f2f46e441fd7fe408118e2dc991048a, type: 3}
 --- !u!1 &752142039
 GameObject:
   m_ObjectHideFlags: 0
@@ -8377,13 +8384,22 @@ PrefabInstance:
       propertyPath: playerCamera
       value: 
       objectReference: {fileID: 256803877}
+    - target: {fileID: 3566265393160742236, guid: 83c734178083fbf48b8387dbd4e26213, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 24.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3566265393160742236, guid: 83c734178083fbf48b8387dbd4e26213, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -23.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3566265393160742236, guid: 83c734178083fbf48b8387dbd4e26213, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 139.2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1710710381717337283, guid: 83c734178083fbf48b8387dbd4e26213, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1654248893}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 83c734178083fbf48b8387dbd4e26213, type: 3}
 --- !u!1 &1074022215
 GameObject:
@@ -8497,6 +8513,11 @@ Transform:
   - {fileID: 230509517}
   m_Father: {fileID: 1929795730}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1077708702 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3566265393160742236, guid: 83c734178083fbf48b8387dbd4e26213, type: 3}
+  m_PrefabInstance: {fileID: 1072298490}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1102508930
 GameObject:
   m_ObjectHideFlags: 0
@@ -12740,34 +12761,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1652161945}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1654248885 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1710710381717337283, guid: 83c734178083fbf48b8387dbd4e26213, type: 3}
-  m_PrefabInstance: {fileID: 1072298490}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1654248886 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 918592502053174931, guid: 83c734178083fbf48b8387dbd4e26213, type: 3}
-  m_PrefabInstance: {fileID: 1072298490}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1654248893
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1654248885}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6c19d3ce803dff4b83e99431d7f3348, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moneyBalance: 0
-  beerMoneyGiven: 0
-  whiteWineMoneyGiven: 0
-  redWineMoneyGiven: 0
-  moneyBalanceText: {fileID: 1418519223}
-  displayedMoney: 
 --- !u!1 &1658263354
 GameObject:
   m_ObjectHideFlags: 0
@@ -14578,7 +14571,7 @@ Transform:
   - {fileID: 1746447333}
   - {fileID: 836727910}
   - {fileID: 2018948348}
-  - {fileID: 1654248886}
+  - {fileID: 1077708702}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1854988626

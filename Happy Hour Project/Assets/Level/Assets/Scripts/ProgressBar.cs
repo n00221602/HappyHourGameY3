@@ -11,6 +11,7 @@ public class ProgressBar : MonoBehaviour
     public GameObject progressBar;
 
     private PhysicsRayCast physicsRayCast;
+    //private CustomerNPC customerNPC;
 
     // Start is called before the first frame update
     void Start()
@@ -33,7 +34,7 @@ public class ProgressBar : MonoBehaviour
         float fillAmount = progressTime / physicsRayCast.drinksInterval;
         mask.fillAmount = fillAmount;
 
-        if (progressTime >= progressInterval)
+        if (progressTime >= physicsRayCast.drinksInterval)
         {
             progressTime = 0f;
             mask.fillAmount = 0f;

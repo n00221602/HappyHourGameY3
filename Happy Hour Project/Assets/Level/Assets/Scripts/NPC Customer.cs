@@ -9,7 +9,7 @@ public class CustomerNPC : MonoBehaviour
     private NavMeshAgent agent;
     Transform destination;
     Transform exit;
-    private float waitTime = 30f;
+    public float waitTime = 30f;
     private float waitTimer;
 
     public GameObject CustomerBeer;
@@ -26,7 +26,9 @@ public class CustomerNPC : MonoBehaviour
 
     private string[] destinations = { "npcDestination 1", "npcDestination 2", "npcDestination 3", "npcDestination 4", "npcDestination 5", "npcDestination 6" };
     //private string selectedDestination;
-   
+
+    public CustomerTimer customerTimer;
+
 
     void Start()
     {
@@ -151,23 +153,24 @@ public class CustomerNPC : MonoBehaviour
         Debug.Log("Gimme some " + selectedDrink);
         // Increment the wait timer
         waitTimer += Time.deltaTime;
+        customerTimer.StartTimer();
 
         // Checks if a drink is handed to the customer, then switch to leaving state
         if (CustomerBeer.activeSelf)
         {
-            iconBeer.SetActive(false);
+            allIcons.SetActive(false);
             currentState = State.Leaving;
         }
 
         if (CustomerRedWine.activeSelf)
         {
-            iconRedWine.SetActive(false);
+            allIcons.SetActive(false);
             currentState = State.Leaving;
         }
 
         if (CustomerWhiteWine.activeSelf)
         {
-            iconWhiteWine.SetActive(false);
+            allIcons.SetActive(false);
             currentState = State.Leaving;
         }
 

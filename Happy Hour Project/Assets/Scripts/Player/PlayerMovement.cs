@@ -15,11 +15,14 @@ public class PlayerMovement : MonoBehaviour
     public float jumpCooldown;
     public float airMultiplier;
     public GameObject ExitMenu;
+    public GameObject ShopMenu;
     bool readyToJump;
 
     [Header("KeyBinds")]
     public KeyCode jumpKey = KeyCode.Space;
     public KeyCode exitKey = KeyCode.Escape;
+    public KeyCode shopKey = KeyCode.Q;
+
 
     public KeyCode sprintKey = KeyCode.LeftShift;
 
@@ -45,6 +48,8 @@ public class PlayerMovement : MonoBehaviour
         rb.freezeRotation = true;
         readyToJump = true;
         ExitMenu.SetActive(false);
+        ShopMenu.SetActive(false);
+
     }
 
      private void Update()
@@ -79,6 +84,12 @@ public class PlayerMovement : MonoBehaviour
 
         }
 
+         if(Input.GetKey(shopKey) && !ShopMenu.activeSelf)
+        {
+            ShopMenu.SetActive(true);
+            Cursor.lockState = CursorLockMode.None;
+
+        }
 
 
 
@@ -146,6 +157,15 @@ public class PlayerMovement : MonoBehaviour
        if(Input.GetKey(exitKey))
         {
             SceneManager.LoadScene("MainMenu"); 
+        }
+         
+     }
+
+     public void ShoppingMenu()
+     {
+       if(Input.GetKey(shopKey))
+        {
+            SceneManager.LoadScene("ShopBook"); 
         }
          
      }

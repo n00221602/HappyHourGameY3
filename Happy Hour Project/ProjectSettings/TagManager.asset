@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Timer
   - Customer
+  - Drinker
   layers:
   - Default
   - TransparentFX

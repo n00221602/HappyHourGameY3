@@ -41,6 +41,11 @@ public class PlayerMovement : MonoBehaviour
 
     Rigidbody rb;
 
+   public GameObject DrinksShop;
+   public GameObject PassivesShop;
+   public GameObject BarmanShop;
+   public GameObject ExtrasShop;
+
 
     private void Start()
     {
@@ -165,7 +170,11 @@ public class PlayerMovement : MonoBehaviour
      {
        if(Input.GetKey(shopKey))
         {
-            SceneManager.LoadScene("ShopBook"); 
+        SceneManager.LoadScene("ShopBook"); 
+        DrinksShop.SetActive(true);
+        PassivesShop.SetActive(false);
+       BarmanShop.SetActive(false);
+        ExtrasShop.SetActive(false);
         }
          
      }

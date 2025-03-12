@@ -3,11 +3,12 @@ using UnityEngine.AI;
 
 public class CustomerNPC : MonoBehaviour
 {
-    public enum State { Moving, Waiting, Leaving }
+    public enum State { Moving, Waiting, Drinking, Leaving }
     public State currentState;
 
     private NavMeshAgent agent;
     Transform destination;
+    Transform table;
     Transform exit;
     public float waitTime = 30f;
     private float waitTimer;
@@ -24,8 +25,8 @@ public class CustomerNPC : MonoBehaviour
     private string[] drinks = { "Beer", "RedWine", "WhiteWine" };
     private string selectedDrink;
 
-    private string[] destinations = { "npcDestination 1", "npcDestination 2", "npcDestination 3", "npcDestination 4", "npcDestination 5", "npcDestination 6" };
-    //private string selectedDestination;
+    private string[] destinations = { "BarDest1", "BarDest2", "BarDest3", "BarDest4", "BarDest5", "BarDest6" };
+    private string[] tables = { "TableDest1", "TableDest2", "TableDest3", "TableDest4", "TableDest5", "TableDest6" }; 
 
     public CustomerTimer customerTimer;
 
@@ -70,6 +71,9 @@ public class CustomerNPC : MonoBehaviour
                 break;
             case State.Waiting:
                 OrderDrink();
+                break;
+            case State.Drinking:
+                FindTable();
                 break;
             case State.Leaving:
                 LeaveCounter();
@@ -155,23 +159,13 @@ public class CustomerNPC : MonoBehaviour
         waitTimer += Time.deltaTime;
         customerTimer.StartTimer();
 
-        // Checks if a drink is handed to the customer, then switch to leaving state
-        if (CustomerBeer.activeSelf)
+        // Checks if a drink is handed to the customer, then switch to drinking state
+        if (CustomerBeer.activeSelf || CustomerRedWine.activeSelf || CustomerWhiteWine.activeSelf)
         {
             allIcons.SetActive(false);
-            currentState = State.Leaving;
-        }
-
-        if (CustomerRedWine.activeSelf)
-        {
-            allIcons.SetActive(false);
-            currentState = State.Leaving;
-        }
-
-        if (CustomerWhiteWine.activeSelf)
-        {
-            allIcons.SetActive(false);
-            currentState = State.Leaving;
+            this.gameObject.tag = "Drinker"; // Changes the Customer tag to Drinker
+            currentState = State.Drinking;
+            
         }
 
         // If the wait time hits 0, switch to leaving state
@@ -179,6 +173,53 @@ public class CustomerNPC : MonoBehaviour
         {
             allIcons.SetActive(false);
             currentState = State.Leaving;
+        }
+    }
+
+    void FindTable()
+    {
+        if (table == null)
+        {
+            for (int i = 0; i < tables.Length; i++)
+            {
+                //The initial table is set to the current loop. This table is not guaranteed to be the final table
+                Transform initialTable = GameObject.Find(tables[i]).transform;
+                bool isTaken = false;
+
+                // Creates a temporary array containing all the customers in the scene
+                GameObject[] drinkers = GameObject.FindGameObjectsWithTag("Drinker");
+
+                // For each drinker, check if the table is taken
+                foreach (GameObject drinker in drinkers)
+                {
+                    if (drinker != this.gameObject && drinker.GetComponent<CustomerNPC>().table == initialTable)
+                    {
+                        isTaken = true;
+                        break;
+                    }
+                }
+
+                //If the table is not taken, assign it to the customer
+                if (!isTaken)
+                {
+                    table = initialTable;
+                    break;
+                }
+            }
+        }
+
+        // If table is assigned, move towards the table position
+        if (table != null)
+        {
+            Vector3 targetVector = table.transform.position;
+            agent.SetDestination(targetVector);
+        }
+
+        // If the NPC reaches the table, switch to the waiting state
+        if (table != null && Vector3.Distance(agent.transform.position, table.transform.position) < 1f)
+        {
+            //currentState = State.Waiting;
+            Debug.Log("Enjoy your drink!");
         }
     }
 

@@ -277,7 +277,7 @@ Transform:
   m_GameObject: {fileID: 2278583530237125200}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 31.05, y: 2.46, z: 54.962704}
+  m_LocalPosition: {x: 42.56, y: 1.57, z: 59.606777}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -704,7 +704,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mask: {fileID: 3553886667984689980}
-  customerNPC: {fileID: 0}
 --- !u!1 &4066660712800061476
 GameObject:
   m_ObjectHideFlags: 0

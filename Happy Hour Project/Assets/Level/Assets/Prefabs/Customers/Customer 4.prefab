@@ -261,7 +261,6 @@ GameObject:
   - component: {fileID: 1232634318626875477}
   - component: {fileID: 1633619140931123565}
   - component: {fileID: 6465701325281260859}
-  - component: {fileID: 4924277504577208151}
   m_Layer: 3
   m_Name: Customer 4
   m_TagString: Customer
@@ -278,7 +277,7 @@ Transform:
   m_GameObject: {fileID: 2278583530237125200}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 29.05341, y: 0.98, z: 58.135437}
+  m_LocalPosition: {x: 42.56, y: 1.57, z: 59.606777}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -420,21 +419,6 @@ MonoBehaviour:
   worldSpaceCanvas: {fileID: 2056109130475480974}
   offset: {x: 0, y: 1.6, z: 0}
   playerCamera: {fileID: 0}
---- !u!114 &4924277504577208151
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2278583530237125200}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de85c58a0122e2d4787cc0218a9e209b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moneyBalance: 0
-  moneyGiven: 0
-  moneyBalanceText: {fileID: 0}
 --- !u!1 &3615395968908269926
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,6 +9,9 @@ public class MoneySystem : MonoBehaviour
     public float moneyBalance = 0f;
     [SerializeField] TextMeshProUGUI moneyBalanceText;
 
+    void Start(){
+        moneyBalanceText = GameObject.Find("Player/PlayerUi/Money").GetComponent<TextMeshProUGUI>();
+    }
     
     void beerMoneyAddition()
     {
@@ -36,16 +39,7 @@ public class MoneySystem : MonoBehaviour
 
     }
 
-  //  void Start()
-//  {
-//      moneyBalance = 0f;
-//
-//      customerNPC = FindObjectOfType<CustomerNPC>();
-//      if (customerNPC == null)
-//      {
-//          Debug.LogError("CustomerNPC component not found on " + gameObject.name);
-//      }
-//  }
+ 
 //
 //  void Update()
 //  {

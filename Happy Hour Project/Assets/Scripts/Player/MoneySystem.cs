@@ -30,6 +30,11 @@ public class MoneySystem : MonoBehaviour
         moneyBalance += 8f;
        // Debug.Log("Your Total Balance Is: " + moneyBalance);
     }
+     void Update()
+    {
+         moneyBalanceText.text = moneyBalance.ToString();
+
+    }
 
   //  void Start()
 //  {

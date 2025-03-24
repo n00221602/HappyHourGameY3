@@ -11,6 +11,7 @@ public class MoneySystem : MonoBehaviour
 
     void Start(){
         moneyBalanceText = GameObject.Find("Player/PlayerUi/Money").GetComponent<TextMeshProUGUI>();
+
     }
     
     void beerMoneyAddition()

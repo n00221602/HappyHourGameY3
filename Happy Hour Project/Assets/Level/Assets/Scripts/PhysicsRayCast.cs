@@ -35,8 +35,12 @@ public class PhysicsRayCast : MonoBehaviour
     //CustomerNPC script
     private CustomerNPC customerNPC;
 
+    //Progress Bar script
     public ProgressBar BeerProgressBar;
     public ProgressBar WineProgressBar;
+
+    //Money System script
+    public MoneySystem moneySystem;
 
     // Start is called before the first frame update
     void Start()
@@ -241,6 +245,7 @@ public class PhysicsRayCast : MonoBehaviour
             customerNPC.CustomerBeer.SetActive(true);
             FullPlayerPint.SetActive(false);
             FullHand.SetActive(false);
+            moneySystem.beerMoneyAddition();
         }
 
         if (FullPlayerRedWine.activeSelf && customerNPC.iconRedWine.activeSelf)
@@ -249,6 +254,7 @@ public class PhysicsRayCast : MonoBehaviour
             customerNPC.CustomerRedWine.SetActive(true);
             FullPlayerRedWine.SetActive(false);
             FullHand.SetActive(false);
+            moneySystem.redWineMoneyAddition();
         }
 
         if (FullPlayerWhiteWine.activeSelf && customerNPC.iconWhiteWine.activeSelf)
@@ -257,6 +263,7 @@ public class PhysicsRayCast : MonoBehaviour
             customerNPC.CustomerWhiteWine.SetActive(true);
             FullPlayerWhiteWine.SetActive(false);
             FullHand.SetActive(false);
+            moneySystem.whiteWineMoneyAddition();
         }
     }
 }

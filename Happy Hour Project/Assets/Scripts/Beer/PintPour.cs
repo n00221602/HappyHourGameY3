@@ -8,6 +8,7 @@ public class PintPour : MonoBehaviour
     public GameObject PintOnPlayer;
     public GameObject PlaceholderPint;
     public GameObject FullPintOnPlayer;
+    public float pintCountdown = 4f;
 
     void Start()
     {
@@ -16,6 +17,10 @@ public class PintPour : MonoBehaviour
         FullPintOnPlayer.SetActive(false);
         PlaceholderPint.SetActive(false);
 
+    }
+
+    public void IncreacePourSpeedPurchased(){
+        pintCountdown /= 1.5f;
     }
 
     private void OnTriggerStay(Collider other)
@@ -27,7 +32,7 @@ public class PintPour : MonoBehaviour
                 PlaceholderPint.SetActive(true);
                 PintOnPlayer.SetActive(false);
                 FlowingBeer.SetActive(true);
-                Invoke(nameof(CompletePour), 4f); 
+                Invoke(nameof(CompletePour), pintCountdown); 
             }
         }
     }

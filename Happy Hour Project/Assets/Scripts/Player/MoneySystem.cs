@@ -10,10 +10,11 @@ public class MoneySystem : MonoBehaviour
     public bool moneyGiven = false;
     [SerializeField] TextMeshProUGUI moneyBalanceText;
 
-    void Start()
-    {
-        moneyBalanceText = this.gameObject.GetComponent<TextMeshProUGUI>();
+    void Start(){
+        moneyBalanceText = GameObject.Find("Player/PlayerUi/Money").GetComponent<TextMeshProUGUI>();
+
     }
+
 
     void Update()
     {

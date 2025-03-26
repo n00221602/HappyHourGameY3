@@ -178,6 +178,11 @@ public class PlayerMovement : MonoBehaviour
         }
          
      }
+
+     public void IncreaseSpeedPurchased()
+     {
+         moveSpeed *= 1.3f;
+     }
          
 
 

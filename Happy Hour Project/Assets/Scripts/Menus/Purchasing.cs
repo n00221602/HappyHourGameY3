@@ -13,6 +13,7 @@ public class Purchasing : MonoBehaviour
     public GameObject Karaoke;
 
     public MoneySystem currentMoney;
+    public PlayerMovement moveSpeed;
 
     void Start()
     {
@@ -24,16 +25,18 @@ public class Purchasing : MonoBehaviour
     Karaoke.SetActive(false);
 
     currentMoney = GetComponent<MoneySystem>();  
+    moveSpeed = GetComponent<PlayerMovement>();  
+
     }
 
     public void purchaseAirHockeyTable(){
       AirHockeyTable.SetActive(true);
 
-       // if(currentMoney.moneyBalance >= 5f)
-       // {
-       // currentMoney.moneyBalance -=5f;
+        if(currentMoney.moneyBalance >= 5f)
+        {
+        currentMoney.moneyBalance -=5f;
 
-        //}
+        }
     }
 
     public void purchasePoolTable(){
@@ -55,4 +58,12 @@ public class Purchasing : MonoBehaviour
     public void purchaseKaraoke(){
       Karaoke.SetActive(true);
     }
+
+
+
+    //---------------------PERKS-----------------------
+      public void purchaseMoveSpeed(){
+      
+    }
+    
 }

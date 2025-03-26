@@ -6,90 +6,94 @@ using TMPro;
 public class MoneySystem : MonoBehaviour
 {
     private CustomerNPC customerNPC;
-    public float moneyBalance = 0f;
+    public float moneyBalance;
+    public bool moneyGiven = false;
     [SerializeField] TextMeshProUGUI moneyBalanceText;
 
     void Start(){
         moneyBalanceText = GameObject.Find("Player/PlayerUi/Money").GetComponent<TextMeshProUGUI>();
 
     }
-    
-    void beerMoneyAddition()
+
+
+    void Update()
     {
-        //Debug.Log("CustomerBeer is active.");
-        moneyBalance += 5f;
-       // Debug.Log("Your Total Balance Is: " + moneyBalance);
+        Debug.Log(moneyBalance);
+
+        //if (customerNPC == null)
+        //{
+        //    customerNPC = FindObjectOfType<CustomerNPC>();
+        //    if (customerNPC == null)
+        //    {
+        //        Debug.LogError("CustomerNPC component not found.");
+        //        return;
+        //    }
+        //}
+
+        //// BEER MONEY
+        //if (customerNPC.CustomerBeer.activeSelf)
+        //{
+        //    beerMoneyAddition();
+        //}
+
+        //// RED WINE MONEY
+        //if (customerNPC.CustomerRedWine.activeSelf)
+        //{
+        //    redWineMoneyAddition();
+        //}
+
+        //// WHITE WINE MONEY
+        //if (customerNPC.CustomerWhiteWine.activeSelf)
+        //{
+        //    whiteWineMoneyAddition();
+        //}
+
+        //// Reset moneyGiven only when all customers are inactive
+        //if (!customerNPC.CustomerBeer.activeSelf && !customerNPC.CustomerRedWine.activeSelf && !customerNPC.CustomerWhiteWine.activeSelf)
+        //{
+        //    moneyGiven = false;
+        //}
     }
 
-    void redWineMoneyAddition()
+    public void beerMoneyAddition()
     {
-       // Debug.Log("CustomerRedWine is active.");
-        moneyBalance += 8f;
-       // Debug.Log("Your Total Balance Is: " + moneyBalance);
+        if (!moneyGiven)
+        {
+            Debug.Log("CustomerBeer is active.");
+            moneyBalance += 5f;
+            Debug.Log("Your Total Balance Is: " + moneyBalance);
+            //moneyGiven = true;
+            UpdateText();
+        }
     }
 
-    void whiteWineMoneyAddition()
+    public void redWineMoneyAddition()
     {
-      //  Debug.Log("CustomerWhiteWine is active.");
-        moneyBalance += 8f;
-       // Debug.Log("Your Total Balance Is: " + moneyBalance);
+        if (!moneyGiven)
+        {
+            Debug.Log("CustomerRedWine is active.");
+            moneyBalance += 8f;
+            Debug.Log("Your Total Balance Is: " + moneyBalance);
+            //moneyGiven = true;
+            UpdateText();
+        }
     }
-     void Update()
+
+    public void whiteWineMoneyAddition()
     {
-         moneyBalanceText.text = moneyBalance.ToString();
-
+        if (!moneyGiven)
+        {
+            Debug.Log("CustomerWhiteWine is active.");
+            moneyBalance += 8f;
+            Debug.Log("Your Total Balance Is: " + moneyBalance);
+            //moneyGiven = true;
+            UpdateText();
+        }
     }
 
- 
-//
-//  void Update()
-//  {
-//      Debug.Log(moneyBalance);
-//      moneyBalanceText.text = moneyBalance.ToString();
-//
-//      if (customerNPC == null)
-//      {
-//          return;
-//      }
-//
-//      // BEER MONEY
-//      if (customerNPC.CustomerBeer != null && customerNPC.CustomerBeer.activeSelf)
-//      {
-//          if (!moneyGiven)
-//          {
-//              beerMoneyAddition();
-//          }
-//      }
-//      else
-//      {
-//          moneyGiven = false;
-//      }
-//
-//      // RED WINE MONEY
-//      if (customerNPC.CustomerRedWine != null && customerNPC.CustomerRedWine.activeSelf)
-//      {
-//          if (!moneyGiven)
-//          {
-//              redWineMoneyAddition();
-//          }
-//      }
-//      else
-//      {
-//          moneyGiven = false;
-//      }
-//
-//      // WHITE WINE MONEY
-//      if (customerNPC.CustomerWhiteWine != null && customerNPC.CustomerWhiteWine.activeSelf)
-//      {
-//          if (!moneyGiven)
-//          {
-//              whiteWineMoneyAddition();
-//          }
-//      }
-//      else
-//      {
-//          moneyGiven = false;
-//      }
-//  }
-
+    void UpdateText()
+    {
+        moneyBalanceText.text = "$" + moneyBalance;
+    }
 }
+

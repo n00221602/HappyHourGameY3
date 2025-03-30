@@ -1129,7 +1129,7 @@ Transform:
   m_GameObject: {fileID: 8920798606357571656}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 30.6, y: 0.98, z: 58.135437}
+  m_LocalPosition: {x: 33.789494, y: 1.64, z: 64.811264}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1247,6 +1247,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 0
+  eventTime: 0
   waitTime: 30
   CustomerBeer: {fileID: 7640944875275548105}
   CustomerRedWine: {fileID: 5458203612647809972}
@@ -1255,6 +1256,7 @@ MonoBehaviour:
   iconBeer: {fileID: 7909498186523830048}
   iconRedWine: {fileID: 5879880828219606101}
   iconWhiteWine: {fileID: 1557421314770237583}
+  puddlePrefab: {fileID: 8614868225107757238, guid: 36d031652825014489d083f934fa6758, type: 3}
   customerTimer: {fileID: 1206651991190698467}
 --- !u!114 &1427008596122240548
 MonoBehaviour:

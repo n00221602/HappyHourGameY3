@@ -7,6 +7,11 @@ TagManager:
   - Timer
   - Customer
   - Drinker
+  - Spill
+  - Clean
+  - Dirty
+  - Table
+  - Floor
   layers:
   - Default
   - TransparentFX
@@ -14,7 +19,7 @@ TagManager:
   - whatIsGround
   - Water
   - UI
-  - 
+  - Destinations
   - 
   - 
   - 

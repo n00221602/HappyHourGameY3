@@ -100,7 +100,6 @@ public class PhysicsRayCast : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(transform.position, transform.forward, out hit, 3f))
             {
-                Debug.Log(hit.collider.name);
 
                 // BEER
                 if (hit.collider.name == "PickupPint")
@@ -134,7 +133,6 @@ public class PhysicsRayCast : MonoBehaviour
                     HandleCustomer(hit.collider);
                 }
             }
-            // Debug.DrawLine(transform.position, transform.forward * 10f);
         }
     }
 
@@ -143,7 +141,6 @@ public class PhysicsRayCast : MonoBehaviour
     {
         if (PlayerPint != null && !FullHand.activeSelf)
         {
-            Debug.Log("PICKED");
             PlayerPint.SetActive(true);
             FullHand.SetActive(true);
         }
@@ -175,7 +172,6 @@ public class PhysicsRayCast : MonoBehaviour
     {
         if (PlayerWineGlass != null && !FullHand.activeSelf)
         {
-            Debug.Log("PICKED");
             PlayerWineGlass.SetActive(true);
             FullHand.SetActive(true);
         }
@@ -234,14 +230,13 @@ public class PhysicsRayCast : MonoBehaviour
         CustomerNPC customerNPC = customerCollider.GetComponent<CustomerNPC>();
         if (customerNPC == null)
         {
-            Debug.LogError("customerNPC is null!");
+            Debug.LogError("customerNPC is null");
             return;
         }
 
         // Handle Drinks
         if (FullPlayerPint.activeSelf && customerNPC.iconBeer.activeSelf)
         {
-            Debug.Log("Handed beer");
             customerNPC.CustomerBeer.SetActive(true);
             FullPlayerPint.SetActive(false);
             FullHand.SetActive(false);
@@ -250,7 +245,6 @@ public class PhysicsRayCast : MonoBehaviour
 
         if (FullPlayerRedWine.activeSelf && customerNPC.iconRedWine.activeSelf)
         {
-            Debug.Log("Handed red wine");
             customerNPC.CustomerRedWine.SetActive(true);
             FullPlayerRedWine.SetActive(false);
             FullHand.SetActive(false);
@@ -259,7 +253,6 @@ public class PhysicsRayCast : MonoBehaviour
 
         if (FullPlayerWhiteWine.activeSelf && customerNPC.iconWhiteWine.activeSelf)
         {
-            Debug.Log("Handed white wine");
             customerNPC.CustomerWhiteWine.SetActive(true);
             FullPlayerWhiteWine.SetActive(false);
             FullHand.SetActive(false);

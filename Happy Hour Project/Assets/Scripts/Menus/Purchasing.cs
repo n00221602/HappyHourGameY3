@@ -11,6 +11,8 @@ public class Purchasing : MonoBehaviour
     public GameObject SlotMachines;
     public GameObject Jukebox;
     public GameObject Karaoke;
+    public GameObject BeerGarden;
+    public GameObject Toilets;
 
     public MoneySystem currentMoney;
     public PlayerMovement moveSpeed;
@@ -23,6 +25,8 @@ public class Purchasing : MonoBehaviour
     SlotMachines.SetActive(false);
     Jukebox.SetActive(false);
     Karaoke.SetActive(false);
+    BeerGarden.SetActive(true);
+    BeerGarden.SetActive(true);
 
     currentMoney = GetComponent<MoneySystem>();  
     moveSpeed = GetComponent<PlayerMovement>();  
@@ -59,11 +63,15 @@ public class Purchasing : MonoBehaviour
       Karaoke.SetActive(true);
     }
 
+    public void purchaseBeerGarden(){
+      BeerGarden.SetActive(false);
+    }
 
+      public void purchaseToilets(){
+      Toilets.SetActive(false);
+    }
 
     //---------------------PERKS-----------------------
-      public void purchaseMoveSpeed(){
-      
-    }
+
     
 }

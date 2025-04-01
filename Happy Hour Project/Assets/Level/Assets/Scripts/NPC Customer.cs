@@ -180,7 +180,7 @@ public class CustomerNPC : MonoBehaviour
             agent.SetDestination(targetVector);
         }
 
-        // If the NPC reaches the counter, switch to the waiting state
+        // If the customer reaches the counter, rotate it towards the counter and switch to the waiting state
         if (bar != null && Vector3.Distance(agent.transform.position, bar.transform.position) < 0.1f)
         {
             transform.Rotate(0, -90, 0);
@@ -284,6 +284,10 @@ public class CustomerNPC : MonoBehaviour
         // If the NPC reaches the destination, check for the nearest table asset and rotate towards it. Then switch to the waiting state
         if (table != null && Vector3.Distance(agent.transform.position, table.transform.position) < 0.1f)
         {
+        
+
+
+            //THIS SECTION IS FOR FINDING THE TABLE THAT THE CUSTOMER IS SITTING AT
             Vector3 assignedTable = table.position;
             GameObject[] tables = GameObject.FindGameObjectsWithTag("Table");
 
@@ -310,9 +314,23 @@ public class CustomerNPC : MonoBehaviour
                 Vector3 nearestTablePosition = nearestTable.transform.position;
                 transform.LookAt(nearestTablePosition);
 
+                Vector3 offset = new Vector3(0f, 0f, 0f);
+                string orderedDrink = selectedDrink;
+                if(orderedDrink == "Beer")
+                {
+                    CustomerBeer.transform.position = nearestTablePosition + offset;
+                }
+                if (orderedDrink == "RedWine")
+                {
+                    CustomerRedWine.transform.position = nearestTablePosition + offset;
+                }
+                if (orderedDrink == "WhiteWine")
+                {
+                    CustomerWhiteWine.transform.position = nearestTablePosition + offset;
+                }
 
             }
-            
+
             currentState = State.Drinking;
         }
     }

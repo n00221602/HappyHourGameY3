@@ -51,7 +51,7 @@ public class CustomerSpawner : MonoBehaviour
     {
         // Randomly spawns a customer from the customer index array
         int randomIndex = Random.Range(0, customers.Length);
-        Vector3 spawnPosition = new Vector3(20, 1, 51); // Sets the XYZ spawn position
+        Vector3 spawnPosition = new Vector3(24, 0, 51); // Sets the XYZ spawn position
         Instantiate(customers[randomIndex], spawnPosition, Quaternion.identity);
 
         Debug.Log("Customer Spawned!");

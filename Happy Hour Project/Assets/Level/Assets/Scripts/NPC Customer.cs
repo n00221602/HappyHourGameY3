@@ -4,15 +4,17 @@ using UnityEngine.AI;
 
 public class CustomerNPC : MonoBehaviour
 {
-    public enum State { Moving, Waiting, Searching, Leaving, Drinking, MoveToGame, Neutral, FightEvent, SpillEvent }
+    public enum State { Moving, Waiting, Searching, Leaving, Drinking, MoveToGame, Neutral, FightEvent, SpillEvent, FinishedEvent }
     public State currentState;
     public float eventTime = 0f;
 
     private NavMeshAgent agent;
+    private Animator animator;
     Transform bar;
     Transform table;
     Transform game;
     Transform exit;
+    Transform randomVictim;
     public float waitTime = 30f;
     private float waitTimer;
 
@@ -26,12 +28,14 @@ public class CustomerNPC : MonoBehaviour
     public GameObject iconWhiteWine;
 
     public GameObject puddlePrefab;
+    private GameObject nearestTable;
+    private GameObject cleanDestinationsParent;
 
     private string[] drinks = { "Beer", "RedWine", "WhiteWine" };
     private string selectedDrink;
 
     private string[] barDestinations = { "BarDest1", "BarDest2", "BarDest3", "BarDest4", "BarDest5", "BarDest6" };
-    private string[] cleanDestinations = { "TableDest1", "TableDest2", "TableDest3", "TableDest4", "TableDest5", "TableDest6", "TableDest7"};
+    private string[] cleanDestinations;
     private string[] dirtyDestinations = { };
     private string[] gameDestinations = { "GameDest1", "GameDest2", "GameDest3", "GameDest4", "GameDest5", "GameDest6", "GameDest7", "GameDest8", "GameDest9", "GameDest10" };
 
@@ -43,7 +47,8 @@ public class CustomerNPC : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        currentState = State.Moving;  // Start in moving state
+        animator = GetComponent<Animator>();
+        currentState = State.Moving;  // Starts the customer in the Moving state
         MoveToCounter();
 
         // Customer Drink Objects
@@ -64,8 +69,16 @@ public class CustomerNPC : MonoBehaviour
         if (CustomerRedWine != null) CustomerRedWine.SetActive(false);
         if (CustomerWhiteWine != null) CustomerWhiteWine.SetActive(false);
 
-        // Decide the drink once at the start
+        // Decide the drink once at the start.
         DecideDrink();
+
+        // Dynamically fill the cleanDestinations array
+        cleanDestinationsParent = GameObject.Find("TableDestinations");
+        cleanDestinations = new string[cleanDestinationsParent.transform.childCount];
+        for (int i = 0; i < cleanDestinationsParent.transform.childCount; i++)
+        {
+            cleanDestinations[i] = cleanDestinationsParent.transform.GetChild(i).name;
+        }
 
 
     }
@@ -73,7 +86,13 @@ public class CustomerNPC : MonoBehaviour
 
     void Update()
     {
-        // Handle state transitions based on current state
+        // Update animator parameters based on NavMeshAgent's velocity
+        if (animator != null && agent != null)
+        {
+            animator.SetBool("isMoving", agent.velocity.sqrMagnitude > 0);
+        }
+
+        // Handles the states of the customer.
         switch (currentState)
         {
             case State.Moving:
@@ -85,32 +104,32 @@ public class CustomerNPC : MonoBehaviour
             case State.Searching:
                 FindCleanDestination();
                 break;
-            //case State.MovingToTable:
-            //    FindTable();
-            //    break;
             case State.MoveToGame:
                 FindGame();
                 break;
             case State.Drinking:
                 PickEvent();
                 break;
-            case State.Neutral:
-                Neutral();
-                break;
+            //case State.Neutral:
+            //    Neutral();
+            //    break;
             case State.FightEvent:
                 StartFight();
                 break;
             case State.SpillEvent:
                 Spill();
                 break;
+            case State.FinishedEvent:
+                FinishedDrink();
+                break;
             case State.Leaving:
-                LeaveCounter();
+                LeaveBar();
                 break;
         }
 
     }
 
-    //Runs in the start method
+    //Runs in the start method. Randomly selects a drink for the customer to order.
     void DecideDrink()
     {
         // Randomly select a drink from the array
@@ -119,7 +138,7 @@ public class CustomerNPC : MonoBehaviour
 
     }
 
-    //Runs during the Moving state
+    //Runs during the Moving state. Moves the customer towards the bar counter.
     void MoveToCounter()
     {
         // Assigns destination to the position of the npcDestination object
@@ -127,7 +146,7 @@ public class CustomerNPC : MonoBehaviour
         {
             for (int i = 0; i < barDestinations.Length; i++)
             {
-                //The initial destination is set to the current loop. This destination is not guaranteed to be the final destination
+                // The initial destination is set to the current loop. This destination is not guaranteed to be the final destination
                 Transform initialDestination = GameObject.Find(barDestinations[i]).transform;
                 bool isTaken = false;
 
@@ -137,14 +156,15 @@ public class CustomerNPC : MonoBehaviour
                 // For each customer, check if the destination is taken
                 foreach (GameObject customer in customers)
                 {
-                    if (customer != this.gameObject && customer.GetComponent<CustomerNPC>().bar == initialDestination)
+                    var customerNPC = customer.GetComponent<CustomerNPC>();
+                    if (customer != this.gameObject && customerNPC != null && customerNPC.bar == initialDestination)
                     {
                         isTaken = true;
                         break;
                     }
                 }
 
-                //If the destination is not taken, assign it to the customer
+                // If the destination is not taken, assign it to the customer
                 if (!isTaken)
                 {
                     bar = initialDestination;
@@ -161,14 +181,16 @@ public class CustomerNPC : MonoBehaviour
         }
 
         // If the NPC reaches the counter, switch to the waiting state
-        if (Vector3.Distance(agent.transform.position, bar.transform.position) < 1f)
+        if (bar != null && Vector3.Distance(agent.transform.position, bar.transform.position) < 0.1f)
         {
+            transform.Rotate(0, -90, 0);
             currentState = State.Waiting;
             waitTimer = 0f;  // Sets the waiting timer to 0
         }
     }
 
-    //Runs during the Waiting state
+
+    //Runs during the Waiting state. The customer orders the drink and a timer is started.
     void OrderDrink()
     {
         if (selectedDrink == "Beer")
@@ -206,23 +228,7 @@ public class CustomerNPC : MonoBehaviour
         }
     }
 
-    //Runs during the Searching state
-    //void FindDestination()
-    //{
-    //    //// Randomly choose between table and game destinations
-    //    //int randomChoice = Random.Range(0, 2); // 0 for table, 1 for game
-
-    //    //if (randomChoice == 0)
-    //    //{
-    //    //    currentState = State.MovingToTable;
-    //    //}
-    //    //else
-    //    //{
-    //    //    currentState = State.MoveToGame;
-    //    //}
-    //}
-
-    //Runs during the MovingToTable state
+    //Runs during the Searching state. Makes the customer find a random table that is clean.
     void FindCleanDestination()
     {
         if (table == null)
@@ -235,6 +241,7 @@ public class CustomerNPC : MonoBehaviour
                 currentState = State.Leaving;
             }
 
+            //This goes through the cleanDestinations array and assigns a random destination to the customer    
             for (int i = 0; i < cleanDestinations.Length; i++)
             {
                 int randomTable = Random.Range(0, cleanDestinations.Length); ;
@@ -243,7 +250,7 @@ public class CustomerNPC : MonoBehaviour
                 Transform initialTable = GameObject.Find(cleanDestinations[randomTable]).transform;
                 bool isTaken = false;
 
-                // Creates a temporary array containing all the customers in the scene
+                // Creates a temporary array containing all the customers who have been served in the scene
                 GameObject[] drinkers = GameObject.FindGameObjectsWithTag("Drinker");
 
                 // For each drinker, check if the table is taken
@@ -274,14 +281,43 @@ public class CustomerNPC : MonoBehaviour
             agent.SetDestination(targetVector);
         }
 
-        // If the NPC reaches the table, switch to the waiting state
-        if (table != null && Vector3.Distance(agent.transform.position, table.transform.position) < 1f)
+        // If the NPC reaches the destination, check for the nearest table asset and rotate towards it. Then switch to the waiting state
+        if (table != null && Vector3.Distance(agent.transform.position, table.transform.position) < 0.1f)
         {
+            Vector3 assignedTable = table.position;
+            GameObject[] tables = GameObject.FindGameObjectsWithTag("Table");
+
+            //The minimum distance is first set to Mathf.Infinity, which is the largest possible value for a float.
+            float minDistance = Mathf.Infinity;
+
+            //Checks each distance between the table and the cuestomer's destination. Assigns nearestTable to the table with the shortest distance
+            foreach (GameObject table in tables)
+            {
+                float distance = Vector3.Distance(assignedTable, table.transform.position);
+
+                //Since minDistance is set to Mathf.Infinity, the first table will always be set to nearestTable. The loop contiues and compares the distance to the current nearestTable, assigning a new nearestTable if the distance is shorter.
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    nearestTable = table;
+                }
+
+            }
+
+            //If the nearest table is found, rotate the customer to look at it
+            if (nearestTable != null)
+            {
+                Vector3 nearestTablePosition = nearestTable.transform.position;
+                transform.LookAt(nearestTablePosition);
+
+
+            }
+            
             currentState = State.Drinking;
-            //Debug.Log("Enjoy your drink!");
         }
     }
-    //Runs during the MoveToGame state
+
+    //Runs during the MoveToGame state. Finds a destination in the games area.
     void FindGame()
     {
         if (game == null)
@@ -331,8 +367,8 @@ public class CustomerNPC : MonoBehaviour
         }
     }
 
-    //Runs during the Leaving state
-    void LeaveCounter()
+    //Runs during the Leaving state. Makes the customer leave the bar.
+    void LeaveBar()
     {
         // Assigns exit to the position of the npcExit object
         if (exit == null)
@@ -356,75 +392,82 @@ public class CustomerNPC : MonoBehaviour
         }
     }
 
-    //Runs during the Neutral state
+
+    //Runs during the Drinking state. Picks a random event while the customer is at its table.
     void PickEvent()
     {
         Debug.Log("DRINKING");
         eventTime += Time.deltaTime;
-        if (eventTime >= 10f)
+        if (eventTime >= 20f)
         {
-            //int randomChoice = Random.Range(0, 3);
+            //eventTime = 0f;
+            //int eventInterval = 100;
+            //int randomChoice = Random.Range(1, eventInterval);
 
-            //if (randomChoice == 0)
+            //if (randomChoice <= 40) //40% chance for a customer to leave the bar
             //{
-            //    currentState = State.FightEvent;
+            //    currentState = State.Leaving;
             //}
-            //if (randomChoice == 1)
+
+            //if (randomChoice > 40 && randomChoice <= 65) //25% chance for a customer to leave the bar with a messy table
+            //{
+            //    currentState = State.FinishedEvent;
+            //}
+            //if (randomChoice > 65 && randomChoice <= 80) //15% chance for a customer to spill their drink
             //{
             //    currentState = State.SpillEvent;
             //}
-            //else
+            //else //20% chance for a customer to start a fight
             //{
-            //    currentState = State.Neutral;
+            //    currentState = State.FightEvent;
             //}
 
-            currentState = State.SpillEvent;
+            eventTime = 0f;
+            currentState = State.FinishedEvent;
         }
 
     }
 
-    void Neutral()
-    {
-        Debug.Log("Neutral");
-    }
-
-    //Runs during the Fighting state
+    //Runs during the Fighting state. This makes the customer choose a random victim and approach them.
     void StartFight()
     {
         Debug.Log("FIGHT!");
+        this.gameObject.tag = "Fighter";
+
+        GameObject[] drinkers = GameObject.FindGameObjectsWithTag("Drinker");
+
+        for (int i = 0; i < drinkers.Length; i++)
+        {
+            int randomIndex = Random.Range(0, drinkers.Length);
+
+            if (drinkers[randomIndex] != this.gameObject)
+            {
+                Debug.Log("VICTIM FOUND AT INDEX" + randomIndex);
+                randomVictim = drinkers[randomIndex].transform;
+                break;
+            }
+        }
+
+        if (randomVictim != null)
+        {
+            Vector3 targetVector = randomVictim.position;
+            agent.SetDestination(targetVector);
+        } 
+        else
+        {
+            Debug.Log("No victim found");
+            this.gameObject.tag = "Drinker";
+            currentState = State.Neutral;
+            return;
+        }
     }
 
-    void Spill()
+    //Runs during the FinishedEvent state. This makes the customer leave the table with a mess and marks it as dirty.
+    void FinishedDrink()
     {
-        Debug.Log("SPILL!");
+        Debug.Log("Drink finished");
 
-        if (table != null)
-        {
-            //table refers to the destination that the customer was assigned to in FindCLeanDestination()
-            Vector3 assignedTable = table.position;
-
-            // Gathers all tables into an array.
-            GameObject[] tables = GameObject.FindGameObjectsWithTag("Table");
-            GameObject nearestTable = null;
-
-            //The minimum distance is first set to Mathf.Infinity, which is the largest possible value for a float.
-            float minDistance = Mathf.Infinity;
-
-            //Checks each distance between the table and the cuestomer's destination. Assigns nearestTable to the table with the shortest distance
-            foreach (GameObject table in tables)
-            {
-                float distance = Vector3.Distance(assignedTable, table.transform.position);
-
-                //Since minDistance is set to Mathf.Infinity, the first table will always be set to nearestTable. The loop contiues and compares the distance to the current nearestTable, assigning a new nearestTable if the distance is shorter.
-                if (distance < minDistance)
-                {
-                    minDistance = distance;
-                    nearestTable = table;
-                }
-                
-            }
-
-
+        //This uses the nearestTable variable determined in FindCleanDestination()
             if (nearestTable != null)
             {
                 Vector3 nearestTablePosition = nearestTable.transform.position;
@@ -441,62 +484,58 @@ public class CustomerNPC : MonoBehaviour
                     Debug.LogWarning("Puddle prefab not found");
                 }
 
-                // If a table is near a spill, change the destination tag to Dirty
-                //foreach (string cleanDest in cleanDestinations)
-                //{
-                //    Transform destination = GameObject.Find(cleanDest).transform;
-                //    if (Vector3.Distance(destination.position, nearestTablePosition) < 1)
-                //    {
-                //        // Change the destination tag to Dirty
-                //        destination.tag = "Dirty";
-                //    }
-                //}
             }
             else
             {
                 Debug.LogWarning("No table found with the 'Table' tag");
             }
-        }
-        else
-        {
-            Debug.LogWarning("No table assigned to the customer");
-        }
-
         currentState = State.Leaving;
     }
 
+    //Runs during the SpillEvent state. This makes the customer spill their drink at their feet.
+    void Spill()
+    {
+        Debug.Log("SPILL!");
+        Vector3 offset = new Vector3(0f, -1.02f, 0f);
+        Vector3 spillPosition = transform.position + offset;
+
+        // Spawns puddle prefab at the "Table XYZ" position
+        if (puddlePrefab != null)
+        {
+
+            Instantiate(puddlePrefab, spillPosition, Quaternion.identity);
+        }
+        else
+        {
+            Debug.LogWarning("Puddle prefab not assigned");
+        }
+
+        //If a table is near a spill, change the destination tag to Dirty
+        for (int i = 0; i < cleanDestinations.Length; i++)
+        {
+            Transform destination = GameObject.Find(cleanDestinations[i]).transform;
+            if (Vector3.Distance(destination.position, spillPosition) < 1)
+            {
+                //change the destination tag to Dirty
+                destination.tag = "Dirty";
 
 
-    //void Spill()
+            }
+        }
+        currentState = State.Leaving;
+    }
+
+    //NEUTRAL STATE. MIGHT NOT BE NEEDED?
+    //void Neutral()
     //{
-    //    Debug.Log("SPILL!");
-    //    Vector3 offset = new Vector3(0f, -1.02f, 0f);
-    //    Vector3 spillPosition = transform.position + offset;
-
-    //    // Spawns puddle prefab at the "Table XYZ" position
-    //    if (puddlePrefab != null)
+    //    Debug.Log("Neutral");
+    //    eventTime += Time.deltaTime;
+    //    if (eventTime >= 20) 
     //    {
-
-    //        Instantiate(puddlePrefab, spillPosition, Quaternion.identity);
-    //    }
-    //    else
-    //    {
-    //        Debug.LogWarning("Puddle prefab not assigned");
+    //        eventTime = 0f;
+    //        currentState = State.Drinking;
     //    }
 
-    //    //If a table is near a spill, change the destination tag to Dirty
-    //    for (int i = 0; i < cleanDestinations.Length; i++)
-    //    {
-    //        Transform destination = GameObject.Find(cleanDestinations[i]).transform;
-    //        if (Vector3.Distance(destination.position, spillPosition) < 1)
-    //        {
-    //            //change the destination tag to Dirty
-    //            destination.tag = "Dirty";
-
-
-    //        }
-    //    }
-    //    currentState = State.Leaving;
     //}
 }
 

@@ -10,11 +10,14 @@ public class CustomerNPC : MonoBehaviour
 
     private NavMeshAgent agent;
     private Animator animator;
+
     Transform bar;
     Transform table;
     Transform game;
     Transform exit;
     Transform randomVictim;
+    Transform facingBar;
+
     public float waitTime = 30f;
     private float waitTimer;
 
@@ -27,19 +30,23 @@ public class CustomerNPC : MonoBehaviour
     public GameObject iconRedWine;
     public GameObject iconWhiteWine;
 
-    public GameObject puddlePrefab;
+    private GameObject messyDrink;
     private GameObject nearestTable;
     private GameObject cleanDestinationsParent;
+
+    public GameObject MessyBeer;
+    public GameObject MessyRedWine;
+    public GameObject MessyWhiteWine;
+    public GameObject puddlePrefab;
 
     private string[] drinks = { "Beer", "RedWine", "WhiteWine" };
     private string selectedDrink;
 
     private string[] barDestinations = { "BarDest1", "BarDest2", "BarDest3", "BarDest4", "BarDest5", "BarDest6" };
+    private string[] lookAtBar = { "LookAt1", "LookAt2", "LookAt3", "LookAt4", "LookAt5", "LookAt6"};
     private string[] cleanDestinations;
     private string[] dirtyDestinations = { };
     private string[] gameDestinations = { "GameDest1", "GameDest2", "GameDest3", "GameDest4", "GameDest5", "GameDest6", "GameDest7", "GameDest8", "GameDest9", "GameDest10" };
-
-  
 
     public CustomerTimer customerTimer;
 
@@ -92,8 +99,13 @@ public class CustomerNPC : MonoBehaviour
             animator.SetBool("isMoving", agent.velocity.sqrMagnitude > 0);
         }
 
-        // Handles the states of the customer.
-        switch (currentState)
+        if (facingBar != null)
+        {
+            transform.LookAt(facingBar);
+        }
+
+            // Handles the states of the customer.
+            switch (currentState)
         {
             case State.Moving:
                 MoveToCounter();
@@ -150,6 +162,8 @@ public class CustomerNPC : MonoBehaviour
                 Transform initialDestination = GameObject.Find(barDestinations[i]).transform;
                 bool isTaken = false;
 
+                
+
                 // Creates a temporary array containing all the customers in the scene
                 GameObject[] customers = GameObject.FindGameObjectsWithTag("Customer");
 
@@ -168,6 +182,7 @@ public class CustomerNPC : MonoBehaviour
                 if (!isTaken)
                 {
                     bar = initialDestination;
+                    facingBar = GameObject.Find(lookAtBar[i]).transform;
                     break;
                 }
             }
@@ -183,7 +198,6 @@ public class CustomerNPC : MonoBehaviour
         // If the customer reaches the counter, rotate it towards the counter and switch to the waiting state
         if (bar != null && Vector3.Distance(agent.transform.position, bar.transform.position) < 0.1f)
         {
-            transform.Rotate(0, -90, 0);
             currentState = State.Waiting;
             waitTimer = 0f;  // Sets the waiting timer to 0
         }
@@ -196,14 +210,17 @@ public class CustomerNPC : MonoBehaviour
         if (selectedDrink == "Beer")
         {
             iconBeer.SetActive(true);
+            messyDrink = MessyBeer;
         }
         if (selectedDrink == "RedWine")
         {
             iconRedWine.SetActive(true);
+            messyDrink = MessyRedWine;
         }
         if (selectedDrink == "WhiteWine")
         {
             iconWhiteWine.SetActive(true);
+            messyDrink = MessyRedWine;
         }
 
         Debug.Log("Gimme some " + selectedDrink);
@@ -217,7 +234,8 @@ public class CustomerNPC : MonoBehaviour
             allIcons.SetActive(false);
             this.gameObject.tag = "Drinker"; // Changes the Customer tag to Drinker
             currentState = State.Searching;
-            
+            facingBar = null;
+
         }
 
         // If the wait time hits 0, switch to leaving state
@@ -312,23 +330,27 @@ public class CustomerNPC : MonoBehaviour
             if (nearestTable != null)
             {
                 Vector3 nearestTablePosition = nearestTable.transform.position;
+                Vector3 tablePosition = table.transform.position;
+
                 transform.LookAt(nearestTablePosition);
 
-                Vector3 offset = new Vector3(0f, 0f, 0f);
+                // The drink is positioned a third of the way between the table object and the table destination
+                Vector3 drinkPosition = nearestTablePosition + (tablePosition - nearestTablePosition) * 0.33f;
+
+                Vector3 offset = new Vector3(0f, 1.018f, 0f);
                 string orderedDrink = selectedDrink;
-                if(orderedDrink == "Beer")
+                if (orderedDrink == "Beer")
                 {
-                    CustomerBeer.transform.position = nearestTablePosition + offset;
+                    CustomerBeer.transform.position = drinkPosition + offset;
                 }
                 if (orderedDrink == "RedWine")
                 {
-                    CustomerRedWine.transform.position = nearestTablePosition + offset;
+                    CustomerRedWine.transform.position = drinkPosition + offset;
                 }
                 if (orderedDrink == "WhiteWine")
                 {
-                    CustomerWhiteWine.transform.position = nearestTablePosition + offset;
+                    CustomerWhiteWine.transform.position = drinkPosition + offset;
                 }
-
             }
 
             currentState = State.Drinking;
@@ -388,8 +410,26 @@ public class CustomerNPC : MonoBehaviour
     //Runs during the Leaving state. Makes the customer leave the bar.
     void LeaveBar()
     {
-        // Assigns exit to the position of the npcExit object
-        if (exit == null)
+        facingBar = null;
+
+        if (selectedDrink != null)
+        {
+            if (selectedDrink == "Beer")
+            {
+                CustomerBeer.gameObject.SetActive(false);
+            }
+            if (selectedDrink == "RedWine")
+            {
+                CustomerRedWine.gameObject.SetActive(false);
+            }
+            if (selectedDrink == "WhiteWine")
+            {
+                CustomerWhiteWine.gameObject.SetActive(false);
+            }
+        }
+
+            // Assigns exit to the position of the npcExit object
+            if (exit == null)
         {
             exit = GameObject.Find("npcExit").transform;
         }
@@ -492,9 +532,9 @@ public class CustomerNPC : MonoBehaviour
                 Vector3 offset = new Vector3(0f, 1.057f, 0f);
 
                 // Copys the puddlePrefab at the nearest table's position
-                if (puddlePrefab != null)
+                if (messyDrink != null)
                 {
-                    Instantiate(puddlePrefab, nearestTablePosition + offset, Quaternion.identity);
+                    Instantiate(messyDrink, nearestTablePosition + offset, Quaternion.identity);
                     table.tag = "Dirty"; // Changes the table tag to Dirty
                 }
                 else

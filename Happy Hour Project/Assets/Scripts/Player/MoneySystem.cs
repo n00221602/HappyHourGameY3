@@ -45,6 +45,16 @@ public class MoneySystem : MonoBehaviour
         }
     }
 
+       public void canMoneyAddition()
+    {
+        if (!moneyGiven)
+        {
+            moneyBalance += 1f;
+            //moneyGiven = true;
+            UpdateText();
+        }
+    }
+
     void UpdateText()
     {
         moneyBalanceText.text = "$" + moneyBalance;

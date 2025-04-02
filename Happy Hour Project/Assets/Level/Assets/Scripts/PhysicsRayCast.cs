@@ -25,12 +25,17 @@ public class PhysicsRayCast : MonoBehaviour
     private GameObject WhiteWineLiquid;
     private GameObject PourWineGlass;
 
+        //Soft Drink game objects
+    private GameObject PlayerCan;
+    public GameObject PickupCan;
+
     public float drinksInterval;
 
     //Customer game objects
     private GameObject CustomerBeer;
     private GameObject CustomerRedWine;
     private GameObject CustomerWhiteWine;
+    private GameObject CustomerCan;
 
     //CustomerNPC script
     private CustomerNPC customerNPC;
@@ -65,6 +70,10 @@ public class PhysicsRayCast : MonoBehaviour
         WhiteWineLiquid = GameObject.Find("WhiteWineLiquidPouring");
         PourWineGlass = GameObject.Find("PlaceholderWineGlass");
 
+        //Soft Drinks
+        PlayerCan = GameObject.Find("PlayerCan");
+        PickupCan = GameObject.Find("PickupCan");
+
         //Setting player active hand to false
         if (FullHand != null) FullHand.SetActive(false);
 
@@ -85,6 +94,10 @@ public class PhysicsRayCast : MonoBehaviour
         if (RedWineLiquid != null) RedWineLiquid.SetActive(false);
         if (WhiteWineLiquid != null) WhiteWineLiquid.SetActive(false);
         if (PourWineGlass != null) PourWineGlass.SetActive(false);
+
+        //Setting the soft drink game objects to false
+        if (PlayerCan != null) PlayerCan.SetActive(false);
+        if (PickupCan != null) PickupCan.SetActive(false);
 
         //progressBar = GameObject.Find("Progress Bar").GetComponent<ProgressBar>();
 
@@ -126,6 +139,13 @@ public class PhysicsRayCast : MonoBehaviour
                 {
                     PourWhiteWine();
                 }
+
+                // Soft Drinks
+                if (hit.collider.name == "PickupCan")
+                {
+                    HandleCan();
+                }
+        
 
                 //CUSTOMERS
                 if (hit.collider.CompareTag("Customer"))
@@ -225,6 +245,15 @@ public class PhysicsRayCast : MonoBehaviour
         WhiteWine.SetActive(true);
     }
 
+        //Soft Drink Functions
+    private void HandleCan()
+    {
+        if (PlayerCan != null && !FullHand.activeSelf)
+        {
+            PlayerCan.SetActive(true);
+            FullHand.SetActive(true);
+        }
+    }
     public void HandleCustomer(Collider customerCollider)
     {
         CustomerNPC customerNPC = customerCollider.GetComponent<CustomerNPC>();
@@ -257,6 +286,14 @@ public class PhysicsRayCast : MonoBehaviour
             FullPlayerWhiteWine.SetActive(false);
             FullHand.SetActive(false);
             moneySystem.whiteWineMoneyAddition();
+        }
+
+        if (PlayerCan.activeSelf && customerNPC.iconCan.activeSelf)
+        {
+            customerNPC.CustomerCan.SetActive(true);
+            PlayerCan.SetActive(false);
+            FullHand.SetActive(false);
+            moneySystem.canMoneyAddition();
         }
     }
 }

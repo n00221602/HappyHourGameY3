@@ -99,7 +99,7 @@ public class CustomerNPC : MonoBehaviour
             animator.SetBool("isMoving", agent.velocity.sqrMagnitude > 0);
         }
 
-        if (facingBar != null)
+        if (facingBar != null && Vector3.Distance(transform.position, facingBar.position) < 1f)
         {
             transform.LookAt(facingBar);
         }
@@ -220,7 +220,7 @@ public class CustomerNPC : MonoBehaviour
         if (selectedDrink == "WhiteWine")
         {
             iconWhiteWine.SetActive(true);
-            messyDrink = MessyRedWine;
+            messyDrink = MessyWhiteWine;
         }
 
         Debug.Log("Gimme some " + selectedDrink);
@@ -302,9 +302,6 @@ public class CustomerNPC : MonoBehaviour
         // If the NPC reaches the destination, check for the nearest table asset and rotate towards it. Then switch to the waiting state
         if (table != null && Vector3.Distance(agent.transform.position, table.transform.position) < 0.1f)
         {
-        
-
-
             //THIS SECTION IS FOR FINDING THE TABLE THAT THE CUSTOMER IS SITTING AT
             Vector3 assignedTable = table.position;
             GameObject[] tables = GameObject.FindGameObjectsWithTag("Table");
@@ -456,7 +453,7 @@ public class CustomerNPC : MonoBehaviour
     {
         Debug.Log("DRINKING");
         eventTime += Time.deltaTime;
-        if (eventTime >= 20f)
+        if (eventTime >= 5f)
         {
             //eventTime = 0f;
             //int eventInterval = 100;
@@ -525,30 +522,37 @@ public class CustomerNPC : MonoBehaviour
     {
         Debug.Log("Drink finished");
 
-        //This uses the nearestTable variable determined in FindCleanDestination()
-            if (nearestTable != null)
+        // This uses the nearestTable variable determined in FindCleanDestination()
+        if (nearestTable != null)
+        {
+            Vector3 nearestTablePosition = nearestTable.transform.position;
+            Vector3 offset = new Vector3(0f, 1.047f, 0f); // offset the y so prefab spawns on table
+
+            // Copy the messyDrink at the nearest table's position
+            if (messyDrink != null)
             {
-                Vector3 nearestTablePosition = nearestTable.transform.position;
-                Vector3 offset = new Vector3(0f, 1.057f, 0f);
+                GameObject messyDrinkPrefab = Instantiate(messyDrink, nearestTablePosition + offset, Quaternion.identity);
 
-                // Copys the puddlePrefab at the nearest table's position
-                if (messyDrink != null)
+                // Calculate the direction to the table
+                Vector3 directionToTable = table.position - messyDrinkPrefab.transform.position;
+                directionToTable.y = 0; // Keep only the horizontal direction
+
+                // Set the rotation to face the table on the y-axis
+                if (directionToTable != Vector3.zero)
                 {
-                    Instantiate(messyDrink, nearestTablePosition + offset, Quaternion.identity);
-                    table.tag = "Dirty"; // Changes the table tag to Dirty
-                }
-                else
-                {
-                    Debug.LogWarning("Puddle prefab not found");
+                    messyDrinkPrefab.transform.rotation = Quaternion.LookRotation(directionToTable);
                 }
 
+                table.tag = "Dirty"; // Changes the table tag to Dirty
             }
             else
             {
-                Debug.LogWarning("No table found with the 'Table' tag");
+                Debug.LogWarning("Prefab not found");
             }
+        }
         currentState = State.Leaving;
     }
+
 
     //Runs during the SpillEvent state. This makes the customer spill their drink at their feet.
     void Spill()

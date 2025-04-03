@@ -618,7 +618,7 @@ Transform:
   m_GameObject: {fileID: 5102086112498965525}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 43.875633, y: 0.0020003319, z: 36.318314}
+  m_LocalPosition: {x: 42.812347, y: 0.0020008087, z: 35.116947}
   m_LocalScale: {x: 0.42, y: 0.42, z: 0.42}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -672,9 +672,9 @@ MonoBehaviour:
   iconBeer: {fileID: 696755588122674940}
   iconRedWine: {fileID: 6681037820082892000}
   iconWhiteWine: {fileID: 7371871862179467513}
-  MessyBeer: {fileID: 4746017039684285515, guid: 6e97ce613f757cb4f892b3a586015b99, type: 3}
-  MessyRedWine: {fileID: 5397485399344672022, guid: c17dfec96f8f1bc4599f2725f91e8e97, type: 3}
-  MessyWhiteWine: {fileID: 418041883696581098, guid: a3b765d519138c34d98e41705f081c1d, type: 3}
+  MessyBeer: {fileID: 3976919528755899041, guid: 19856b530620ba244991da4c2140dc2b, type: 3}
+  MessyRedWine: {fileID: 2439333479578083870, guid: e0b7cc0a06e9cee4c930d34c47e7df23, type: 3}
+  MessyWhiteWine: {fileID: 8417067701400438330, guid: a3b765d519138c34d98e41705f081c1d, type: 3}
   puddlePrefab: {fileID: 8614868225107757238, guid: 36d031652825014489d083f934fa6758, type: 3}
   customerTimer: {fileID: 5040969785799174282}
 --- !u!114 &6768844252810483271
@@ -704,16 +704,16 @@ NavMeshAgent:
   m_Radius: 0.6
   m_Speed: 4
   m_Acceleration: 5
-  avoidancePriority: 99
+  avoidancePriority: 50
   m_AngularSpeed: 180
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 0
+  m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 4.65
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 1
 --- !u!95 &9188737411572061924
 Animator:
   serializedVersion: 5

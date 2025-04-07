@@ -14,6 +14,7 @@ TagManager:
   - Fighter
   - Stool
   - Booth
+  - Victim
   layers:
   - Default
   - TransparentFX

@@ -25,9 +25,13 @@ public class PhysicsRayCast : MonoBehaviour
     private GameObject WhiteWineLiquid;
     private GameObject PourWineGlass;
 
-        //Soft Drink game objects
+    //Soft Drink game objects
     private GameObject PlayerCan;
     public GameObject PickupCan;
+
+    //Bottle Beer game objects
+    private GameObject PlayerBottleBeer;
+    public GameObject bottleBeerPickup;
 
     public float drinksInterval;
 
@@ -36,6 +40,7 @@ public class PhysicsRayCast : MonoBehaviour
     private GameObject CustomerRedWine;
     private GameObject CustomerWhiteWine;
     private GameObject CustomerCan;
+    private GameObject CustomerBottleBeer;
 
     //CustomerNPC script
     private CustomerNPC customerNPC;
@@ -73,6 +78,10 @@ public class PhysicsRayCast : MonoBehaviour
         //Soft Drinks
         PlayerCan = GameObject.Find("PlayerCan");
         PickupCan = GameObject.Find("PickupCan");
+        
+        //Bottle Beer
+        PlayerBottleBeer = GameObject.Find("PlayerBottle");
+        bottleBeerPickup = GameObject.Find("bottleBeerPickup");
 
         //Setting player active hand to false
         if (FullHand != null) FullHand.SetActive(false);
@@ -97,7 +106,9 @@ public class PhysicsRayCast : MonoBehaviour
 
         //Setting the soft drink game objects to false
         if (PlayerCan != null) PlayerCan.SetActive(false);
-        if (PickupCan != null) PickupCan.SetActive(false);
+
+        //Setting the bottle beer game objects to false
+        if (PlayerBottleBeer != null) PlayerBottleBeer.SetActive(false);
 
         //progressBar = GameObject.Find("Progress Bar").GetComponent<ProgressBar>();
 
@@ -144,6 +155,13 @@ public class PhysicsRayCast : MonoBehaviour
                 if (hit.collider.name == "PickupCan")
                 {
                     HandleCan();
+                }
+
+                // Bottle Beer
+                if (hit.collider.name == "bottleBeerPickup")
+                {
+                    HandleBottleBeer();
+                    Debug.Log("Collider is working");
                 }
         
 
@@ -254,6 +272,16 @@ public class PhysicsRayCast : MonoBehaviour
             FullHand.SetActive(true);
         }
     }
+
+    //Bottle Beer Functions
+    private void HandleBottleBeer()
+    {
+        if (PlayerBottleBeer != null && !FullHand.activeSelf)
+        {
+            PlayerBottleBeer.SetActive(true);
+            FullHand.SetActive(true);
+        }
+    }
     public void HandleCustomer(Collider customerCollider)
     {
         CustomerNPC customerNPC = customerCollider.GetComponent<CustomerNPC>();
@@ -294,6 +322,14 @@ public class PhysicsRayCast : MonoBehaviour
             PlayerCan.SetActive(false);
             FullHand.SetActive(false);
             moneySystem.canMoneyAddition();
+        }
+
+        if (PlayerBottleBeer.activeSelf && customerNPC.iconBottleBeer.activeSelf)
+        {
+            customerNPC.CustomerBottleBeer.SetActive(true);
+            PlayerBottleBeer.SetActive(false);
+            FullHand.SetActive(false);
+            moneySystem.bottleBeerMoneyAddition();
         }
     }
 }

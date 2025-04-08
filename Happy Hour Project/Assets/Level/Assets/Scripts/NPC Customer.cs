@@ -22,18 +22,22 @@ public class CustomerNPC : MonoBehaviour
     public GameObject CustomerRedWine;
     public GameObject CustomerWhiteWine;
     public GameObject CustomerCan;
+    public GameObject CustomerBottleBeer;
+
 
     public GameObject allIcons;
     public GameObject iconBeer;
     public GameObject iconRedWine;
     public GameObject iconWhiteWine;
     public GameObject iconCan;
+    public GameObject iconBottleBeer;
+
 
     public GameObject puddlePrefab;
     private GameObject nearestTable;
     private GameObject cleanDestinationsParent;
 
-    private string[] drinks = { "Beer", "RedWine", "WhiteWine", "Can" };
+    private string[] drinks = { "Beer", "RedWine", "WhiteWine", "Can", "BottleBeer" };
     private string selectedDrink;
 
     private string[] barDestinations = { "BarDest1", "BarDest2", "BarDest3", "BarDest4", "BarDest5", "BarDest6" };
@@ -58,6 +62,8 @@ public class CustomerNPC : MonoBehaviour
         CustomerRedWine = transform.Find("CustomerRedWineFull").gameObject;
         CustomerWhiteWine = transform.Find("CustomerWhiteWineFull").gameObject;
         CustomerCan = transform.Find("CustomerCan").gameObject;
+        CustomerBottleBeer = transform.Find("CustomerBottleBeer").gameObject;
+
 
         // Icon Objects
         allIcons = transform.Find("DrinkIcons").gameObject;
@@ -65,15 +71,22 @@ public class CustomerNPC : MonoBehaviour
         iconRedWine = transform.Find("DrinkIcons/RedWineIcon").gameObject;
         iconWhiteWine = transform.Find("DrinkIcons/WhiteWineIcon").gameObject;
         iconCan = transform.Find("DrinkIcons/CanIcon").gameObject;
+        iconBottleBeer = transform.Find("DrinkIcons/BottleBeerIcon").gameObject;
+
 
         if (iconBeer != null) iconBeer.SetActive(false);
         if (iconRedWine != null) iconRedWine.SetActive(false);
         if (iconWhiteWine != null) iconWhiteWine.SetActive(false);
         if (iconCan != null) iconCan.SetActive(false);
+        if (iconBottleBeer != null) iconBottleBeer.SetActive(false);
+
+
         if (CustomerBeer != null) CustomerBeer.SetActive(false);
         if (CustomerRedWine != null) CustomerRedWine.SetActive(false);
         if (CustomerWhiteWine != null) CustomerWhiteWine.SetActive(false);
         if (CustomerCan != null) CustomerCan.SetActive(false);
+        if (CustomerBottleBeer != null) CustomerBottleBeer.SetActive(false);
+
 
         // Decide the drink once at the start.
         DecideDrink();
@@ -165,6 +178,7 @@ public class CustomerNPC : MonoBehaviour
                     var customerNPC = customer.GetComponent<CustomerNPC>();
                     if (customer != this.gameObject && customerNPC != null && customerNPC.bar == initialDestination)
                     {
+                        
                         isTaken = true;
                         break;
                     }
@@ -187,7 +201,7 @@ public class CustomerNPC : MonoBehaviour
         }
 
         // If the customer reaches the counter, rotate it towards the counter and switch to the waiting state
-        if (bar != null && Vector3.Distance(agent.transform.position, bar.transform.position) < 0.1f)
+        if (bar != null && Vector3.Distance(agent.transform.position, bar.transform.position) < 1f)
         {
             transform.Rotate(0, -90, 0);
             currentState = State.Waiting;
@@ -215,13 +229,17 @@ public class CustomerNPC : MonoBehaviour
         {
             iconCan.SetActive(true);
         }
+        if (selectedDrink == "BottleBeer")
+        {
+            iconBottleBeer.SetActive(true);
+        }
         Debug.Log("Gimme some " + selectedDrink);
         // Increment the wait timer
         waitTimer += Time.deltaTime;
         customerTimer.StartTimer();
 
         // Checks if a drink is handed to the customer, then switch to drinking state
-        if (CustomerBeer.activeSelf || CustomerRedWine.activeSelf || CustomerWhiteWine.activeSelf || CustomerCan.activeSelf)
+        if (CustomerBeer.activeSelf || CustomerRedWine.activeSelf || CustomerWhiteWine.activeSelf || CustomerCan.activeSelf || CustomerBottleBeer.activeSelf)
         {
             allIcons.SetActive(false);
             this.gameObject.tag = "Drinker"; // Changes the Customer tag to Drinker
@@ -340,6 +358,10 @@ public class CustomerNPC : MonoBehaviour
                 if (orderedDrink == "Can")
                 {
                     CustomerCan.transform.position = nearestTablePosition + offset;
+                }
+                if (orderedDrink == "BottleBeer")
+                {
+                    CustomerBottleBeer.transform.position = nearestTablePosition + offset;
                 }
 
             }

@@ -55,6 +55,16 @@ public class MoneySystem : MonoBehaviour
         }
     }
 
+       public void bottleBeerMoneyAddition()
+    {
+        if (!moneyGiven)
+        {
+            moneyBalance += 3f;
+            //moneyGiven = true;
+            UpdateText();
+        }
+    }
+
     void UpdateText()
     {
         moneyBalanceText.text = "$" + moneyBalance;

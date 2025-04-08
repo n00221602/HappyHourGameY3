@@ -556,7 +556,7 @@ Transform:
   m_GameObject: {fileID: 4433950767114040741}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 42.812347, y: 0.0020008087, z: 35.116947}
+  m_LocalPosition: {x: 43.535316, y: 0.0019996166, z: 35.428474}
   m_LocalScale: {x: 0.42, y: 0.42, z: 0.42}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -584,7 +584,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.9999995, y: 4.6629705, z: 0.99999976}
+  m_Size: {x: 1.6, y: 4.6629705, z: 0.99999976}
   m_Center: {x: 0, y: 2.3195815, z: 0}
 --- !u!114 &6823629030873365182
 MonoBehaviour:
@@ -609,9 +609,9 @@ MonoBehaviour:
   iconBeer: {fileID: 859033281606154408}
   iconRedWine: {fileID: 5477561728493028592}
   iconWhiteWine: {fileID: 4263824329414351218}
-  MessyBeer: {fileID: 3976919528755899041, guid: 19856b530620ba244991da4c2140dc2b, type: 3}
-  MessyRedWine: {fileID: 2439333479578083870, guid: e0b7cc0a06e9cee4c930d34c47e7df23, type: 3}
-  MessyWhiteWine: {fileID: 8417067701400438330, guid: a3b765d519138c34d98e41705f081c1d, type: 3}
+  MessyBeer: {fileID: 6864014008860869754, guid: 81b3c20869071d444a25b0f238263f8c, type: 3}
+  MessyRedWine: {fileID: 4769004891104046688, guid: e0b7cc0a06e9cee4c930d34c47e7df23, type: 3}
+  MessyWhiteWine: {fileID: 3934634045782759635, guid: a3b765d519138c34d98e41705f081c1d, type: 3}
   puddlePrefab: {fileID: 8614868225107757238, guid: 36d031652825014489d083f934fa6758, type: 3}
   customerTimer: {fileID: 4746208292697614352}
 --- !u!114 &153272825924460979
@@ -641,7 +641,7 @@ NavMeshAgent:
   m_Radius: 1
   m_Speed: 4
   m_Acceleration: 5
-  avoidancePriority: 50
+  avoidancePriority: 80
   m_AngularSpeed: 180
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
@@ -650,7 +650,7 @@ NavMeshAgent:
   m_Height: 4.65
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 1
+  m_ObstacleAvoidanceType: 4
 --- !u!95 &5952425510633447343
 Animator:
   serializedVersion: 5

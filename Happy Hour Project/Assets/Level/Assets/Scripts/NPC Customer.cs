@@ -162,6 +162,8 @@ public class CustomerNPC : MonoBehaviour
     //Runs during the Moving state. Moves the customer towards the bar counter.
     void MoveToCounter()
     {
+        //animator.SetBool("isMoving", true);
+
         // Assigns destination to the position of the npcDestination object
         if (bar == null)
         {
@@ -216,6 +218,7 @@ public class CustomerNPC : MonoBehaviour
     //Runs during the Waiting state. The customer orders the drink and a timer is started.
     void OrderDrink()
     {
+        //animator.SetBool("isMoving", false);
         if (selectedDrink == "Beer")
         {
             iconBeer.SetActive(true);

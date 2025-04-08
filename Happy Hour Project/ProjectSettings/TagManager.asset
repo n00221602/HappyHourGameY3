@@ -15,6 +15,7 @@ TagManager:
   - Stool
   - Booth
   - Victim
+  - MessyTable
   layers:
   - Default
   - TransparentFX

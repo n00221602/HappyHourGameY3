@@ -25,7 +25,7 @@ public class PhysicsRayCast : MonoBehaviour
     private GameObject WhiteWineLiquid;
     private GameObject PourWineGlass;
 
-    public float drinksInterval;
+    public float progressInterval;
 
     //Customer game objects
     private GameObject CustomerBeer;
@@ -38,9 +38,14 @@ public class PhysicsRayCast : MonoBehaviour
     //Progress Bar script
     public ProgressBar BeerProgressBar;
     public ProgressBar WineProgressBar;
+    private ProgressBar MessyTableProgressBar;
 
     //Money System script
     public MoneySystem moneySystem;
+
+    //Messy table prefabs
+    
+    private GameObject currentMess;
 
     // Start is called before the first frame update
     void Start()
@@ -127,6 +132,37 @@ public class PhysicsRayCast : MonoBehaviour
                     PourWhiteWine();
                 }
 
+                //if (hit.collider.name == "MessyBeer")
+                //{
+                //    currentMess = hit.collider.gameObject;
+                //    Debug.Log(hit.collider.tag + " MESSY");
+                //    CleanTable();
+                //}
+
+                if (hit.collider.CompareTag("MessyTable"))
+                {
+                    Debug.Log("TABLE FOUND");
+                    //currentMess = null;
+                    MessyTableProgressBar = null;
+
+                    //This finds the ProgressBar component unique to this MessyTable prefab
+                    Transform tableCanvas = hit.collider.transform.Find("TableCanvas");
+                    if (tableCanvas != null)
+                    {
+                        Transform tableProgressBar = tableCanvas.Find("TableProgressBar");
+                        if (tableProgressBar != null)
+                        {
+                            MessyTableProgressBar = tableProgressBar.GetComponent<ProgressBar>();
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("Progress bar not found");
+                    }
+                    currentMess = hit.collider.gameObject;
+                    HandleMessyTable();
+                }
+
                 //CUSTOMERS
                 if (hit.collider.CompareTag("Customer"))
                 {
@@ -153,8 +189,8 @@ public class PhysicsRayCast : MonoBehaviour
             PourPint.SetActive(true);
             PlayerPint.SetActive(false);
             BeerFlow.SetActive(true);
-            drinksInterval = 4f;
-            Invoke(nameof(CompleteBeerPour), drinksInterval);
+            progressInterval = 4f;
+            Invoke(nameof(CompleteBeerPour), progressInterval);
             BeerProgressBar.FillProgressBar();
         }
     }
@@ -186,8 +222,8 @@ public class PhysicsRayCast : MonoBehaviour
             PouringRed.SetActive(true);
             RedWineLiquid.SetActive(true);
             RedWine.SetActive(false);
-            drinksInterval = 2.5f;
-            Invoke(nameof(CompleteRedWinePour), drinksInterval);
+            progressInterval = 2.5f;
+            Invoke(nameof(CompleteRedWinePour), progressInterval);
             WineProgressBar.FillProgressBar();
         }
     }
@@ -210,8 +246,8 @@ public class PhysicsRayCast : MonoBehaviour
             PouringWhite.SetActive(true);
             WhiteWineLiquid.SetActive(true);
             WhiteWine.SetActive(false);
-            drinksInterval = 2.5f;
-            Invoke(nameof(CompleteWhiteWinePour), drinksInterval);
+            progressInterval = 2.5f;
+            Invoke(nameof(CompleteWhiteWinePour), progressInterval);
             WineProgressBar.FillProgressBar();
         }
     }
@@ -225,6 +261,20 @@ public class PhysicsRayCast : MonoBehaviour
         WhiteWine.SetActive(true);
     }
 
+    private void HandleMessyTable()
+    {
+        progressInterval = 3f;
+        Invoke(nameof(CompleteCleanTable), progressInterval);
+        MessyTableProgressBar.FillProgressBar();
+    }
+
+    void CompleteCleanTable()
+    {
+        if (currentMess != null) 
+        {
+            Destroy(currentMess);
+        }
+    }
     public void HandleCustomer(Collider customerCollider)
     {
         CustomerNPC customerNPC = customerCollider.GetComponent<CustomerNPC>();

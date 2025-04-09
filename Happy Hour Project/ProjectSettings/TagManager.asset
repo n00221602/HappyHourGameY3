@@ -16,6 +16,7 @@ TagManager:
   - Booth
   - Victim
   - MessyTable
+  - Served
   layers:
   - Default
   - TransparentFX
@@ -24,7 +25,7 @@ TagManager:
   - Water
   - UI
   - Other
-  - 
+  - NPCPath
   - 
   - 
   - 

@@ -5,9 +5,12 @@ using UnityEngine.AI;
 
 public class CustomerNPC : MonoBehaviour
 {
-    public enum State { Moving, Waiting, Searching, Leaving, Drinking, MoveToGame, Neutral, FightEvent, SpillEvent, FinishedEvent }
+    public enum State { Moving, Waiting, Searching, Leaving, Drinking, MoveToGame, Neutral, FightEvent, SpillEvent, FinishedEvent, Victim }
     public State currentState;
-    public float eventTime = 0f;
+
+    private float eventTime = 0f;
+    private float elapsedTime = 0f;
+    private float fightTime = 0f;
 
     private NavMeshAgent agent;
     private Animator animator;
@@ -17,7 +20,7 @@ public class CustomerNPC : MonoBehaviour
     Transform game;
     Transform exit;
     Transform randomVictim;
-    Transform currentVictim;
+    //Transform currentVictim;
     Transform facingBar;
 
     public float waitTime = 30f;
@@ -108,13 +111,13 @@ public class CustomerNPC : MonoBehaviour
             transform.LookAt(facingBar);
         }
 
-        if(this.gameObject.tag == "Victim")
+        if (this.gameObject.tag == "Victim")
         {
-            ManageVictim();
+            currentState = State.Victim;
         }
 
-            // Handles the states of the customer.
-            switch (currentState)
+        // Handles the states of the customer.
+        switch (currentState)
         {
             case State.Moving:
                 MoveToCounter();
@@ -142,6 +145,9 @@ public class CustomerNPC : MonoBehaviour
                 break;
             case State.FinishedEvent:
                 FinishedDrink();
+                break;
+            case State.Victim:
+                ManageVictim();
                 break;
             case State.Leaving:
                 LeaveBar();
@@ -207,7 +213,7 @@ public class CustomerNPC : MonoBehaviour
         }
 
         // If the customer reaches the counter, rotate it towards the counter and switch to the waiting state
-        if (bar != null && Vector3.Distance(agent.transform.position, bar.transform.position) < 1f)
+        if (bar != null && Vector3.Distance(agent.transform.position, bar.transform.position) < 0.1f)
         {
             currentState = State.Waiting;
             waitTimer = 0f;  // Sets the waiting timer to 0
@@ -244,7 +250,7 @@ public class CustomerNPC : MonoBehaviour
         if (CustomerBeer.activeSelf || CustomerRedWine.activeSelf || CustomerWhiteWine.activeSelf)
         {
             allIcons.SetActive(false);
-            this.gameObject.tag = "Drinker"; // Changes the Customer tag to Drinker
+            this.gameObject.tag = "Served"; // Changes the Customer tag to Served
             currentState = State.Searching;
             facingBar = null;
 
@@ -451,10 +457,11 @@ public class CustomerNPC : MonoBehaviour
     //Runs during the Drinking state. Picks a random event while the customer is at its table.
     void PickEvent()
     {
+        this.gameObject.tag = "Drinker";
         animator.SetBool("isDrunk", true);
         Debug.Log("DRINKING");
         eventTime += Time.deltaTime;
-        if (eventTime >= 3f)
+        if (eventTime >= 15f)
         {
             //eventTime = 0f;
             //int eventInterval = 100;
@@ -479,7 +486,7 @@ public class CustomerNPC : MonoBehaviour
             //}
 
             eventTime = 0f;
-            currentState = State.FinishedEvent;
+            currentState = State.FightEvent;
         }
     }
 
@@ -492,44 +499,59 @@ public class CustomerNPC : MonoBehaviour
 
         GameObject[] drinkers = GameObject.FindGameObjectsWithTag("Drinker");
 
-        for (int i = 0; i < drinkers.Length; i++)
+       
+        //If there are no drinkers to fight, the fighter will leave the bar
+        if (drinkers.Length == 0 && randomVictim == null)
         {
-            int randomIndex = Random.Range(0, drinkers.Length);
+            Debug.Log("No drinkers found to fight with.");
+            this.gameObject.tag = "Drinker";
+            currentState = State.Leaving;
+            return;
+        }
 
-            if (drinkers[randomIndex] != this.gameObject)
+        //Picks a random drinker from the array. This drinker will become the fighter's victim
+        if (drinkers.Length > 0)
+        {
+            for (int i = 0; i < drinkers.Length; i++)
             {
-                randomVictim = drinkers[randomIndex].transform;
-                randomVictim.gameObject.tag = "Victim";
-                break;
+                int randomIndex = Random.Range(0, drinkers.Length);
+
+                if (drinkers[randomIndex] != this.gameObject)
+                {
+                    randomVictim = drinkers[randomIndex].transform;
+                    break;
+                }
             }
         }
 
+        //If a victim is found, the fighter moves towards them
         if (randomVictim != null)
         {
+            randomVictim.gameObject.tag = "Victim";
             animator.SetBool("isRunning", true);
             Vector3 targetVector = randomVictim.transform.position;
             agent.SetDestination(targetVector);
         }
-        else
-        {
-            Debug.Log("No victim found");
-            this.gameObject.tag = "Drinker";
-            currentState = State.Drinking;
-            return;
-        }
 
-        if (Vector3.Distance(agent.transform.position, randomVictim.transform.position) < 1f)
+        //Once the fighter is in range of the victim, the fighter will stop moving and start fighting
+        if (randomVictim != null && Vector3.Distance(agent.transform.position, randomVictim.transform.position) < 1f)
         {
-            Debug.Log("FIGHTER AND VICTIM in range!");
-            agent.isStopped = true;
-            transform.LookAt(randomVictim.transform.position);
             animator.SetBool("isRunning", false);
             animator.SetBool("isFighting", true);
-           
-        }
-        else
-        {
-            Debug.Log("Victim not in range yet");
+            agent.isStopped = true;
+            transform.LookAt(randomVictim.transform.position);
+
+            elapsedTime += Time.deltaTime;
+
+            //Once the fight hits x seconds, the fighter will stop fighting and replay the fight state
+            if (elapsedTime >= 5f)
+            {
+                Debug.Log("Fight timer complete ");
+                animator.SetBool("isFighting", false);
+                agent.isStopped = false;
+                randomVictim = null;
+                elapsedTime = 0f;
+            }
         }
     }
 
@@ -540,13 +562,21 @@ public class CustomerNPC : MonoBehaviour
             GameObject fighter = GameObject.FindGameObjectWithTag("Fighter");
             if (fighter != null && Vector3.Distance(agent.transform.position, fighter.transform.position) < 1f)
             {
-                animator.SetBool("isVictim", true);
+                if (this.gameObject.tag == "Victim")
+                {
+                    animator.SetBool("isVictim", true);
+                    CustomerDrinks.SetActive(false);
+                }
+
                 transform.LookAt(fighter.transform.position);
-                
-            }
-            else
-            {
-                Debug.Log("No fighter found or not in range");
+                fightTime += Time.deltaTime;
+                if (fightTime >= 5f)
+                {
+                    Debug.Log("KNOCKED OUTTTTTT");
+                    animator.SetBool("isKnockedOut", true);
+                    //this.gameObject.tag = "KnockedOut";
+                    agent.enabled = false;
+                }
             }
         }
     }

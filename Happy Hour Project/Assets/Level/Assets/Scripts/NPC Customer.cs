@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class CustomerNPC : MonoBehaviour
 {
-    public enum State { Moving, Waiting, Searching, Leaving, Drinking, MoveToGame, Neutral, FightEvent, SpillEvent, FinishedEvent, Victim }
+    public enum State { Moving, Waiting, Searching, Leaving, Drinking, MoveToGame, Neutral, FightEvent, SpillEvent, MessyEvent, Victim }
     public State currentState;
 
     private float eventTime = 0f;
@@ -56,7 +56,7 @@ public class CustomerNPC : MonoBehaviour
 
     public CustomerTimer customerTimer;
 
-
+    private bool victimFound = false;
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -143,8 +143,8 @@ public class CustomerNPC : MonoBehaviour
             case State.SpillEvent:
                 Spill();
                 break;
-            case State.FinishedEvent:
-                FinishedDrink();
+            case State.MessyEvent:
+                MessyDrink();
                 break;
             case State.Victim:
                 ManageVictim();
@@ -271,7 +271,7 @@ public class CustomerNPC : MonoBehaviour
         {
 
             //If all destinations are taken and have a Dirty tag, switch to the leaving state
-            if (cleanDestinations.All(dest => GameObject.Find(dest).tag == "Dirty"))
+            if (cleanDestinations.All(dest => GameObject.Find(dest).tag != "Clean"))
             {
                 Debug.Log("THERES NOWHERE TO SIT");
                 currentState = State.Leaving;
@@ -304,6 +304,7 @@ public class CustomerNPC : MonoBehaviour
                 if (!isTaken && initialTable.tag == "Clean")
                 {
                     table = initialTable;
+                    table.tag = "Taken"; // Changes the table tag to Taken
                     break;
                 }
 
@@ -429,6 +430,7 @@ public class CustomerNPC : MonoBehaviour
 
         if (this.gameObject.tag == "Drinker")
         {
+            this.gameObject.tag = "Drunk";
             CustomerDrinks.SetActive(false);
             agent.speed = 0.8f;
         }
@@ -461,7 +463,7 @@ public class CustomerNPC : MonoBehaviour
         animator.SetBool("isDrunk", true);
         Debug.Log("DRINKING");
         eventTime += Time.deltaTime;
-        if (eventTime >= 15f)
+        if (eventTime >= 10f)
         {
             //eventTime = 0f;
             //int eventInterval = 100;
@@ -474,7 +476,7 @@ public class CustomerNPC : MonoBehaviour
 
             //if (randomChoice > 40 && randomChoice <= 65) //25% chance for a customer to leave the bar with a messy table
             //{
-            //    currentState = State.FinishedEvent;
+            //    currentState = State.MessyEvent;
             //}
             //if (randomChoice > 65 && randomChoice <= 80) //15% chance for a customer to spill their drink
             //{
@@ -493,12 +495,18 @@ public class CustomerNPC : MonoBehaviour
     //Runs during the Fighting state. This makes the customer choose a random victim and approach them.
     void StartFight()
     {
+        //Checks if there is an existing fighter in the scene. If there is, the customer will not start a fight.
+        GameObject existingFighter = GameObject.FindGameObjectWithTag("Fighter");
+        if (existingFighter != null && existingFighter != this.gameObject)
+        {
+            currentState = State.MessyEvent;
+            return;
+        }
+
         CustomerDrinks.SetActive(false);
-        Debug.Log("FIGHT!");
         this.gameObject.tag = "Fighter";
 
         GameObject[] drinkers = GameObject.FindGameObjectsWithTag("Drinker");
-
        
         //If there are no drinkers to fight, the fighter will leave the bar
         if (drinkers.Length == 0 && randomVictim == null)
@@ -510,19 +518,16 @@ public class CustomerNPC : MonoBehaviour
         }
 
         //Picks a random drinker from the array. This drinker will become the fighter's victim
-        if (drinkers.Length > 0)
+        foreach (GameObject drinker in drinkers)
+    {
+        if (drinker != this.gameObject && victimFound == false)
         {
-            for (int i = 0; i < drinkers.Length; i++)
-            {
-                int randomIndex = Random.Range(0, drinkers.Length);
-
-                if (drinkers[randomIndex] != this.gameObject)
-                {
-                    randomVictim = drinkers[randomIndex].transform;
-                    break;
-                }
-            }
+            randomVictim = drinker.transform;
+            randomVictim.gameObject.tag = "Victim";
+            victimFound = true;
+            break;
         }
+    }
 
         //If a victim is found, the fighter moves towards them
         if (randomVictim != null)
@@ -531,6 +536,8 @@ public class CustomerNPC : MonoBehaviour
             animator.SetBool("isRunning", true);
             Vector3 targetVector = randomVictim.transform.position;
             agent.SetDestination(targetVector);
+            agent.acceleration = 100f;
+            //agent.speed = 3f;
         }
 
         //Once the fighter is in range of the victim, the fighter will stop moving and start fighting
@@ -546,12 +553,19 @@ public class CustomerNPC : MonoBehaviour
             //Once the fight hits x seconds, the fighter will stop fighting and replay the fight state
             if (elapsedTime >= 5f)
             {
+                Debug.Log($"{gameObject.name} fight timer complete.");
                 Debug.Log("Fight timer complete ");
                 animator.SetBool("isFighting", false);
                 agent.isStopped = false;
                 randomVictim = null;
+                victimFound = false;
                 elapsedTime = 0f;
             }
+        }
+
+        if (randomVictim == null)
+        {
+            StartFight();
         }
     }
 
@@ -562,19 +576,17 @@ public class CustomerNPC : MonoBehaviour
             GameObject fighter = GameObject.FindGameObjectWithTag("Fighter");
             if (fighter != null && Vector3.Distance(agent.transform.position, fighter.transform.position) < 1f)
             {
-                if (this.gameObject.tag == "Victim")
-                {
-                    animator.SetBool("isVictim", true);
-                    CustomerDrinks.SetActive(false);
-                }
+                animator.SetBool("isVictim", true);
+                CustomerDrinks.SetActive(false);
 
                 transform.LookAt(fighter.transform.position);
                 fightTime += Time.deltaTime;
-                if (fightTime >= 5f)
+                 int elapsedfight = Mathf.FloorToInt(fightTime);
+                if (fightTime >= 4.8f)
                 {
-                    Debug.Log("KNOCKED OUTTTTTT");
                     animator.SetBool("isKnockedOut", true);
                     //this.gameObject.tag = "KnockedOut";
+                    fightTime = 0f;
                     agent.enabled = false;
                 }
             }
@@ -583,8 +595,8 @@ public class CustomerNPC : MonoBehaviour
 
 
 
-    //Runs during the FinishedEvent state. This makes the customer leave the table with a mess and marks it as dirty.
-    void FinishedDrink()
+    //Runs during the MessyEvent state. This makes the customer leave the table with a mess and marks it as dirty.
+    void MessyDrink()
     {
         CustomerDrinks.SetActive(false);
         Debug.Log("Drink finished");
@@ -667,3 +679,4 @@ public class CustomerNPC : MonoBehaviour
 
     //}
 }
+

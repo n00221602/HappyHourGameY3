@@ -189,7 +189,7 @@ public class PhysicsRayCast : MonoBehaviour
             PourPint.SetActive(true);
             PlayerPint.SetActive(false);
             BeerFlow.SetActive(true);
-            progressInterval = 4f;
+            progressInterval = 2f;
             Invoke(nameof(CompleteBeerPour), progressInterval);
             BeerProgressBar.FillProgressBar();
         }
@@ -222,7 +222,7 @@ public class PhysicsRayCast : MonoBehaviour
             PouringRed.SetActive(true);
             RedWineLiquid.SetActive(true);
             RedWine.SetActive(false);
-            progressInterval = 2.5f;
+            progressInterval = 2f;
             Invoke(nameof(CompleteRedWinePour), progressInterval);
             WineProgressBar.FillProgressBar();
         }
@@ -246,7 +246,7 @@ public class PhysicsRayCast : MonoBehaviour
             PouringWhite.SetActive(true);
             WhiteWineLiquid.SetActive(true);
             WhiteWine.SetActive(false);
-            progressInterval = 2.5f;
+            progressInterval = 2f;
             Invoke(nameof(CompleteWhiteWinePour), progressInterval);
             WineProgressBar.FillProgressBar();
         }

@@ -16,7 +16,7 @@ public class CustomerTimer : MonoBehaviour
     {
         customerTimer = this.gameObject;
         customerTimer.SetActive(false);
-        timerImage = customerTimer.GetComponent<Image>(); // Get the Image component
+        timerImage = customerTimer.GetComponent<Image>();
     }
 
     // Update is called once per frame
@@ -35,8 +35,8 @@ public class CustomerTimer : MonoBehaviour
         // Update the color based on the elapsed time
         if (colorSwatches.Length > 0)
         {
-            float interval = maximum / colorSwatches.Length; // Calculate the interval for each color
-            int colorIndex = Mathf.FloorToInt(customerTime / interval) % colorSwatches.Length; // Determine the current color index
+            float interval = maximum / colorSwatches.Length;
+            int colorIndex = Mathf.FloorToInt(customerTime / interval) % colorSwatches.Length;
             timerImage.color = colorSwatches[colorIndex];
         }
     }

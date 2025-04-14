@@ -17,6 +17,9 @@ TagManager:
   - Victim
   - MessyTable
   - Served
+  - KnockedOut
+  - Taken
+  - Drunk
   layers:
   - Default
   - TransparentFX

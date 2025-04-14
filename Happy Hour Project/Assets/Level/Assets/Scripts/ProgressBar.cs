@@ -12,16 +12,12 @@ public class ProgressBar : MonoBehaviour
 
     private PhysicsRayCast physicsRayCast;
     //private CustomerNPC customerNPC;
-
-    // Start is called before the first frame update
     void Start()
     {
         physicsRayCast = GameObject.Find("PlayerCam").GetComponent<PhysicsRayCast>();
         progressBar = this.gameObject;
         progressBar.SetActive(false);
     }
-
-    // Update is called once per frame
     void Update()
     {
         FillProgressBar();

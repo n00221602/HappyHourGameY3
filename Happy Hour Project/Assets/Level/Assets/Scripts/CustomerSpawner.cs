@@ -7,7 +7,7 @@ public class CustomerSpawner : MonoBehaviour
 {
     public GameObject[] customers;
     private float elapsedTime = 0f; // Start from 0
-    private float spawnInterval = 10f; // Time between spawns
+    private float spawnInterval = 20f; // Time between spawns
 
     void Update()
     {

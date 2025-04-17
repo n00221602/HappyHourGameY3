@@ -20,6 +20,7 @@ TagManager:
   - KnockedOut
   - Taken
   - Drunk
+  - FighterHit
   layers:
   - Default
   - TransparentFX

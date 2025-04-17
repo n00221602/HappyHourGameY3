@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ProgressBar : MonoBehaviour
@@ -36,6 +37,5 @@ public class ProgressBar : MonoBehaviour
             mask.fillAmount = 0f;
             progressBar.SetActive(false);
         }
-
     }
 }

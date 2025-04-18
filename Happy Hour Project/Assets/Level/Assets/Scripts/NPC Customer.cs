@@ -434,6 +434,7 @@ public class CustomerNPC : MonoBehaviour
     //Runs during the Leaving state. Makes the customer leave the bar.
     void LeaveBar()
     {
+        agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
         facingBar = null;
 
         if (this.gameObject.tag == "Drinker")
@@ -452,7 +453,10 @@ public class CustomerNPC : MonoBehaviour
         {
             bar = null;
             table = null;
-            initialTable.tag = "Clean"; // Changes the table tag to Clean
+            if (initialTable != null)
+            {
+                initialTable.tag = "Clean"; // Changes the table tag to Clean
+            }
             Vector3 targetVector = exit.transform.position;
             agent.SetDestination(targetVector);
         }
@@ -473,28 +477,26 @@ public class CustomerNPC : MonoBehaviour
         animator.SetBool("isDrunk", true);
         Debug.Log("DRINKING");
         eventTime += Time.deltaTime;
-        if (eventTime >= 10f)
+        if (eventTime >= 20f)
         {
-            //eventTime = 0f;
-            //int eventInterval = 100;
-            //int randomChoice = Random.Range(1, eventInterval);
-
-            //if (randomChoice <= 40) //40% chance for a customer to leave the bar
-            //{
-            //    currentState = State.Leaving;
-            //}
-
-            //if (randomChoice > 40 && randomChoice <= 70) //30% chance for a customer to leave the bar with a messy table
-            //{
-            //    currentState = State.MessyEvent;
-            //}
-            //else //30% chance for a customer to start a fight
-            //{
-            //    currentState = State.FightEvent;
-            //}
-
             eventTime = 0f;
-            currentState = State.FightEvent;
+            int eventInterval = 100;
+            int randomChoice = Random.Range(1, eventInterval);
+            Debug.Log("Random choice: " + randomChoice);
+
+            if (randomChoice <= 40) //40% chance for a customer to leave the bar
+            {
+                currentState = State.Leaving;
+            }
+
+            if (randomChoice > 40 && randomChoice <= 80) //40% chance for a customer to leave the bar with a messy table
+            {
+                currentState = State.MessyEvent;
+            }
+            if (randomChoice > 80) //20% chance for a customer to start a fight
+            {
+                currentState = State.FightEvent;
+            }
         }
     }
 
@@ -560,7 +562,7 @@ public class CustomerNPC : MonoBehaviour
             elapsedTime += Time.deltaTime;
 
             //Once the fight hits x seconds, the fighter will stop fighting and replay the fight state
-            if (elapsedTime >= 12f)
+            if (elapsedTime >= 18f)
             {
                 Debug.Log($"{gameObject.name} fight timer complete.");
                 Debug.Log("Fight timer complete ");
@@ -629,7 +631,7 @@ public class CustomerNPC : MonoBehaviour
                 transform.LookAt(fighter.transform.position);
                 fightTime += Time.deltaTime;
                  int elapsedfight = Mathf.FloorToInt(fightTime);
-                if (fightTime >= 11.8f)
+                if (fightTime >= 17.8f)
                 {
                     float randomSpin = Random.Range(-20f, 20f);
                     transform.Rotate(0, randomSpin, 0);
@@ -638,15 +640,6 @@ public class CustomerNPC : MonoBehaviour
                     fightTime = 0f;
                     agent.enabled = false;
                 }
-
-                //if (fighter == null)
-                //{
-                //    Debug.Log("VICTIM HAS BEEN SAVED");
-                //    animator.SetBool("isKnockedOut", false);
-                //    animator.SetBool("isVictim", false);
-                //   // this.gameObject.tag = "Drinker";
-                //    fightTime = 0f;
-                //}
             }
         }
 

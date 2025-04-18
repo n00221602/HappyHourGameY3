@@ -49,8 +49,11 @@ public class PhysicsRayCast : MonoBehaviour
     //Money System script
     public MoneySystem moneySystem;
 
-    //Messy table prefabs
-    
+    //Customer Spawner script
+    public CustomerSpawner customerSpawner;
+    public GameObject timecube;
+
+    //Messy table prefab
     private GameObject currentMess;
 
    public bool isMessyTable;
@@ -58,32 +61,8 @@ public class PhysicsRayCast : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
-
-        //Player Hand
-        //FullHand = GameObject.Find("FullHand");
-        //BaseballBat = GameObject.Find("BaseballBat");
-
-        //PlayerBaseballBat = GameObject.Find("PlayerBaseballBat");
-        //animator = PlayerBaseballBat.GetComponent<Animator>();
-
-        //Beer
-        //PlayerPint = GameObject.Find("PlayerPintGlass");
-        //FullPlayerPint = GameObject.Find("FullPlayerPintGlass");
-        //BeerFlow = GameObject.Find("flowingBeer");
-        //PourPint = GameObject.Find("PlaceholderPint");
-
-        ////Wine
-        //PlayerWineGlass = GameObject.Find("PlayerWineGlass");
-        //FullPlayerRedWine = GameObject.Find("FullPlayerWineGlassRed");
-        //FullPlayerWhiteWine = GameObject.Find("FullPlayerWineGlassWhite");
-        //RedWine = GameObject.Find("Red Wine");
-        //WhiteWine = GameObject.Find("White Wine");
-        //PouringRed = GameObject.Find("PouringRed");
-        //PouringWhite = GameObject.Find("PouringWhite");
-        //RedWineLiquid = GameObject.Find("RedWineLiquidPouring");
-        //WhiteWineLiquid = GameObject.Find("WhiteWineLiquidPouring");
-        //PourWineGlass = GameObject.Find("PlaceholderWineGlass");
+        timecube = GameObject.Find("timecube");
+        customerSpawner = timecube.GetComponent<CustomerSpawner>();
 
         //Setting player active hand to false
         if (FullHand != null) FullHand.SetActive(false);
@@ -106,23 +85,17 @@ public class PhysicsRayCast : MonoBehaviour
         if (RedWineLiquid != null) RedWineLiquid.SetActive(false);
         if (WhiteWineLiquid != null) WhiteWineLiquid.SetActive(false);
         if (PourWineGlass != null) PourWineGlass.SetActive(false);
-
-        //progressBar = GameObject.Find("Progress Bar").GetComponent<ProgressBar>();
-
-
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Handles mouse clicks
-        if (Input.GetMouseButtonDown(0))
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.forward, out hit, 3f))
         {
-            RaycastHit hit;
-            if (Physics.Raycast(transform.position, transform.forward, out hit, 3f))
+            //Handles left mouse clicks
+            if (Input.GetMouseButtonDown(0))
             {
-
                 // BEER
                 if (hit.collider.name == "PickupPint")
                 {
@@ -147,6 +120,7 @@ public class PhysicsRayCast : MonoBehaviour
                     PourWhiteWine();
                 }
 
+                //Handles picking up the baseball bat
                 if (hit.collider.name == "BaseballBatDisplay")
                 {
                     HandleBaseballBat();
@@ -156,8 +130,6 @@ public class PhysicsRayCast : MonoBehaviour
                 if (hit.collider.CompareTag("MessyTable"))
                 {
                     isMessyTable = true;
-                    Debug.Log("TABLE FOUND");
-                    //currentMess = null;
                     MessyTableProgressBar = null;
 
                     //This finds the ProgressBar component unique to this MessyTable prefab
@@ -178,38 +150,43 @@ public class PhysicsRayCast : MonoBehaviour
                     HandleMessyEvent();
                 }
 
-               
-
-                //CUSTOMERS
+                //Handles the customer interaction
                 if (hit.collider.CompareTag("Customer"))
                 {
                     HandleCustomer(hit.collider);
                 }
             }
+
+            //if the player lets go of the left mouse button, they will stop cleaning the table
+            if (Input.GetMouseButtonUp(0)) 
+            {
+                isMessyTable = false; 
+                CancelInvoke(nameof(CompleteMessyEvent)); 
+            }
+
+            //On E key press, the timer starts
+            if (Input.GetKeyDown(KeyCode.E) && !customerSpawner.timerRunning && hit.collider.name == "timecube")
+            {
+                Debug.Log("Timer started");
+                customerSpawner.timerRunning = true; // Start the timer
+            }
         }
 
-        if (Input.GetMouseButtonUp(0)) // Detect when the button is released
-        {
-            isMessyTable = false; // Reset the messy table state
-            CancelInvoke(nameof(CompleteMessyEvent)); // Cancel the scheduled method
-        }
-
+        //Right click inputs
         if (Input.GetMouseButtonDown(1) && PlayerBaseballBat.activeSelf)
         {
-            animator.SetTrigger("SwingBat");
-
-            RaycastHit hit;
-            if (Physics.Raycast(transform.position, transform.forward, out hit, 3f))
+            if (animator != null)
             {
-                //Handles FightEvent
-                if (hit.collider.CompareTag("Fighter"))
-                {
-                    Debug.Log("Fighter Found");
-                    hit.collider.gameObject.tag = "FighterHit";
-                    HandleFightEvent();
-                }
+                animator.SetTrigger("SwingBat");
             }
-                
+            
+            //Handles FightEvent
+            if (hit.collider != null && hit.collider.CompareTag("Fighter"))
+            {
+                Debug.Log("Fighter Found");
+                hit.collider.gameObject.tag = "FighterHit";
+                HandleFightEvent();
+            }
         }
     }
 
@@ -230,7 +207,7 @@ public class PhysicsRayCast : MonoBehaviour
             PourPint.SetActive(true);
             PlayerPint.SetActive(false);
             BeerFlow.SetActive(true);
-            progressInterval = 2f;
+            progressInterval = 4f;
             Invoke(nameof(CompleteBeerPour), progressInterval);
             BeerProgressBar.FillProgressBar();
         }
@@ -263,7 +240,7 @@ public class PhysicsRayCast : MonoBehaviour
             PouringRed.SetActive(true);
             RedWineLiquid.SetActive(true);
             RedWine.SetActive(false);
-            progressInterval = 2f;
+            progressInterval = 3f;
             Invoke(nameof(CompleteRedWinePour), progressInterval);
             WineProgressBar.FillProgressBar();
         }
@@ -287,7 +264,7 @@ public class PhysicsRayCast : MonoBehaviour
             PouringWhite.SetActive(true);
             WhiteWineLiquid.SetActive(true);
             WhiteWine.SetActive(false);
-            progressInterval = 2f;
+            progressInterval = 3f;
             Invoke(nameof(CompleteWhiteWinePour), progressInterval);
             WineProgressBar.FillProgressBar();
         }
@@ -366,7 +343,6 @@ public class PhysicsRayCast : MonoBehaviour
     {
         if (!FullHand.activeSelf && !PlayerBaseballBat.activeSelf)
         {
-            Debug.Log("Baseball Bat picked up");
             BaseballBat.SetActive(false);
             PlayerBaseballBat.SetActive(true);
             FullHand.SetActive(true);
@@ -374,7 +350,6 @@ public class PhysicsRayCast : MonoBehaviour
 
         else
         {
-            Debug.Log("Baseball Bat put back");
             BaseballBat.SetActive(true);
             PlayerBaseballBat.SetActive(false);
             PlayerBaseballBat.transform.localRotation = Quaternion.Euler(-8, -177.68f, 25); // This resets the rotation of the baseball bat

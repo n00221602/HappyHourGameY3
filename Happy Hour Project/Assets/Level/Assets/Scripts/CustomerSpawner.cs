@@ -8,15 +8,25 @@ public class CustomerSpawner : MonoBehaviour
     public GameObject[] customers;
     public GameObject timecube;
 
-    
 
-    float currentDayTimer = 140f;
+    public float currentDay = 0f;
+
+    //Day timer set in inspector
+    public float currentDayTimer;
 
     private float spawnTime = 0f;
-    private float spawnLimit = 10f;
+    private float spawnRate = 15f;
 
     public bool timerRunning = false;
 
+    private ClockUI clockUI;
+
+    private void Start()
+    {
+        clockUI = FindObjectOfType<ClockUI>();
+        currentDayTimer = 120f;
+    }
+    
     void Update()
     {
         GameObject[] customers = GameObject.FindGameObjectsWithTag("Customer");
@@ -37,31 +47,44 @@ public class CustomerSpawner : MonoBehaviour
         if (timerRunning)
         {
             StartTimer();
+            clockUI.StartClock();
         }
 
-        //if (currentDayTimer >= spawnLimit)
-        //{
-        //    // Resets the timer to 0 seconds
-        //    currentDayTimer = 0f;
-
-        //    // Spawns a customer
-        //    SpawnCustomer();
-        //}
-
-        //if (Input.GetKeyDown(KeyCode.O) && customers.Length < 6)
-        //{
-        //    SpawnCustomer();
-        //}
+        
 
     }
 
 
     void StartTimer()
     {
+
+        //Each statement defines the current day. Each day has a differnent spawn rate. It begins at day 0 which is the tutorial day.
+        if (currentDay == 0f) { }
+
+        if (currentDay == 1f) { spawnRate = 5f; }
+
+        if (currentDay == 2f) { spawnRate = 12f; }
+
+        if (currentDay == 3) { spawnRate = 12f; }
+
+        if (currentDay == 4) { spawnRate = 12f; }
+
+        if (currentDay == 5) { spawnRate = 10f; }
+
+        if (currentDay == 6) { spawnRate = 10f; }
+
+        if (currentDay == 7) { spawnRate = 10f; }
+
+        if (currentDay == 8) { spawnRate = 10f; }
+
+        if (currentDay == 9) { spawnRate = 8f; }
+
+        if (currentDay == 10f) { spawnRate = 8f; }
+
         spawnTime += Time.deltaTime;
 
         // Randomly spawns a customer from the customer index array once the interval is reached
-        if (spawnTime >= spawnLimit)
+        if (spawnTime >= spawnRate)
         {
             spawnTime = 0f;
             int randomIndex = Random.Range(0, customers.Length);
@@ -85,8 +108,9 @@ public class CustomerSpawner : MonoBehaviour
     void NoTimer()
     {
         Debug.Log("Timer ended");
-        timecube.SetActive(true);
-        currentDayTimer = 10f;
+        Debug.Log("current day: " + currentDay);
+        //timecube.SetActive(true);
+        currentDayTimer = 0f;
         timerRunning = false;
     }
 }

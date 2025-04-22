@@ -305,16 +305,17 @@ public class CustomerNPC : MonoBehaviour
                 if (!isTaken && initialTable.tag == "Clean")
                 {
                     table = initialTable;
-                    table.tag = "Taken"; // Changes the table tag to Taken
+                    table.gameObject.tag = "Taken"; // Changes the table tag to Taken
                     break;
                 }
 
                 //Switches the table back to clean once the customer is finished
-                if (table == null && initialTable.tag == "Taken")
+                if (table == null && initialTable.tag == "Taken" && table.tag != "Dirty")
                 {
                     table = initialTable;
-                    table.tag = "Clean";
+                    table.gameObject.tag = "Clean";
                 }
+                
 
             }
         }
@@ -481,7 +482,7 @@ public class CustomerNPC : MonoBehaviour
         {
             eventTime = 0f;
             int eventInterval = 100;
-            int randomChoice = Random.Range(1, eventInterval);
+            int randomChoice = Random.Range(80, eventInterval);
             Debug.Log("Random choice: " + randomChoice);
 
             if (randomChoice <= 40) //40% chance for a customer to leave the bar
@@ -636,7 +637,7 @@ public class CustomerNPC : MonoBehaviour
                     float randomSpin = Random.Range(-20f, 20f);
                     transform.Rotate(0, randomSpin, 0);
                     animator.SetBool("isKnockedOut", true);
-                    initialTable.tag = "Clean"; // This makes the table free for other customers to walk to
+                    //initialTable.tag = "Clean"; // This makes the table free for other customers to walk to
                     fightTime = 0f;
                     agent.enabled = false;
                 }
@@ -688,9 +689,13 @@ public class CustomerNPC : MonoBehaviour
                 //if (directionToTable != Vector3.zero)
                 //{
                     messyDrinkPrefab.transform.rotation = Quaternion.LookRotation(directionToTable);
-               // }
+                // }
 
-                table.tag = "Dirty"; // Changes the table tag to Dirty
+                if (table != null)
+                {
+                    table.gameObject.tag = "Dirty";
+                    Debug.Log("Table tag set to Dirty: " + table.name);
+                }
             }
             else
             {

@@ -164,11 +164,10 @@ public class PhysicsRayCast : MonoBehaviour
                 CancelInvoke(nameof(CompleteMessyEvent)); 
             }
 
-            //On E key press, the timer starts
+            //Handles the Timer
             if (Input.GetKeyDown(KeyCode.E) && !customerSpawner.timerRunning && hit.collider.name == "timecube")
             {
-                Debug.Log("Timer started");
-                customerSpawner.timerRunning = true; // Start the timer
+                HandleTimer();
             }
         }
 
@@ -355,6 +354,16 @@ public class PhysicsRayCast : MonoBehaviour
             PlayerBaseballBat.transform.localRotation = Quaternion.Euler(-8, -177.68f, 25); // This resets the rotation of the baseball bat
             FullHand.SetActive(false);
         }
+    }
+
+    //Handles the current day and the legnth of the current day from the CustomerSpawner script.
+    private void HandleTimer()
+    {
+        Debug.Log("Timer started");
+        //customerSpawner.currentDayTimer = customerSpawner.currentDayTimer * 1.2f;
+        //customerSpawner.setTime = customerSpawner.currentDayTimer;
+        customerSpawner.currentDay = customerSpawner.currentDay + 1f;
+        customerSpawner.timerRunning = true;
     }
 
 }

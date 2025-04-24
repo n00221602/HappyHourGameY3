@@ -8,14 +8,18 @@ public class LevelTimer : MonoBehaviour
     bool timerRunning = false;
 
     public GameObject timecube;
+
+    private CustomerSpawner customerSpawner;
     void Start()
     {
         timecube.SetActive(true);
+        customerSpawner = this.gameObject.GetComponent<CustomerSpawner>();
+        
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(1) && !timerRunning) // Ensure the timer doesn't start again if it's already running
+        if (Input.GetMouseButtonDown(1) && !timerRunning)
         {
             timecube.SetActive(false);
             timerRunning = true; // Start the timer
@@ -48,5 +52,6 @@ public class LevelTimer : MonoBehaviour
         timecube.SetActive(true);
         elapsedTime = 10f;
         timerRunning = false;
+        customerSpawner = null;
     }
 }

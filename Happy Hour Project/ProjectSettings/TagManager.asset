@@ -14,6 +14,13 @@ TagManager:
   - Fighter
   - Stool
   - Booth
+  - Victim
+  - MessyTable
+  - Served
+  - KnockedOut
+  - Taken
+  - Drunk
+  - FighterHit
   layers:
   - Default
   - TransparentFX
@@ -22,7 +29,7 @@ TagManager:
   - Water
   - UI
   - Other
-  - 
+  - NPCPath
   - 
   - 
   - 

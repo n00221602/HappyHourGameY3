@@ -17,24 +17,21 @@ public class ClockUI : MonoBehaviour
         customerSpawner = FindObjectOfType<CustomerSpawner>();
     }
 
+    //Starts the clock hand rotation in the clock UI
     public void StartClock()
     {
-
-        
-        day += Time.deltaTime / customerSpawner.currentDayTimer;
-        Debug.Log(day);
-
-        //float dayNormal = day % 1f;
+        day += Time.deltaTime / customerSpawner.currentDaySeconds;
+       // float dayNormal = day % 1f;
 
         clockHand.eulerAngles = new Vector3(0, 0, -day * 360f);
 
         if (day >= 1f)
         {
-            // Reset the day to 0 when it reaches 1
             StopClock();
         }
     }
 
+    // Reset the clock after it completes a full rotation
     void StopClock()
     {
         // Stop the clock hand rotation

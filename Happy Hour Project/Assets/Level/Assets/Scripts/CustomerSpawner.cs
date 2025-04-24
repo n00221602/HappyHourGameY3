@@ -12,10 +12,11 @@ public class CustomerSpawner : MonoBehaviour
     public float currentDay = 0f;
 
     //Day timer set in inspector
+    public float currentDaySeconds;
     public float currentDayTimer;
 
     private float spawnTime = 0f;
-    private float spawnRate = 15f;
+    private float spawnRate;
 
     public bool timerRunning = false;
 
@@ -24,7 +25,8 @@ public class CustomerSpawner : MonoBehaviour
     private void Start()
     {
         clockUI = FindObjectOfType<ClockUI>();
-        currentDayTimer = 120f;
+        currentDaySeconds = 140f;
+        currentDayTimer = currentDaySeconds;
     }
     
     void Update()
@@ -61,7 +63,7 @@ public class CustomerSpawner : MonoBehaviour
         //Each statement defines the current day. Each day has a differnent spawn rate. It begins at day 0 which is the tutorial day.
         if (currentDay == 0f) { }
 
-        if (currentDay == 1f) { spawnRate = 5f; }
+        if (currentDay == 1f) { spawnRate = 12f; }
 
         if (currentDay == 2f) { spawnRate = 12f; }
 

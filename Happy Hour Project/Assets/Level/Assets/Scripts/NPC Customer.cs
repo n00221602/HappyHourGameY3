@@ -1,6 +1,8 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
+
 
 public class CustomerNPC : MonoBehaviour
 {
@@ -32,6 +34,12 @@ public class CustomerNPC : MonoBehaviour
     public GameObject iconCan;
     public GameObject iconBottleBeer;
 
+    public GameObject Star1;
+    public GameObject Star2;
+    public GameObject Star3;
+    public GameObject Star4;
+    public GameObject Star5;
+    private bool reputationLost = false;
 
     public GameObject puddlePrefab;
     private GameObject nearestTable;
@@ -73,6 +81,12 @@ public class CustomerNPC : MonoBehaviour
         iconCan = transform.Find("DrinkIcons/CanIcon").gameObject;
         iconBottleBeer = transform.Find("DrinkIcons/BottleBeerIcon").gameObject;
 
+        // Reputation Objects
+        Star1 = GameObject.Find("Player/PlayerUi/PlayerHealth/Star1").gameObject;
+        Star2 = GameObject.Find("Player/PlayerUi/PlayerHealth/Star2").gameObject;
+        Star3 = GameObject.Find("Player/PlayerUi/PlayerHealth/Star3").gameObject;
+        Star4 = GameObject.Find("Player/PlayerUi/PlayerHealth/Star4").gameObject;
+        Star5 = GameObject.Find("Player/PlayerUi/PlayerHealth/Star5").gameObject;
 
         if (iconBeer != null) iconBeer.SetActive(false);
         if (iconRedWine != null) iconRedWine.SetActive(false);
@@ -443,6 +457,11 @@ public class CustomerNPC : MonoBehaviour
             Debug.Log("BYEEEEE");
             Destroy(gameObject);
         }
+        if (currentState == State.Leaving && !reputationLost)
+        {
+         Debug.Log($"NPC {gameObject.name} is about to lose reputation.");
+         BarReputation();
+        }
     }
 
 
@@ -576,6 +595,54 @@ public class CustomerNPC : MonoBehaviour
             }
         }
         currentState = State.Leaving;
+    }
+
+     void BarReputation()
+    {
+    Debug.Log($"NPC {gameObject.name} entering BarReputation. reputationLost={reputationLost}");
+
+        if( !reputationLost && currentState == State.Leaving && !CustomerBeer.activeSelf && !CustomerRedWine.activeSelf  && !CustomerWhiteWine.activeSelf && !CustomerCan.activeSelf && !CustomerBottleBeer.activeSelf )
+        {
+            Debug.Log($"NPC {gameObject.name} is losing reputation.");
+
+            if( Star1.activeSelf)
+            {
+                Star1.SetActive(false);
+                Debug.Log("Star1 deactivated.");
+
+            }
+
+            else if(Star2.activeSelf )
+            {
+                Star2.SetActive(false);
+                Debug.Log("Star2 deactivated.");
+
+            }
+
+            else if(Star3.activeSelf)
+            {
+                Star3.SetActive(false);
+            }
+
+             else if(Star4.activeSelf)
+            {
+                Star4.SetActive(false);
+            }
+
+             else if(Star5.activeSelf)
+            {
+                Star5.SetActive(false);
+                Invoke(nameof(GameOverMover), 1f); 
+            }
+            reputationLost = true;
+            Debug.Log($"NPC {gameObject.name} reputationLost set to true.");
+
+        }
+    }
+
+         void GameOverMover()
+    {
+        SceneManager.LoadScene("Game Over"); 
     }
 
     //NEUTRAL STATE. MIGHT NOT BE NEEDED?

@@ -30917,6 +30917,18 @@ MonoBehaviour:
   PassivesShop: {fileID: 272865765}
   BarmanShop: {fileID: 1557812829}
   ExtrasShop: {fileID: 974900670}
+  PooltableButton: {fileID: 0}
+  PooltableState: {fileID: 0}
+  AirHockeytableButton: {fileID: 0}
+  AirHockeytableState: {fileID: 0}
+  DartsButton: {fileID: 0}
+  DartsState: {fileID: 0}
+  SlotsButton: {fileID: 0}
+  SlotsState: {fileID: 0}
+  JukeboxButton: {fileID: 0}
+  JukeboxState: {fileID: 0}
+  KaraokeButton: {fileID: 0}
+  KaraokeState: {fileID: 0}
 --- !u!4 &1401497814
 Transform:
   m_ObjectHideFlags: 0
@@ -41497,6 +41509,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PourPint: {fileID: 0}
+  PickupCan: {fileID: 0}
+  bottleBeerPickup: {fileID: 0}
   drinksInterval: 0
   BeerProgressBar: {fileID: 1781507645}
   WineProgressBar: {fileID: 902984975}

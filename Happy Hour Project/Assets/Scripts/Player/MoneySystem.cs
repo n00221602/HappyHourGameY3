@@ -65,7 +65,7 @@ public class MoneySystem : MonoBehaviour
         }
     }
 
-    void UpdateText()
+    public void UpdateText()
     {
         moneyBalanceText.text = "$" + moneyBalance;
     }

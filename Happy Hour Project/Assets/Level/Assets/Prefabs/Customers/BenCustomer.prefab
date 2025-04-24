@@ -1619,6 +1619,11 @@ MonoBehaviour:
   iconWhiteWine: {fileID: 7368341249503324393}
   iconCan: {fileID: 6827452772191775718}
   iconBottleBeer: {fileID: 3356508617159276011}
+  Star1: {fileID: 0}
+  Star2: {fileID: 0}
+  Star3: {fileID: 0}
+  Star4: {fileID: 0}
+  Star5: {fileID: 0}
   puddlePrefab: {fileID: 8614868225107757238, guid: 36d031652825014489d083f934fa6758, type: 3}
   customerTimer: {fileID: 1462248549330620795}
 --- !u!114 &2291328407628095038

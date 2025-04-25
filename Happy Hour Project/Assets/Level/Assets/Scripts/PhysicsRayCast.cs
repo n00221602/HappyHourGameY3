@@ -32,11 +32,11 @@ public class PhysicsRayCast : MonoBehaviour
     public GameObject PourWineGlass;
 
     //Soft Drink game objects
-    private GameObject PlayerCan;
+    public GameObject PlayerCan;
     public GameObject PickupCan;
 
     //Bottle Beer game objects
-    private GameObject PlayerBottleBeer;
+    public GameObject PlayerBottleBeer;
     public GameObject bottleBeerPickup;
 
     public float drinksInterval;

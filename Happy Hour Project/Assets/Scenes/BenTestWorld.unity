@@ -5194,8 +5194,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Settings
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 0161d805a3764c089bef00bfe00793f5, type: 2}
-  m_sharedMaterial: {fileID: 2147374, guid: 0161d805a3764c089bef00bfe00793f5, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -6304,7 +6304,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a1b3d908c7dc08408e8f887594651e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  progressInterval: 4
   mask: {fileID: 348068177}
   progressBar: {fileID: 0}
 --- !u!114 &136865705
@@ -21769,13 +21768,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e70a6e87af250b5468c08c6e6d027736, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  FullHand: {fileID: 0}
+  PlayerPint: {fileID: 0}
+  FullPlayerPint: {fileID: 0}
+  BeerFlow: {fileID: 0}
   PourPint: {fileID: 0}
+  PlayerWineGlass: {fileID: 0}
+  FullPlayerRedWine: {fileID: 0}
+  FullPlayerWhiteWine: {fileID: 0}
+  RedWine: {fileID: 0}
+  WhiteWine: {fileID: 0}
+  PouringRed: {fileID: 0}
+  PouringWhite: {fileID: 0}
+  RedWineLiquid: {fileID: 0}
+  WhiteWineLiquid: {fileID: 0}
+  PourWineGlass: {fileID: 0}
+  PlayerCan: {fileID: 0}
   PickupCan: {fileID: 0}
+  PlayerBottleBeer: {fileID: 0}
   bottleBeerPickup: {fileID: 0}
   drinksInterval: 0
+  progressInterval: 0
+  BaseballBat: {fileID: 0}
+  PlayerBaseballBat: {fileID: 0}
   BeerProgressBar: {fileID: 136865704}
   WineProgressBar: {fileID: 908282841}
   moneySystem: {fileID: 1605808862}
+  customerSpawner: {fileID: 0}
+  timecube: {fileID: 0}
+  isMessyTable: 0
 --- !u!114 &544891666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37109,7 +37131,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a1b3d908c7dc08408e8f887594651e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  progressInterval: 19.99
   mask: {fileID: 1741136964}
   progressBar: {fileID: 0}
 --- !u!114 &908282842
@@ -49907,6 +49928,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   customers:
   - {fileID: 6604793632197022068, guid: caf29d5f0d5c51e4aba7276cf4013064, type: 3}
+  timecube: {fileID: 0}
+  currentDay: 0
+  currentDaySeconds: 0
+  currentDayTimer: 0
+  timerRunning: 0
 --- !u!1001 &1284952915
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -79468,8 +79494,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Cope  Cola
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

@@ -83,22 +83,22 @@ public class CustomerNPC : MonoBehaviour
         MoveToCounter();
 
         // Customer Drink Objects
-        CustomerBeer = transform.Find("CustomerBeerFull").gameObject;
-        CustomerRedWine = transform.Find("CustomerRedWineFull").gameObject;
-        CustomerWhiteWine = transform.Find("CustomerWhiteWineFull").gameObject;
-        CustomerCan = transform.Find("CustomerCan").gameObject;
-        CustomerBottleBeer = transform.Find("CustomerBottleBeer").gameObject;
+        //CustomerBeer = transform.Find("CustomerBeerFull").gameObject;
+        //CustomerRedWine = transform.Find("CustomerRedWineFull").gameObject;
+        //CustomerWhiteWine = transform.Find("CustomerWhiteWineFull").gameObject;
+        //CustomerCan = transform.Find("CustomerCan").gameObject;
+        //CustomerBottleBeer = transform.Find("CustomerBottleBeer").gameObject;
 
 
-        // Icon Objects
-        allIcons = transform.Find("DrinkIcons").gameObject;
-        iconBeer = transform.Find("DrinkIcons/BeerIcon").gameObject;
-        iconRedWine = transform.Find("DrinkIcons/RedWineIcon").gameObject;
-        iconWhiteWine = transform.Find("DrinkIcons/WhiteWineIcon").gameObject;
-        iconCan = transform.Find("DrinkIcons/CanIcon").gameObject;
-        iconBottleBeer = transform.Find("DrinkIcons/BottleBeerIcon").gameObject;
+        //// Icon Objects
+        //allIcons = transform.Find("DrinkIcons").gameObject;
+        //iconBeer = transform.Find("DrinkIcons/BeerIcon").gameObject;
+        //iconRedWine = transform.Find("DrinkIcons/RedWineIcon").gameObject;
+        //iconWhiteWine = transform.Find("DrinkIcons/WhiteWineIcon").gameObject;
+        //iconCan = transform.Find("DrinkIcons/CanIcon").gameObject;
+        //iconBottleBeer = transform.Find("DrinkIcons/BottleBeerIcon").gameObject;
 
-        // Reputation Objects
+        //// Reputation Objects
         Star1 = GameObject.Find("Player/PlayerUi/PlayerHealth/Star1").gameObject;
         Star2 = GameObject.Find("Player/PlayerUi/PlayerHealth/Star2").gameObject;
         Star3 = GameObject.Find("Player/PlayerUi/PlayerHealth/Star3").gameObject;
@@ -288,10 +288,12 @@ public class CustomerNPC : MonoBehaviour
         if (selectedDrink == "Can")
         {
             iconCan.SetActive(true);
+            messyDrink = MessyRedWine;
         }
         if (selectedDrink == "BottleBeer")
         {
             iconBottleBeer.SetActive(true);
+            messyDrink = MessyWhiteWine;
         }
         Debug.Log("Gimme some " + selectedDrink);
         // Increment the wait timer
@@ -528,7 +530,7 @@ public class CustomerNPC : MonoBehaviour
             Debug.Log("BYEEEEE");
             Destroy(gameObject);
         }
-        if (currentState == State.Leaving && !reputationLost)
+        if (currentState == State.Leaving && !reputationLost && this.gameObject.tag == "Customer")
         {
          Debug.Log($"NPC {gameObject.name} is about to lose reputation.");
          BarReputation();
@@ -547,7 +549,7 @@ public class CustomerNPC : MonoBehaviour
         {
             eventTime = 0f;
             int eventInterval = 100;
-            int randomChoice = Random.Range(80, eventInterval);
+            int randomChoice = Random.Range(0, eventInterval);
             Debug.Log("Random choice: " + randomChoice);
 
             if (randomChoice <= 40) //40% chance for a customer to leave the bar

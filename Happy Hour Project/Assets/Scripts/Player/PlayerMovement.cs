@@ -63,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
 
       MyInput();  
       SpeedControl();
-      NoMenu();
+      //NoMenu();
 
       if(grounded)
             rb.drag = groundDrag;
@@ -82,23 +82,39 @@ public class PlayerMovement : MonoBehaviour
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
-        if(Input.GetKey(exitKey) && !ExitMenu.activeSelf)
+        if (Input.GetKeyDown(exitKey) && !ShopMenu.activeSelf)
         {
-            ExitMenu.SetActive(true);
-            Cursor.lockState = CursorLockMode.None;
-
+            if(!ExitMenu.activeSelf)
+            {
+                ExitMenu.SetActive(true);
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+            else
+            {
+                ExitMenu.SetActive(false);
+                Cursor.lockState = CursorLockMode.Locked;
+            }
         }
 
-         if(Input.GetKey(shopKey) && !ShopMenu.activeSelf)
+        if (Input.GetKeyDown(shopKey) && !ExitMenu.activeSelf)
         {
-            ShopMenu.SetActive(true);
-            Cursor.lockState = CursorLockMode.None;
-
+            if (!ShopMenu.activeSelf)
+            {
+                ShopMenu.SetActive(true);
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+            else
+            {
+                ShopMenu.SetActive(false);
+                Cursor.lockState = CursorLockMode.Locked;
+            }
         }
 
 
 
-        if(Input.GetKey(jumpKey) && readyToJump && grounded)
+        if (Input.GetKey(jumpKey) && readyToJump && grounded)
         {
             readyToJump = false;
 
@@ -157,27 +173,27 @@ public class PlayerMovement : MonoBehaviour
      }
 
 
-     public void Escape()
-     {
-       if(Input.GetKey(exitKey))
-        {
-            SceneManager.LoadScene("MainMenu"); 
-        }
+     //public void Escape()
+     //{
+     //  if(Input.GetKey(exitKey))
+     //   {
+     //       SceneManager.LoadScene("MainMenu"); 
+     //   }
          
-     }
+     //}
 
-     public void ShoppingMenu()
-     {
-       if(Input.GetKey(shopKey))
-        {
-        SceneManager.LoadScene("ShopBook"); 
-        DrinksShop.SetActive(true);
-        PassivesShop.SetActive(false);
-       BarmanShop.SetActive(false);
-        ExtrasShop.SetActive(false);
-        }
+     //public void ShoppingMenu()
+     //{
+     //  if(Input.GetKey(shopKey))
+     //   {
+     //   SceneManager.LoadScene("ShopBook"); 
+     //   DrinksShop.SetActive(true);
+     //   PassivesShop.SetActive(false);
+     //  BarmanShop.SetActive(false);
+     //   ExtrasShop.SetActive(false);
+     //   }
          
-     }
+     //}
 
      public void IncreaseSpeedPurchased()
      {

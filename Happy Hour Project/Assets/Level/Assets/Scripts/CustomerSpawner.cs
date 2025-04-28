@@ -61,7 +61,7 @@ public class CustomerSpawner : MonoBehaviour
     {
 
         //Each statement defines the current day. Each day has a differnent spawn rate. It begins at day 0 which is the tutorial day.
-        if (currentDay == 0f) { }
+        if (currentDay == 0f) { spawnRate = 12f; }
 
         if (currentDay == 1f) { spawnRate = 12f; }
 
@@ -112,7 +112,7 @@ public class CustomerSpawner : MonoBehaviour
         Debug.Log("Timer ended");
         Debug.Log("current day: " + currentDay);
         //timecube.SetActive(true);
-        currentDayTimer = 0f;
+        currentDayTimer = currentDaySeconds;
         timerRunning = false;
     }
 }

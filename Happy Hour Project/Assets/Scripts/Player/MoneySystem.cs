@@ -14,11 +14,7 @@ public class MoneySystem : MonoBehaviour
     {
         moneyBalanceText = this.gameObject.GetComponent<TextMeshProUGUI>();
         moneyBalance = 100f;
-    }
-
-    private void Update()
-    {
-       Debug.Log("Bakance is:" + moneyBalance);
+        UpdateText();
     }
 
     public void beerMoneyAddition()

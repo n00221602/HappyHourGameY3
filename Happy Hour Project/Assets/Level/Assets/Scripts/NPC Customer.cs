@@ -57,6 +57,9 @@ public class CustomerNPC : MonoBehaviour
     private GameObject nearestTable;
     private GameObject cleanDestinationsParent;
 
+    //Static is shared across all customers
+    public static GameObject gameDestinationsParent;
+
    
     public GameObject MessyBeer;
     public GameObject MessyRedWine;
@@ -69,8 +72,7 @@ public class CustomerNPC : MonoBehaviour
     private string[] barDestinations = { "BarDest1", "BarDest2", "BarDest3", "BarDest4", "BarDest5", "BarDest6" };
     private string[] lookAtBar = { "LookAt1", "LookAt2", "LookAt3", "LookAt4", "LookAt5", "LookAt6"};
     private string[] cleanDestinations;
-    private string[] dirtyDestinations = { };
-    private string[] gameDestinations = { "GameDest1", "GameDest2", "GameDest3", "GameDest4", "GameDest5", "GameDest6", "GameDest7", "GameDest8", "GameDest9", "GameDest10" };
+    private static string[] gameDestinations;
 
     public CustomerTimer customerTimer;
 
@@ -82,32 +84,12 @@ public class CustomerNPC : MonoBehaviour
         currentState = State.Moving;  // Starts the customer in the Moving state
         MoveToCounter();
 
-        // Customer Drink Objects
-        //CustomerBeer = transform.Find("CustomerBeerFull").gameObject;
-        //CustomerRedWine = transform.Find("CustomerRedWineFull").gameObject;
-        //CustomerWhiteWine = transform.Find("CustomerWhiteWineFull").gameObject;
-        //CustomerCan = transform.Find("CustomerCan").gameObject;
-        //CustomerBottleBeer = transform.Find("CustomerBottleBeer").gameObject;
-
-
-        //// Icon Objects
-        //allIcons = transform.Find("DrinkIcons").gameObject;
-        //iconBeer = transform.Find("DrinkIcons/BeerIcon").gameObject;
-        //iconRedWine = transform.Find("DrinkIcons/RedWineIcon").gameObject;
-        //iconWhiteWine = transform.Find("DrinkIcons/WhiteWineIcon").gameObject;
-        //iconCan = transform.Find("DrinkIcons/CanIcon").gameObject;
-        //iconBottleBeer = transform.Find("DrinkIcons/BottleBeerIcon").gameObject;
-
-        //// Reputation Objects
+        // Reputation Objects
         Star1 = GameObject.Find("Player/PlayerUi/PlayerHealth/Star1").gameObject;
         Star2 = GameObject.Find("Player/PlayerUi/PlayerHealth/Star2").gameObject;
         Star3 = GameObject.Find("Player/PlayerUi/PlayerHealth/Star3").gameObject;
         Star4 = GameObject.Find("Player/PlayerUi/PlayerHealth/Star4").gameObject;
         Star5 = GameObject.Find("Player/PlayerUi/PlayerHealth/Star5").gameObject;
-        //CustomerBeer = transform.Find("CustomerBeerFull").gameObject;
-        //CustomerRedWine = transform.Find("CustomerRedWineFull").gameObject;
-        //CustomerWhiteWine = transform.Find("CustomerWhiteWineFull").gameObject;
-        //CustomerDrinks = transform.Find("CustomerDrinks").gameObject;
 
         // Icon Objects
         allIcons = transform.Find("Icons/DrinkIcons").gameObject;
@@ -130,6 +112,7 @@ public class CustomerNPC : MonoBehaviour
         if (CustomerCan != null) CustomerCan.SetActive(false);
         if (CustomerBottleBeer != null) CustomerBottleBeer.SetActive(false);
 
+        gameDestinationsParent = GameObject.Find("GamesDestinations");
 
         // Decide the drink once at the start.
         DecideDrink();
@@ -178,9 +161,6 @@ public class CustomerNPC : MonoBehaviour
             case State.Drinking:
                 PickEvent();
                 break;
-            //case State.Neutral:
-            //    Neutral();
-            //    break;
             case State.FightEvent:
                 StartFight();
                 break;
@@ -295,7 +275,6 @@ public class CustomerNPC : MonoBehaviour
             iconBottleBeer.SetActive(true);
             messyDrink = MessyWhiteWine;
         }
-        Debug.Log("Gimme some " + selectedDrink);
         // Increment the wait timer
         waitTimer += Time.deltaTime;
         customerTimer.StartTimer();
@@ -305,7 +284,7 @@ public class CustomerNPC : MonoBehaviour
         {
             allIcons.SetActive(false);
             this.gameObject.tag = "Served"; // Changes the Customer tag to Served
-            currentState = State.Searching;
+            currentState = State.MoveToGame;
             facingBar = null;
 
         }
@@ -363,11 +342,11 @@ public class CustomerNPC : MonoBehaviour
                 }
 
                 //Switches the table back to clean once the customer is finished
-                if (table == null && initialTable.tag == "Taken" && table.tag != "Dirty")
-                {
-                    table = initialTable;
-                    table.gameObject.tag = "Clean";
-                }
+                //if (table == null && initialTable.tag == "Taken" && table.tag != "Dirty")
+                //{
+                //    table = initialTable;
+                //    table.gameObject.tag = "Clean";
+                //}
                 
 
             }
@@ -494,6 +473,20 @@ public class CustomerNPC : MonoBehaviour
         }
     }
 
+    //This static fucntion is shared by all customers.
+    public static void ManageGameDestinations()
+    {
+        if (gameDestinationsParent == null)
+        {
+            gameDestinationsParent = GameObject.Find("GamesDestinations");
+        }
+        gameDestinations = new string[gameDestinationsParent.transform.childCount];
+        for (int i = 0; i < gameDestinationsParent.transform.childCount; i++)
+        {
+            gameDestinations[i] = gameDestinationsParent.transform.GetChild(i).name;
+        }
+    }
+
     //Runs during the Leaving state. Makes the customer leave the bar.
     void LeaveBar()
     {
@@ -519,6 +512,7 @@ public class CustomerNPC : MonoBehaviour
             if (initialTable != null)
             {
                 initialTable.tag = "Clean"; // Changes the table tag to Clean
+                initialTable = null;
             }
             Vector3 targetVector = exit.transform.position;
             agent.SetDestination(targetVector);
@@ -543,13 +537,12 @@ public class CustomerNPC : MonoBehaviour
     {
         this.gameObject.tag = "Drinker";
         animator.SetBool("isDrunk", true);
-        Debug.Log("DRINKING");
         eventTime += Time.deltaTime;
         if (eventTime >= 20f)
         {
             eventTime = 0f;
             int eventInterval = 100;
-            int randomChoice = Random.Range(0, eventInterval);
+            int randomChoice = Random.Range(80, eventInterval);
             Debug.Log("Random choice: " + randomChoice);
 
             if (randomChoice <= 40) //40% chance for a customer to leave the bar
@@ -808,7 +801,6 @@ public class CustomerNPC : MonoBehaviour
 
      void BarReputation()
     {
-    Debug.Log($"NPC {gameObject.name} entering BarReputation. reputationLost={reputationLost}");
 
         if( !reputationLost && currentState == State.Leaving && !CustomerBeer.activeSelf && !CustomerRedWine.activeSelf  && !CustomerWhiteWine.activeSelf && !CustomerCan.activeSelf && !CustomerBottleBeer.activeSelf )
         {

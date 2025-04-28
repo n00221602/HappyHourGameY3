@@ -284,7 +284,7 @@ public class CustomerNPC : MonoBehaviour
         {
             allIcons.SetActive(false);
             this.gameObject.tag = "Served"; // Changes the Customer tag to Served
-            currentState = State.MoveToGame;
+            currentState = State.Searching;
             facingBar = null;
 
         }

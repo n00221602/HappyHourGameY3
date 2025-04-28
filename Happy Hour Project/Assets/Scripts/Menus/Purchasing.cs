@@ -36,7 +36,7 @@ public class Purchasing : MonoBehaviour
         PoolTable.SetActive(false);
         DartsBoard.SetActive(false);
         SlotMachines.SetActive(false);
-        Jukebox.SetActive(false);
+        //Jukebox.SetActive(false);
         Karaoke.SetActive(false);
         BeerGarden.SetActive(true);
         Toilets.SetActive(true);

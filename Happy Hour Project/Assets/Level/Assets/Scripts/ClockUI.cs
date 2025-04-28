@@ -36,6 +36,7 @@ public class ClockUI : MonoBehaviour
     {
         // Stop the clock hand rotation
         clockHand.eulerAngles = new Vector3(0, 0, 0);
+        day = 0f;
     }
 
 

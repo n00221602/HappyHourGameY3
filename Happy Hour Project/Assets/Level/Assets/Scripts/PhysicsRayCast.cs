@@ -185,7 +185,6 @@ public class PhysicsRayCast : MonoBehaviour
                 if (hit.collider.name == "bottleBeerPickup")
                 {
                     HandleBottleBeer();
-                    Debug.Log("Collider is working");
                 }
         
 
@@ -428,16 +427,14 @@ public class PhysicsRayCast : MonoBehaviour
      //Sink
     private void DisposeOfDrink()
     {
-   //  if (!FullHand.activeSelf)
-    //    {
-     PlayerPint.SetActive(false);
-     FullPlayerPint.SetActive(false);
-     PlayerWineGlass.SetActive(false);
-     FullPlayerRedWine.SetActive(false);
-     FullPlayerWhiteWine.SetActive(false);
-     PlayerCan.SetActive(false);
-     PlayerBottleBeer.SetActive(false);
-     //   }
+        FullHand.SetActive(false);
+        PlayerPint.SetActive(false);
+        FullPlayerPint.SetActive(false);
+        PlayerWineGlass.SetActive(false);
+        FullPlayerRedWine.SetActive(false);
+        FullPlayerWhiteWine.SetActive(false);
+        PlayerCan.SetActive(false);
+        PlayerBottleBeer.SetActive(false);
     }
     private void HandleMessyEvent()
     {
@@ -486,8 +483,6 @@ public class PhysicsRayCast : MonoBehaviour
     private void HandleTimer()
     {
         Debug.Log("Timer started");
-        //customerSpawner.currentDayTimer = customerSpawner.currentDayTimer * 1.2f;
-        //customerSpawner.setTime = customerSpawner.currentDayTimer;
         customerSpawner.currentDay = customerSpawner.currentDay + 1f;
         customerSpawner.timerRunning = true;
     }

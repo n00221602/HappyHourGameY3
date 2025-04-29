@@ -542,7 +542,7 @@ public class CustomerNPC : MonoBehaviour
         {
             eventTime = 0f;
             int eventInterval = 100;
-            int randomChoice = Random.Range(80, eventInterval);
+            int randomChoice = Random.Range(0, eventInterval);
             Debug.Log("Random choice: " + randomChoice);
 
             if (randomChoice <= 40) //40% chance for a customer to leave the bar
@@ -550,11 +550,11 @@ public class CustomerNPC : MonoBehaviour
                 currentState = State.Leaving;
             }
 
-            if (randomChoice > 40 && randomChoice <= 80) //40% chance for a customer to leave the bar with a messy table
+            if (randomChoice > 40 && randomChoice <= 70) //40% chance for a customer to leave the bar with a messy table
             {
                 currentState = State.MessyEvent;
             }
-            if (randomChoice > 80) //20% chance for a customer to start a fight
+            if (randomChoice > 70) //20% chance for a customer to start a fight
             {
                 currentState = State.FightEvent;
             }

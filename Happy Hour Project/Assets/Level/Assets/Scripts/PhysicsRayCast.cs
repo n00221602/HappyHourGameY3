@@ -135,11 +135,6 @@ public class PhysicsRayCast : MonoBehaviour
 
         //Setting the bottle beer game objects to false
         if (PlayerBottleBeer != null) PlayerBottleBeer.SetActive(false);
-
-        //progressBar = GameObject.Find("Progress Bar").GetComponent<ProgressBar>();
-
-
-
     }
 
     // Update is called once per frame
@@ -219,6 +214,13 @@ public class PhysicsRayCast : MonoBehaviour
                     HandleMessyEvent();
                 }
 
+                //if the player lets go of the left mouse button, they will stop cleaning the table
+                if (Input.GetMouseButtonUp(0))
+                {
+                    isMessyTable = false;
+                    CancelInvoke(nameof(CompleteMessyEvent));
+                }
+
                 //Handles the customer interaction
                 if (hit.collider.CompareTag("Customer"))
                 {
@@ -232,12 +234,7 @@ public class PhysicsRayCast : MonoBehaviour
                 }
             }
 
-            //if the player lets go of the left mouse button, they will stop cleaning the table
-            if (Input.GetMouseButtonUp(0)) 
-            {
-                isMessyTable = false; 
-                CancelInvoke(nameof(CompleteMessyEvent)); 
-            }
+           
 
             //Handles the Timer
             if (Input.GetKeyDown(KeyCode.E) && !customerSpawner.timerRunning && hit.collider.name == "timecube")
@@ -375,7 +372,7 @@ public class PhysicsRayCast : MonoBehaviour
     }
     public void HandleCustomer(Collider customerCollider)
     {
-        CustomerNPC customerNPC = customerCollider.GetComponent<CustomerNPC>();
+        customerNPC = customerCollider.GetComponent<CustomerNPC>();
         if (customerNPC == null)
         {
             Debug.LogError("customerNPC is null");
@@ -449,10 +446,8 @@ public class PhysicsRayCast : MonoBehaviour
 
     void CompleteMessyEvent()
     {
-        if (currentMess != null)
-        {
-            Destroy(currentMess);
-        }
+        Destroy(currentMess);
+        customerNPC.table.gameObject.tag = "Clean";
     }
 
     private void HandleFightEvent()

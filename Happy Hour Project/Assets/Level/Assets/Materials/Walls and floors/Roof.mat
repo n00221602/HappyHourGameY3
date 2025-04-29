@@ -32,7 +32,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BumpScale: 3
+    - _BumpScale: 1
     m_Colors:
     - _Color: {r: 0.59748423, g: 0.59748423, b: 0.59748423, a: 1}
   m_BuildTextureStacks: []

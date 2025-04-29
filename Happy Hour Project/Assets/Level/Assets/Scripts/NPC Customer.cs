@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 
 public class CustomerNPC : MonoBehaviour
 {
-    public enum State { Moving, Waiting, Searching, Leaving, Drinking, MoveToGame, Neutral, FightEvent, SpillEvent, MessyEvent, Victim }
+    public enum State { Moving, Waiting, Searching, Leaving, Drinking, MoveToGame, Neutral, FightEvent, MessyEvent, Victim }
     public State currentState;
 
     private float eventTime = 0f;
@@ -19,7 +19,7 @@ public class CustomerNPC : MonoBehaviour
     private Animator animator;
 
     Transform bar;
-    Transform table;
+    public Transform table;
     Transform initialTable;
     Transform game;
     Transform exit;
@@ -64,7 +64,6 @@ public class CustomerNPC : MonoBehaviour
     public GameObject MessyBeer;
     public GameObject MessyRedWine;
     public GameObject MessyWhiteWine;
-    public GameObject puddlePrefab;
 
     private string[] drinks = { "Beer", "RedWine", "WhiteWine", "Can", "BottleBeer" };
     private string selectedDrink;
@@ -163,9 +162,6 @@ public class CustomerNPC : MonoBehaviour
                 break;
             case State.FightEvent:
                 StartFight();
-                break;
-            case State.SpillEvent:
-                Spill();
                 break;
             case State.MessyEvent:
                 MessyDrink();
@@ -284,7 +280,7 @@ public class CustomerNPC : MonoBehaviour
         {
             allIcons.SetActive(false);
             this.gameObject.tag = "Served"; // Changes the Customer tag to Served
-            currentState = State.MoveToGame;
+            currentState = State.Searching;
             facingBar = null;
 
         }
@@ -337,18 +333,9 @@ public class CustomerNPC : MonoBehaviour
                 if (!isTaken && initialTable.tag == "Clean")
                 {
                     table = initialTable;
-                    table.gameObject.tag = "Taken"; // Changes the table tag to Taken
+                    table.tag = "Taken"; // Changes the table tag to Taken
                     break;
                 }
-
-                //Switches the table back to clean once the customer is finished
-                //if (table == null && initialTable.tag == "Taken" && table.tag != "Dirty")
-                //{
-                //    table = initialTable;
-                //    table.gameObject.tag = "Clean";
-                //}
-                
-
             }
         }
 
@@ -507,11 +494,13 @@ public class CustomerNPC : MonoBehaviour
 
         if (exit != null)
         {
-            bar = null;
-            table = null;
-            if (initialTable != null)
+            //bar = null;
+            //table = null;
+
+            //If table isnt dirty, reset the table to be accessible for other customers
+            if (initialTable != null && initialTable.tag != "Dirty")
             {
-                initialTable.tag = "Clean"; // Changes the table tag to Clean
+                initialTable.tag = "Clean";
                 initialTable = null;
             }
             Vector3 targetVector = exit.transform.position;
@@ -524,6 +513,7 @@ public class CustomerNPC : MonoBehaviour
             Debug.Log("BYEEEEE");
             Destroy(gameObject);
         }
+
         if (currentState == State.Leaving && !reputationLost && this.gameObject.tag == "Customer")
         {
          Debug.Log($"NPC {gameObject.name} is about to lose reputation.");
@@ -531,18 +521,17 @@ public class CustomerNPC : MonoBehaviour
         }
     }
 
-
     //Runs during the Drinking state. Picks a random event while the customer is at its table.
     void PickEvent()
     {
         this.gameObject.tag = "Drinker";
         animator.SetBool("isDrunk", true);
         eventTime += Time.deltaTime;
-        if (eventTime >= 20f)
+        if (eventTime >= 5f)
         {
             eventTime = 0f;
-            int eventInterval = 100;
-            int randomChoice = Random.Range(0, eventInterval);
+            int eventInterval = 70;
+            int randomChoice = Random.Range(40, eventInterval);
             Debug.Log("Random choice: " + randomChoice);
 
             if (randomChoice <= 40) //40% chance for a customer to leave the bar
@@ -679,6 +668,7 @@ public class CustomerNPC : MonoBehaviour
         }
     }
 
+    //Runs during the Victim state. This manages the victim once they are hit.
     void ManageVictim()
     {
         if (this.gameObject.tag == "Victim")
@@ -722,8 +712,6 @@ public class CustomerNPC : MonoBehaviour
         }
     }
 
-
-
     //Runs during the MessyEvent state. This makes the customer leave the table with a mess and marks it as dirty.
     void MessyDrink()
     {
@@ -743,57 +731,11 @@ public class CustomerNPC : MonoBehaviour
 
                 // Calculate the direction to the table
                 Vector3 directionToTable = table.position - messyDrinkPrefab.transform.position;
-                directionToTable.y = 0; // Keep only the horizontal direction
-
-                // Set the rotation to face the table on the y-axis
-                //if (directionToTable != Vector3.zero)
-                //{
-                    messyDrinkPrefab.transform.rotation = Quaternion.LookRotation(directionToTable);
-                // }
-
-                if (table != null)
-                {
-                    table.gameObject.tag = "Dirty";
-                    Debug.Log("Table tag set to Dirty: " + table.name);
-                }
-            }
-            else
-            {
-                Debug.LogWarning("Prefab not found");
-            }
-        }
-        currentState = State.Leaving;
-    }
-
-
-    //Runs during the SpillEvent state. This makes the customer spill their drink at their feet.
-    void Spill()
-    {
-        Debug.Log("SPILL!");
-        Vector3 offset = new Vector3(0f, -1.02f, 0f);
-        Vector3 spillPosition = transform.position + offset;
-
-        // Spawns puddle prefab at the "Table XYZ" position
-        if (puddlePrefab != null)
-        {
-
-            Instantiate(puddlePrefab, spillPosition, Quaternion.identity);
-        }
-        else
-        {
-            Debug.LogWarning("Puddle prefab not assigned");
-        }
-
-        //If a table is near a spill, change the destination tag to Dirty
-        for (int i = 0; i < cleanDestinations.Length; i++)
-        {
-            Transform destination = GameObject.Find(cleanDestinations[i]).transform;
-            if (Vector3.Distance(destination.position, spillPosition) < 1)
-            {
-                //change the destination tag to Dirty
-                destination.tag = "Dirty";
-
-
+                directionToTable.y = 0;
+                
+                messyDrinkPrefab.transform.rotation = Quaternion.LookRotation(directionToTable);
+                
+                table.tag = "Dirty";
             }
         }
         currentState = State.Leaving;
@@ -845,18 +787,4 @@ public class CustomerNPC : MonoBehaviour
     {
         SceneManager.LoadScene("Game Over"); 
     }
-
-    //NEUTRAL STATE. MIGHT NOT BE NEEDED?
-    //void Neutral()
-    //{
-    //    Debug.Log("Neutral");
-    //    eventTime += Time.deltaTime;
-    //    if (eventTime >= 20) 
-    //    {
-    //        eventTime = 0f;
-    //        currentState = State.Drinking;
-    //    }
-
-    //}
 }
-

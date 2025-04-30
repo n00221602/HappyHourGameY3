@@ -59,8 +59,9 @@ public class CustomerNPC : MonoBehaviour
 
     //Static is shared across all customers
     public static GameObject gameDestinationsParent;
+    public static GameObject gardenDestinationsParent;
 
-   
+
     public GameObject MessyBeer;
     public GameObject MessyRedWine;
     public GameObject MessyWhiteWine;
@@ -72,6 +73,7 @@ public class CustomerNPC : MonoBehaviour
     private string[] lookAtBar = { "LookAt1", "LookAt2", "LookAt3", "LookAt4", "LookAt5", "LookAt6"};
     private string[] cleanDestinations;
     private static string[] gameDestinations;
+    private static string[] gardenDestinations;
 
     public CustomerTimer customerTimer;
 
@@ -471,6 +473,19 @@ public class CustomerNPC : MonoBehaviour
         for (int i = 0; i < gameDestinationsParent.transform.childCount; i++)
         {
             gameDestinations[i] = gameDestinationsParent.transform.GetChild(i).name;
+        }
+    }
+
+    public static void ManageGardenDestinations()
+    {
+        if (gardenDestinationsParent == null)
+        {
+            gardenDestinationsParent = GameObject.Find("GardenDestinations");
+        }
+        gardenDestinations = new string[gardenDestinationsParent.transform.childCount];
+        for (int i = 0; i < gardenDestinationsParent.transform.childCount; i++)
+        {
+            gardenDestinations[i] = gardenDestinationsParent.transform.GetChild(i).name;
         }
     }
 

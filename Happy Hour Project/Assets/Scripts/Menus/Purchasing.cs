@@ -221,7 +221,7 @@ public class Purchasing : MonoBehaviour
             BeerGarden.SetActive(false);
         }
 
-        if (BeerGarden.activeSelf)
+        if (!BeerGarden.activeSelf)
         {
             Debug.Log("Beer garden purchased!");
             GardenDest1.SetActive(true);

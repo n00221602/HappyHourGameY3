@@ -154,7 +154,7 @@ public class CustomerNPC : MonoBehaviour
                 OrderDrink();
                 break;
             case State.Searching:
-                FindCleanDestination();
+                Searching();
                 break;
             case State.MoveToGame:
                 FindGame();
@@ -296,7 +296,20 @@ public class CustomerNPC : MonoBehaviour
     }
 
     //Runs during the Searching state. Makes the customer find a random table that is clean.
-    void FindCleanDestination()
+    void Searching()
+    {
+        int destinationInterval = 2;
+        int randomChoice = Random.Range(0, destinationInterval);
+        if (randomChoice == 0)
+        {
+            FindTableDestination();
+        }
+        if (randomChoice == 1)
+        {
+            FindGardenDestination();
+        }
+    }
+    void FindTableDestination()
     {
         if (table == null)
         {
@@ -412,9 +425,138 @@ public class CustomerNPC : MonoBehaviour
         }
     }
 
+    void FindGardenDestination()
+    {
+        if (gardenDestinations == null)
+        {
+            Debug.Log("Garden destinations are null");
+            FindTableDestination();
+        }
+
+        if (table == null)
+        {
+
+            //If all destinations are taken and have a Dirty tag, switch to the leaving state
+            if (gardenDestinations.All(dest => GameObject.Find(dest).tag != "Clean"))
+            {
+                Debug.Log("THERES NOWHERE TO SIT");
+                currentState = State.Leaving;
+            }
+
+            //This goes through the gardenDestinations array and assigns a random destination to the customer    
+            for (int i = 0; i < gardenDestinations.Length; i++)
+            {
+                int randomTable = Random.Range(0, gardenDestinations.Length); ;
+
+                //The initial table is set to the current loop. This table is not guaranteed to be the final table
+                initialTable = GameObject.Find(gardenDestinations[randomTable]).transform;
+                bool isTaken = false;
+
+                // Creates a temporary array containing all the customers who have been served in the scene
+                GameObject[] drinkers = GameObject.FindGameObjectsWithTag("Drinker");
+
+                // For each drinker, check if the table is taken
+                foreach (GameObject drinker in drinkers)
+                {
+                    // If the drinker is not the current customer and the drinker's table is the same as the initial table (.table is a Transform variable that is unique to each customer.)
+                    if (drinker != this.gameObject && drinker.GetComponent<CustomerNPC>().table == initialTable)
+                    {
+                        isTaken = true;
+                        break;
+                    }
+                }
+
+                //If the table is not taken and is clean, assign it to the customer
+                if (!isTaken && initialTable.tag == "Clean")
+                {
+                    table = initialTable;
+                    table.tag = "Taken"; // Changes the table tag to Taken
+                    break;
+                }
+            }
+        }
+
+        // If table is assigned, move towards the table position
+        if (table != null)
+        {
+            Vector3 targetVector = table.transform.position;
+            agent.SetDestination(targetVector);
+        }
+
+        // If the NPC reaches the destination, check for the nearest table asset and rotate towards it. Then switch to the waiting state
+        if (table != null && Vector3.Distance(agent.transform.position, table.transform.position) < 0.1f)
+        {
+            //THIS SECTION IS FOR FINDING THE TABLE THAT THE CUSTOMER IS SITTING AT
+            Vector3 assignedTable = table.position;
+            GameObject[] tables = GameObject.FindGameObjectsWithTag("Table");
+
+            //The minimum distance is first set to Mathf.Infinity, which is the largest possible value for a float.
+            float minDistance = Mathf.Infinity;
+
+            //Checks each distance between the table and the cuestomer's destination. Assigns nearestTable to the table with the shortest distance
+            foreach (GameObject table in tables)
+            {
+                float distance = Vector3.Distance(assignedTable, table.transform.position);
+
+                //Since minDistance is set to Mathf.Infinity, the first table will always be set to nearestTable. The loop contiues and compares the distance to the current nearestTable, assigning a new nearestTable if the distance is shorter.
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    nearestTable = table;
+                }
+
+            }
+
+            //If the nearest table is found, rotate the customer to look at it
+            if (nearestTable != null)
+            {
+                Vector3 nearestTablePosition = nearestTable.transform.position;
+                Vector3 tablePosition = table.transform.position;
+
+                transform.LookAt(nearestTablePosition);
+
+                // The drink is positioned a third of the way between the table object and the table destination
+                Vector3 drinkPosition = nearestTablePosition + (tablePosition - nearestTablePosition) * 0.33f;
+
+                Vector3 offset = new Vector3(0f, 1.018f, 0f);
+                string orderedDrink = selectedDrink;
+                if (orderedDrink == "Beer")
+                {
+                    CustomerBeer.transform.position = drinkPosition + offset;
+                }
+                if (orderedDrink == "RedWine")
+                {
+                    CustomerRedWine.transform.position = drinkPosition + offset;
+                }
+                if (orderedDrink == "WhiteWine")
+                {
+                    CustomerWhiteWine.transform.position = drinkPosition + offset;
+                }
+                if (orderedDrink == "Can")
+                {
+                    CustomerCan.transform.position = nearestTablePosition + offset;
+                }
+                if (orderedDrink == "BottleBeer")
+                {
+                    CustomerBottleBeer.transform.position = nearestTablePosition + offset;
+                }
+
+            }
+
+            currentState = State.Drinking;
+        }
+    }
+
     //Runs during the MoveToGame state. Finds a destination in the games area.
     void FindGame()
     {
+        //If no games are purchased
+        if (gameDestinations == null)
+        {
+            Debug.Log("Game destinations not available");
+            currentState = State.Leaving;
+        }
+
         if (game == null)
         {
             for (int i = 0; i < gameDestinations.Length; i++)
@@ -439,11 +581,13 @@ public class CustomerNPC : MonoBehaviour
                 }
 
                 //If the game is not taken, assign it to the customer
-                if (!isTaken)
+                if (!isTaken && initialGame.tag != "Taken")
                 {
                     game = initialGame;
+                    game.tag = "Taken"; // Changes the game tag to Taken
                     break;
                 }
+
             }
         }
 
@@ -457,12 +601,17 @@ public class CustomerNPC : MonoBehaviour
         // If the NPC reaches the game, switch to the waiting state
         if (game != null && Vector3.Distance(agent.transform.position, game.transform.position) < 1f)
         {
-            //currentState = State.Waiting;
-            Debug.Log("Enjoy your drink!");
+            PlayingGame();
         }
     }
 
-    //This static fucntion is shared by all customers.
+    //If a customer is playing a game, money will go up passively for a set time.
+    public void PlayingGame()
+    {
+        Debug.Log("Playing game at" + game.name);
+    }
+
+    //This fills the gameDestinations array once a game is purchased
     public static void ManageGameDestinations()
     {
         if (gameDestinationsParent == null)
@@ -472,10 +621,21 @@ public class CustomerNPC : MonoBehaviour
         gameDestinations = new string[gameDestinationsParent.transform.childCount];
         for (int i = 0; i < gameDestinationsParent.transform.childCount; i++)
         {
-            gameDestinations[i] = gameDestinationsParent.transform.GetChild(i).name;
+            if (gameDestinationsParent.transform.GetChild(i).gameObject.activeSelf)
+            {
+                gameDestinations[i] = gameDestinationsParent.transform.GetChild(i).name;
+                Debug.Log("Imported " + gameDestinations[i]);
+            }
+            else
+            {
+                gameDestinations[i] = null;
+                Debug.Log("Game not active");
+            }
+
         }
     }
 
+    //This fills the gardenDestinations array once the beer garden is purchased
     public static void ManageGardenDestinations()
     {
         if (gardenDestinationsParent == null)
@@ -486,7 +646,9 @@ public class CustomerNPC : MonoBehaviour
         for (int i = 0; i < gardenDestinationsParent.transform.childCount; i++)
         {
             gardenDestinations[i] = gardenDestinationsParent.transform.GetChild(i).name;
+            Debug.Log("Imported " + gardenDestinations[i]);
         }
+        
     }
 
     //Runs during the Leaving state. Makes the customer leave the bar.
@@ -500,6 +662,13 @@ public class CustomerNPC : MonoBehaviour
             this.gameObject.tag = "Drunk";
             CustomerDrinks.SetActive(false);
             agent.speed = 0.8f;
+        }
+
+        // Resets the game to be available for other customers
+        if (game != null)
+        {
+            game.tag = "Clean"; 
+            game = null;
         }
 
         if (exit == null)
@@ -542,23 +711,28 @@ public class CustomerNPC : MonoBehaviour
         this.gameObject.tag = "Drinker";
         animator.SetBool("isDrunk", true);
         eventTime += Time.deltaTime;
-        if (eventTime >= 5f)
+        if (eventTime >= 20f)
         {
             eventTime = 0f;
-            int eventInterval = 70;
-            int randomChoice = Random.Range(40, eventInterval);
+            int eventInterval = 100;
+            int randomChoice = Random.Range(0, eventInterval);
             Debug.Log("Random choice: " + randomChoice);
 
-            if (randomChoice <= 40) //40% chance for a customer to leave the bar
+            if (randomChoice <= 30) //30% chance for a customer to leave the bar
             {
                 currentState = State.Leaving;
             }
 
-            if (randomChoice > 40 && randomChoice <= 70) //30% chance for a customer to leave the bar with a messy table
+            if (randomChoice > 30 && randomChoice <= 45) //15% chance for a customer to play a game
+            {
+                currentState = State.MoveToGame;
+            }
+
+            if (randomChoice > 45 && randomChoice <= 75) //30% chance for a customer to leave the bar with a messy table
             {
                 currentState = State.MessyEvent;
             }
-            if (randomChoice > 70) //30% chance for a customer to start a fight
+            if (randomChoice > 75) //25% chance for a customer to start a fight
             {
                 currentState = State.FightEvent;
             }
@@ -664,7 +838,6 @@ public class CustomerNPC : MonoBehaviour
         //If the player hits the fighter, they stop fighting.
         if (this.gameObject.tag == "FighterHit")
         {
-            Debug.Log("FIGHTER HAS BEEN HIT BY PLAYER");
             agent.isStopped = false;
             animator.SetBool("isFighting", false);
             animator.SetBool("isRunning", false);
@@ -676,7 +849,6 @@ public class CustomerNPC : MonoBehaviour
         //After being hit, the fighter leaves the bar
         if (randomVictim == null && this.gameObject.tag == "FighterHit")
         {
-            Debug.Log("FIGHTER IS LEAVING");
             iconFight.SetActive(false);
             this.gameObject.tag = "Drinker";
             currentState = State.Leaving;
@@ -711,7 +883,6 @@ public class CustomerNPC : MonoBehaviour
 
         if (this.gameObject.tag == "Drinker")
         {
-            Debug.Log("return to drinking state");
             Debug.Log("VICTIM HAS BEEN SAVED");
 
             animator.SetBool("isKnockedOut", false);
@@ -733,7 +904,7 @@ public class CustomerNPC : MonoBehaviour
         CustomerDrinks.SetActive(false);
         Debug.Log("Drink finished");
 
-        // This uses the nearestTable variable determined in FindCleanDestination()
+        // This uses the nearestTable variable determined in FindTableDestination()
         if (nearestTable != null)
         {
             Vector3 nearestTablePosition = nearestTable.transform.position;

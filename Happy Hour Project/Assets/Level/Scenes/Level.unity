@@ -935,7 +935,7 @@ GameObject:
   - component: {fileID: 18987764}
   m_Layer: 6
   m_Name: GardenDest7
-  m_TagString: Untagged
+  m_TagString: Clean
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -949,7 +949,7 @@ Transform:
   m_GameObject: {fileID: 18987762}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -11.68, y: 0, z: -7.63}
+  m_LocalPosition: {x: -11.56, y: 0, z: -7.65}
   m_LocalScale: {x: 1, y: 0.01, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1021,9 +1021,9 @@ GameObject:
   - component: {fileID: 20428558}
   - component: {fileID: 20428560}
   - component: {fileID: 20428559}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GameDest1
-  m_TagString: Untagged
+  m_TagString: Clean
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4828,7 +4828,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0e1c995a1d68c7944b7f501a0d3c91d5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.001
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0e1c995a1d68c7944b7f501a0d3c91d5, type: 3}
       propertyPath: m_LocalPosition.z
@@ -9291,7 +9291,7 @@ GameObject:
   - component: {fileID: 223240136}
   m_Layer: 6
   m_Name: GardenDest2
-  m_TagString: Untagged
+  m_TagString: Clean
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9305,7 +9305,7 @@ Transform:
   m_GameObject: {fileID: 223240134}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.74, y: 0, z: -6.48}
+  m_LocalPosition: {x: -2.53, y: 0, z: -6.449}
   m_LocalScale: {x: 1, y: 0.01, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9510,9 +9510,9 @@ GameObject:
   - component: {fileID: 226102748}
   - component: {fileID: 226102750}
   - component: {fileID: 226102749}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GameDest3
-  m_TagString: Untagged
+  m_TagString: Clean
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10993,7 +10993,7 @@ GameObject:
   - component: {fileID: 256184831}
   m_Layer: 6
   m_Name: GardenDest8
-  m_TagString: Untagged
+  m_TagString: Clean
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -17612,9 +17612,9 @@ GameObject:
   - component: {fileID: 434645605}
   - component: {fileID: 434645607}
   - component: {fileID: 434645606}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GameDest7
-  m_TagString: Untagged
+  m_TagString: Clean
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19188,7 +19188,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 480375231}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LookAtDests
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30324,7 +30324,7 @@ GameObject:
   - component: {fileID: 755669988}
   m_Layer: 6
   m_Name: GardenDest6
-  m_TagString: Untagged
+  m_TagString: Clean
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30338,7 +30338,7 @@ Transform:
   m_GameObject: {fileID: 755669986}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.18, y: 0, z: -7.4}
+  m_LocalPosition: {x: -7.966, y: 0, z: -7.618}
   m_LocalScale: {x: 1, y: 0.01, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -30580,6 +30580,7 @@ GameObject:
   - component: {fileID: 760209603}
   - component: {fileID: 760209605}
   - component: {fileID: 760209604}
+  - component: {fileID: 760209606}
   m_Layer: 3
   m_Name: Rail7 (1)
   m_TagString: Untagged
@@ -30652,6 +30653,27 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 760209602}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &760209606
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 760209602}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.0000002, y: 1, z: 1.0000002}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &762881430
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34469,13 +34491,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 862771625}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.3535534, y: -0.61237246, z: 0.3535534, w: 0.61237246}
-  m_LocalPosition: {x: -0.001, y: 0.002, z: -0.0005}
-  m_LocalScale: {x: 3.930391, y: 0.5716012, z: 0.7011158}
+  m_LocalRotation: {x: 0.38744375, y: -0.5915128, z: 0.38744375, w: 0.5915128}
+  m_LocalPosition: {x: 0.044, y: -0.0087, z: 0.1118}
+  m_LocalScale: {x: 4.1548166, y: 0.8082858, z: 0.7011158}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1003673592}
-  m_LocalEulerAnglesHint: {x: 60, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 66.45, y: -90, z: 0}
 --- !u!64 &862771627
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -34687,9 +34709,9 @@ GameObject:
   - component: {fileID: 877058738}
   - component: {fileID: 877058740}
   - component: {fileID: 877058739}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GameDest9
-  m_TagString: Untagged
+  m_TagString: Clean
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -38182,7 +38204,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 415046179531820647, guid: 6a219e00c36c73e44a66fdbb953a123c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.001
       objectReference: {fileID: 0}
     - target: {fileID: 415046179531820647, guid: 6a219e00c36c73e44a66fdbb953a123c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -38356,7 +38378,7 @@ GameObject:
   - component: {fileID: 944922880}
   m_Layer: 6
   m_Name: GardenDest1
-  m_TagString: Untagged
+  m_TagString: Clean
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -38370,7 +38392,7 @@ Transform:
   m_GameObject: {fileID: 944922878}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.03, y: 0, z: -5.85}
+  m_LocalPosition: {x: -0.1, y: 0, z: -5.84}
   m_LocalScale: {x: 1, y: 0.01, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -38603,7 +38625,7 @@ GameObject:
   - component: {fileID: 949069576}
   m_Layer: 6
   m_Name: GardenDest5
-  m_TagString: Untagged
+  m_TagString: Clean
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -38617,7 +38639,7 @@ Transform:
   m_GameObject: {fileID: 949069574}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.65, y: 0, z: -5.34}
+  m_LocalPosition: {x: -6.43, y: 0, z: -5.66}
   m_LocalScale: {x: 1, y: 0.01, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -38684,9 +38706,9 @@ GameObject:
   - component: {fileID: 950341328}
   - component: {fileID: 950341330}
   - component: {fileID: 950341329}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GameDest10
-  m_TagString: Untagged
+  m_TagString: Clean
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -44846,9 +44868,9 @@ GameObject:
   - component: {fileID: 1088873271}
   - component: {fileID: 1088873273}
   - component: {fileID: 1088873272}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GameDest2
-  m_TagString: Untagged
+  m_TagString: Clean
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -56038,7 +56060,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -56090,13 +56112,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1312634385}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.06975647, y: 0, z: 0, w: 0.9975641}
+  m_LocalRotation: {x: 0.08715578, y: 0, z: 0, w: 0.9961947}
   m_LocalPosition: {x: 4.45, y: 9.36737, z: -8.42}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 8, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 10, y: 0, z: 0}
 --- !u!4 &1315780186 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 04eb2a943a4c2714e9d66b99957bcf8d, type: 3}
@@ -60445,9 +60467,9 @@ GameObject:
   - component: {fileID: 1427748375}
   - component: {fileID: 1427748377}
   - component: {fileID: 1427748376}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GameDest4
-  m_TagString: Untagged
+  m_TagString: Clean
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -63099,7 +63121,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1473375446}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
   m_Name: 
@@ -63118,8 +63140,8 @@ MonoBehaviour:
   m_IgnoreNavMeshObstacle: 1
   m_OverrideTileSize: 0
   m_TileSize: 256
-  m_OverrideVoxelSize: 1
-  m_VoxelSize: 0.042
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.06666667
   m_MinRegionArea: 5
   m_NavMeshData: {fileID: 23800000, guid: 54b424f1d372ba64791e7224657fa29f, type: 2}
   m_BuildHeightMesh: 0
@@ -66614,9 +66636,9 @@ GameObject:
   - component: {fileID: 1563657340}
   - component: {fileID: 1563657342}
   - component: {fileID: 1563657341}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GameDest5
-  m_TagString: Untagged
+  m_TagString: Clean
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -68579,6 +68601,7 @@ GameObject:
   - component: {fileID: 1602023947}
   - component: {fileID: 1602023949}
   - component: {fileID: 1602023948}
+  - component: {fileID: 1602023950}
   m_Layer: 3
   m_Name: Rail7 (2)
   m_TagString: Untagged
@@ -68651,6 +68674,27 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1602023946}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &1602023950
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1602023946}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: -0.0000019073486}
 --- !u!4 &1602730282 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7ee774e7f046e5a4c8e1b2d858d0ab98, type: 3}
@@ -68667,9 +68711,9 @@ GameObject:
   - component: {fileID: 1604472429}
   - component: {fileID: 1604472431}
   - component: {fileID: 1604472430}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GameDest6
-  m_TagString: Untagged
+  m_TagString: Clean
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -78331,9 +78375,9 @@ GameObject:
   - component: {fileID: 1828494289}
   - component: {fileID: 1828494291}
   - component: {fileID: 1828494290}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GameDest8
-  m_TagString: Untagged
+  m_TagString: Clean
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -84747,7 +84791,7 @@ GameObject:
   - component: {fileID: 1935097518}
   m_Layer: 6
   m_Name: GardenDest4
-  m_TagString: Untagged
+  m_TagString: Clean
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -85507,7 +85551,7 @@ GameObject:
   - component: {fileID: 1952587557}
   m_Layer: 6
   m_Name: GardenDest3
-  m_TagString: Untagged
+  m_TagString: Clean
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -85521,7 +85565,7 @@ Transform:
   m_GameObject: {fileID: 1952587555}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -9.99, y: 0, z: -2.62}
+  m_LocalPosition: {x: -9.86, y: 0, z: -2.31}
   m_LocalScale: {x: 1, y: 0.01, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -87646,7 +87690,7 @@ GameObject:
   - component: {fileID: 2025894645}
   - component: {fileID: 2025894644}
   - component: {fileID: 2025894643}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: BeerGardenDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87733,7 +87777,7 @@ Transform:
   m_GameObject: {fileID: 2025894642}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 14.6201, y: 110.2541, z: 18.145002}
+  m_LocalPosition: {x: 14.6201, y: 10.2541, z: 18.145002}
   m_LocalScale: {x: 1, y: 2.7961187, z: 2.080321}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -93168,6 +93212,14 @@ MonoBehaviour:
   GameDest8: {fileID: 1828494288}
   GameDest9: {fileID: 877058737}
   GameDest10: {fileID: 950341327}
+  GardenDest1: {fileID: 944922878}
+  GardenDest2: {fileID: 223240134}
+  GardenDest3: {fileID: 1952587555}
+  GardenDest4: {fileID: 1935097516}
+  GardenDest5: {fileID: 949069574}
+  GardenDest6: {fileID: 755669986}
+  GardenDest7: {fileID: 18987762}
+  GardenDest8: {fileID: 256184829}
   currentMoney: {fileID: 1467105193}
   moveSpeed: {fileID: 0}
   customerNPC: {fileID: 0}

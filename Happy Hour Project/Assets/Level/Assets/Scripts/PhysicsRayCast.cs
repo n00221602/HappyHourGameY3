@@ -65,8 +65,11 @@ public class PhysicsRayCast : MonoBehaviour
     public MoneySystem moneySystem;
 
     //Customer Spawner script
-    public CustomerSpawner customerSpawner;
+    private CustomerSpawner customerSpawner;
     public GameObject timecube;
+
+    //Player Movement script
+    public PlayerMovement playerMovement;
 
     //Messy table prefab
     private GameObject currentMess;
@@ -77,28 +80,28 @@ public class PhysicsRayCast : MonoBehaviour
     void Start()
     {
         //Player Hand
-        FullHand = GameObject.Find("FullHand");
-        //Sink
-        Sink = GameObject.Find("Sink");
+        //FullHand = GameObject.Find("FullHand");
+        ////Sink
+        //Sink = GameObject.Find("Sink");
 
-        //Beer
-        PlayerPint = GameObject.Find("PlayerPintGlass");
-        FullPlayerPint = GameObject.Find("FullPlayerPintGlass");
-        BeerFlow = GameObject.Find("flowingBeer");
-        PourPint = GameObject.Find("PlaceholderPint");
+        ////Beer
+        //PlayerPint = GameObject.Find("PlayerPintGlass");
+        //FullPlayerPint = GameObject.Find("FullPlayerPintGlass");
+        //BeerFlow = GameObject.Find("flowingBeer");
+        //PourPint = GameObject.Find("PlaceholderPint");
 
-        //Wine
-        PlayerWineGlass = GameObject.Find("PlayerWineGlass");
-        FullPlayerRedWine = GameObject.Find("FullPlayerWineGlassRed");
-        FullPlayerWhiteWine = GameObject.Find("FullPlayerWineGlassWhite");
-        RedWine = GameObject.Find("Red Wine");
-        WhiteWine = GameObject.Find("White Wine");
-        PouringRed = GameObject.Find("PouringRed");
-        PouringWhite = GameObject.Find("PouringWhite");
-        RedWineLiquid = GameObject.Find("RedWineLiquidPouring");
-        WhiteWineLiquid = GameObject.Find("WhiteWineLiquidPouring");
-        PourWineGlass = GameObject.Find("PlaceholderWineGlass");
-        timecube = GameObject.Find("timecube");
+        ////Wine
+        //PlayerWineGlass = GameObject.Find("PlayerWineGlass");
+        //FullPlayerRedWine = GameObject.Find("FullPlayerWineGlassRed");
+        //FullPlayerWhiteWine = GameObject.Find("FullPlayerWineGlassWhite");
+        //RedWine = GameObject.Find("Red Wine");
+        //WhiteWine = GameObject.Find("White Wine");
+        //PouringRed = GameObject.Find("PouringRed");
+        //PouringWhite = GameObject.Find("PouringWhite");
+        //RedWineLiquid = GameObject.Find("RedWineLiquidPouring");
+        //WhiteWineLiquid = GameObject.Find("WhiteWineLiquidPouring");
+        //PourWineGlass = GameObject.Find("PlaceholderWineGlass");
+        //timecube = GameObject.Find("timecube");
         customerSpawner = timecube.GetComponent<CustomerSpawner>();
 
         //Soft Drinks
@@ -141,7 +144,7 @@ public class PhysicsRayCast : MonoBehaviour
     void Update()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, 3f))
+        if (Physics.Raycast(transform.position, transform.forward, out hit, 1.5f))
         {
             //Handles left mouse clicks
             if (Input.GetMouseButtonDown(0))
@@ -279,6 +282,7 @@ public class PhysicsRayCast : MonoBehaviour
             PlayerPint.SetActive(false);
             BeerFlow.SetActive(true);
             progressInterval = 4f;
+            playerMovement.moveSpeed = 0f;
             Invoke(nameof(CompleteBeerPour), progressInterval);
             BeerProgressBar.FillProgressBar();
         }
@@ -286,6 +290,7 @@ public class PhysicsRayCast : MonoBehaviour
 
     void CompleteBeerPour()
     {
+        playerMovement.moveSpeed = 5f;
         PourPint.SetActive(false);
         PlayerPint.SetActive(false);
         FullPlayerPint.SetActive(true);
@@ -312,6 +317,7 @@ public class PhysicsRayCast : MonoBehaviour
             RedWineLiquid.SetActive(true);
             RedWine.SetActive(false);
             progressInterval = 3f;
+            playerMovement.moveSpeed = 0f;
             Invoke(nameof(CompleteRedWinePour), progressInterval);
             WineProgressBar.FillProgressBar();
         }
@@ -319,6 +325,7 @@ public class PhysicsRayCast : MonoBehaviour
 
     void CompleteRedWinePour()
     {
+        playerMovement.moveSpeed = 5f;
         PourWineGlass.SetActive(false);
         FullPlayerRedWine.SetActive(true);
         PouringRed.SetActive(false);
@@ -336,6 +343,7 @@ public class PhysicsRayCast : MonoBehaviour
             WhiteWineLiquid.SetActive(true);
             WhiteWine.SetActive(false);
             progressInterval = 3f;
+            playerMovement.moveSpeed = 0f;
             Invoke(nameof(CompleteWhiteWinePour), progressInterval);
             WineProgressBar.FillProgressBar();
         }
@@ -343,6 +351,7 @@ public class PhysicsRayCast : MonoBehaviour
 
     void CompleteWhiteWinePour()
     {
+        playerMovement.moveSpeed = 5f;
         PourWineGlass.SetActive(false);
         FullPlayerWhiteWine.SetActive(true);
         PouringWhite.SetActive(false);

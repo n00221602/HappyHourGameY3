@@ -11,7 +11,7 @@ public KeyCode exitKey = KeyCode.Escape;
 
 public void PlayGame()
 {
-    SceneManager.LoadScene("BenTestWorld"); 
+    SceneManager.LoadScene("Level"); 
 }
 
 public void QuitGame(){

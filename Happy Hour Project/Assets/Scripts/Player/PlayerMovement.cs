@@ -89,11 +89,15 @@ public class PlayerMovement : MonoBehaviour
                 ExitMenu.SetActive(true);
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
+                //This freezes the scene
+                Time.timeScale = 0;
             }
             else
             {
                 ExitMenu.SetActive(false);
                 Cursor.lockState = CursorLockMode.Locked;
+                //This resumes the scene
+                Time.timeScale = 1;
             }
         }
 

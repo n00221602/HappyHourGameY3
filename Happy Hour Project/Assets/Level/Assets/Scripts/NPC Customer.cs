@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -12,8 +13,11 @@ public class CustomerNPC : MonoBehaviour
     public State currentState;
 
     private float eventTime = 0f;
-    private float elapsedTime = 0f;
     private float fightTime = 0f;
+    private float victimTime = 0f;
+
+    private float gameTime = 0f;
+    private float gameMoneyIncrementer = 0f;
 
     private NavMeshAgent agent;
     private Animator animator;
@@ -72,18 +76,26 @@ public class CustomerNPC : MonoBehaviour
     private string[] barDestinations = { "BarDest1", "BarDest2", "BarDest3", "BarDest4", "BarDest5", "BarDest6" };
     private string[] lookAtBar = { "LookAt1", "LookAt2", "LookAt3", "LookAt4", "LookAt5", "LookAt6"};
     private string[] cleanDestinations;
-    private static string[] gameDestinations;
+    private static List<string> gameDestinations;
     private static string[] gardenDestinations;
 
     public CustomerTimer customerTimer;
+    public MoneySystem moneySystem;
 
-   // private bool victimFound = false;
+    // private bool victimFound = false;
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         currentState = State.Moving;  // Starts the customer in the Moving state
         MoveToCounter();
+
+        //Money System
+        moneySystem = GameObject.Find("MoneyBalance").GetComponent<MoneySystem>();
+        if (moneySystem != null)
+        {
+            Debug.Log("MoneySystem found");
+        }
 
         // Reputation Objects
         Star1 = GameObject.Find("Player/PlayerUi/PlayerHealth/Star1").gameObject;
@@ -559,9 +571,11 @@ public class CustomerNPC : MonoBehaviour
 
         if (game == null)
         {
-            for (int i = 0; i < gameDestinations.Length; i++)
+
+            //<List<string> uses .Count instead of .Length
+            for (int i = 0; i < gameDestinations.Count; i++)
             {
-                int randomGame = Random.Range(0, gameDestinations.Length); ;
+                int randomGame = Random.Range(0, gameDestinations.Count); ;
 
                 //The initial game is set to the current loop. This game is not guaranteed to be the final game
                 Transform initialGame = GameObject.Find(gameDestinations[randomGame]).transform;
@@ -602,13 +616,30 @@ public class CustomerNPC : MonoBehaviour
         if (game != null && Vector3.Distance(agent.transform.position, game.transform.position) < 1f)
         {
             PlayingGame();
+            CustomerDrinks.SetActive(false);
         }
     }
 
     //If a customer is playing a game, money will go up passively for a set time.
     public void PlayingGame()
     {
-        Debug.Log("Playing game at" + game.name);
+        gameTime += Time.deltaTime;
+        gameMoneyIncrementer += Time.deltaTime;
+        //If this variable hits 1 second, it increments moneyBalance by a set amount and resets back to 0
+        if (gameMoneyIncrementer >= 1f)
+        {
+            gameMoneyIncrementer = 0f;
+            moneySystem.moneyBalance += 0.5f;
+            moneySystem.UpdateText();
+
+        }
+
+        if (gameTime >= 20f)
+        {
+            gameTime = 0f;
+            currentState = State.Leaving;
+        }
+
     }
 
     //This fills the gameDestinations array once a game is purchased
@@ -618,20 +649,14 @@ public class CustomerNPC : MonoBehaviour
         {
             gameDestinationsParent = GameObject.Find("GamesDestinations");
         }
-        gameDestinations = new string[gameDestinationsParent.transform.childCount];
+        gameDestinations = new List<string>();
         for (int i = 0; i < gameDestinationsParent.transform.childCount; i++)
         {
             if (gameDestinationsParent.transform.GetChild(i).gameObject.activeSelf)
             {
-                gameDestinations[i] = gameDestinationsParent.transform.GetChild(i).name;
-                Debug.Log("Imported " + gameDestinations[i]);
+                gameDestinations.Add(gameDestinationsParent.transform.GetChild(i).name);
+                Debug.Log("Imported " + gameDestinationsParent.transform.GetChild(i).name);
             }
-            else
-            {
-                gameDestinations[i] = null;
-                Debug.Log("Game not active");
-            }
-
         }
     }
 
@@ -798,17 +823,17 @@ public class CustomerNPC : MonoBehaviour
             agent.isStopped = true;
             transform.LookAt(randomVictim.transform.position);
 
-            elapsedTime += Time.deltaTime;
+            fightTime += Time.deltaTime;
 
             //Once the fight hits x seconds, the fighter will stop fighting and replay the fight state
-            if (elapsedTime >= 18f)
+            if (fightTime >= 18f)
             {
                 Debug.Log($"{gameObject.name} fight timer complete.");
                 Debug.Log("Fight timer complete ");
                 animator.SetBool("isFighting", false);
                 agent.isStopped = false;
                 randomVictim = null;
-                elapsedTime = 0f;
+                fightTime = 0f;
             }
         }
 
@@ -843,7 +868,7 @@ public class CustomerNPC : MonoBehaviour
             animator.SetBool("isRunning", false);
             randomVictim.gameObject.tag = "Drinker";
             randomVictim = null;
-            elapsedTime = 0f;
+            fightTime = 0f;
         }
 
         //After being hit, the fighter leaves the bar
@@ -867,15 +892,15 @@ public class CustomerNPC : MonoBehaviour
                 CustomerDrinks.SetActive(false);
 
                 transform.LookAt(fighter.transform.position);
-                fightTime += Time.deltaTime;
-                 int elapsedfight = Mathf.FloorToInt(fightTime);
-                if (fightTime >= 17.8f)
+                victimTime += Time.deltaTime;
+                 int elapsedfight = Mathf.FloorToInt(victimTime);
+                if (victimTime >= 17.8f)
                 {
                     float randomSpin = Random.Range(-20f, 20f);
                     transform.Rotate(0, randomSpin, 0);
                     animator.SetBool("isKnockedOut", true);
                     //initialTable.tag = "Clean"; // This makes the table free for other customers to walk to
-                    fightTime = 0f;
+                    victimTime = 0f;
                     agent.enabled = false;
                 }
             }
@@ -887,7 +912,7 @@ public class CustomerNPC : MonoBehaviour
 
             animator.SetBool("isKnockedOut", false);
             animator.SetBool("isVictim", false);
-            fightTime = 0f;
+            victimTime = 0f;
 
             //Drink is returned to the table, and the customer looks back to their table
             CustomerDrinks.SetActive(true);

@@ -30,6 +30,8 @@ public class Purchasing : MonoBehaviour
 
     public CustomerNPC customerNPC;
 
+    private CustomerSpawner spawner;
+
     void Start()
     {
         AirHockeyTable.SetActive(false);
@@ -58,6 +60,8 @@ public class Purchasing : MonoBehaviour
         moveSpeed = GetComponent<PlayerMovement>();
 
        // customerNPC = FindObjectOfType<CustomerNPC>();
+       spawner = FindObjectOfType<CustomerSpawner>();
+
     }
 
     private void Update()
@@ -84,6 +88,7 @@ public class Purchasing : MonoBehaviour
             GameDest6.SetActive(true);
             GameDest7.SetActive(true);
             CustomerNPC.ManageGameDestinations();
+            PassiveIncome();
         }
     }
 
@@ -228,6 +233,8 @@ public class Purchasing : MonoBehaviour
 
     public void PassiveIncome(){
         currentMoney.moneyBalance +=10;
+        currentMoney.UpdateText();
+
     }
 
     //---------------------PERKS-----------------------

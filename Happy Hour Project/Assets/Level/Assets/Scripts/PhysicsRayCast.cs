@@ -9,8 +9,8 @@ public class PhysicsRayCast : MonoBehaviour
     //Player Hand
     public GameObject FullHand;
 
-    //Sink - Dispose of unwanted drink
-    private GameObject Sink;
+    //Waste - Dispose of unwanted drink
+    private GameObject Waste;
 
 
     //Beer game objects
@@ -79,7 +79,7 @@ public class PhysicsRayCast : MonoBehaviour
         //Player Hand
         FullHand = GameObject.Find("FullHand");
         //Sink
-        Sink = GameObject.Find("Sink");
+        Waste = GameObject.Find("Waste");
 
         //Beer
         PlayerPint = GameObject.Find("PlayerPintGlass");
@@ -225,8 +225,8 @@ public class PhysicsRayCast : MonoBehaviour
                     HandleCustomer(hit.collider);
                 }
 
-                //Sink
-                if (hit.collider.name == "Sink")
+                //Waste
+                if (hit.collider.name == "Waste")
                 {
                     DisposeOfDrink();
                 }
@@ -424,7 +424,7 @@ public class PhysicsRayCast : MonoBehaviour
         }
     }
 
-     //Sink
+     //Waste
     private void DisposeOfDrink()
     {
         FullHand.SetActive(false);

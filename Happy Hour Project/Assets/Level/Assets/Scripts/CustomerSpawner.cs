@@ -21,10 +21,12 @@ public class CustomerSpawner : MonoBehaviour
     public bool timerRunning = false;
 
     private ClockUI clockUI;
+    private Purchasing purchases;
 
     private void Start()
     {
         clockUI = FindObjectOfType<ClockUI>();
+        purchases = FindObjectOfType<Purchasing>();
         currentDaySeconds = 140f;
         currentDayTimer = currentDaySeconds;
     }
@@ -114,5 +116,12 @@ public class CustomerSpawner : MonoBehaviour
         //timecube.SetActive(true);
         currentDayTimer = currentDaySeconds;
         timerRunning = false;
+    }
+
+    void GainPassiveIncome() {
+        if(currentDaySeconds == 0f && purchases.AirHockeyTable.activeSelf)
+        {
+            purchases.PassiveIncome();
+        }
     }
 }

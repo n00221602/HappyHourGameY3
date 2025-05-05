@@ -32,7 +32,7 @@ public class CustomerNPC : MonoBehaviour
     
 
     public float waitTime = 30f;
-    private float waitTimer;
+    private float waitTimer = 0f;
 
     public GameObject CustomerBeer;
     public GameObject CustomerRedWine;
@@ -156,7 +156,7 @@ public class CustomerNPC : MonoBehaviour
             currentState = State.Victim;
         }
 
-        // Handles the states of the customer.
+        // Runs code based on the current state of the customer
         switch (currentState)
         {
             case State.Moving:
@@ -218,11 +218,10 @@ public class CustomerNPC : MonoBehaviour
                 // Creates a temporary array containing all the customers in the scene
                 GameObject[] customers = GameObject.FindGameObjectsWithTag("Customer");
 
-                // For each customer, check if the destination is taken
+                // For each customer, check if the counter destination is taken
                 foreach (GameObject customer in customers)
                 {
-                    var customerNPC = customer.GetComponent<CustomerNPC>();
-                    if (customer != this.gameObject && customerNPC != null && customerNPC.bar == initialDestination)
+                    if (customer != this.gameObject && customer.GetComponent<CustomerNPC>().bar == initialDestination)
                     {
                         
                         isTaken = true;
@@ -247,11 +246,10 @@ public class CustomerNPC : MonoBehaviour
             agent.SetDestination(targetVector);
         }
 
-        // If the customer reaches the counter, rotate it towards the counter and switch to the waiting state
+        // If the customer reaches the counter, switch to the waiting state
         if (bar != null && Vector3.Distance(agent.transform.position, bar.transform.position) < 1f)
         {
             currentState = State.Waiting;
-            waitTimer = 0f;  // Sets the waiting timer to 0
         }
     }
 
@@ -259,7 +257,6 @@ public class CustomerNPC : MonoBehaviour
     //Runs during the Waiting state. The customer orders the drink and a timer is started.
     void OrderDrink()
     {
-        //animator.SetBool("isMoving", false);
         if (selectedDrink == "Beer")
         {
             iconBeer.SetActive(true);
@@ -289,11 +286,11 @@ public class CustomerNPC : MonoBehaviour
         waitTimer += Time.deltaTime;
         customerTimer.StartTimer();
 
-        // Checks if a drink is handed to the customer, then switch to drinking state
+        // Checks if a drink is handed to the customer
         if (CustomerBeer.activeSelf || CustomerRedWine.activeSelf || CustomerWhiteWine.activeSelf || CustomerCan.activeSelf || CustomerBottleBeer.activeSelf)
         {
             allIcons.SetActive(false);
-            this.gameObject.tag = "Served"; // Changes the Customer tag to Served
+            this.gameObject.tag = "Served";
             currentState = State.Searching;
             facingBar = null;
 
@@ -348,7 +345,6 @@ public class CustomerNPC : MonoBehaviour
                 // For each drinker, check if the table is taken
                 foreach (GameObject drinker in drinkers)
                 {
-                    // If the drinker is not the current customer and the drinker's table is the same as the initial table (.table is a Transform variable that is unique to each customer.)
                     if (drinker != this.gameObject && drinker.GetComponent<CustomerNPC>().table == initialTable)
                     {
                         isTaken = true;
@@ -625,6 +621,8 @@ public class CustomerNPC : MonoBehaviour
     {
         gameTime += Time.deltaTime;
         gameMoneyIncrementer += Time.deltaTime;
+        this.gameObject.tag = "Gaming";
+
         //If this variable hits 1 second, it increments moneyBalance by a set amount and resets back to 0
         if (gameMoneyIncrementer >= 1f)
         {
@@ -703,8 +701,6 @@ public class CustomerNPC : MonoBehaviour
 
         if (exit != null)
         {
-            //bar = null;
-            //table = null;
 
             //If table isnt dirty, reset the table to be accessible for other customers
             if (initialTable != null && initialTable.tag != "Dirty")
@@ -716,7 +712,7 @@ public class CustomerNPC : MonoBehaviour
             agent.SetDestination(targetVector);
         }
 
-        // if the exit position is reached, the customer is despawned
+        // if the exit position is reached, the customer is removed from the scene
         if (Vector3.Distance(agent.transform.position, exit.transform.position) < 1f)
         {
             Debug.Log("BYEEEEE");
@@ -986,7 +982,7 @@ public class CustomerNPC : MonoBehaviour
              else if(Star5.activeSelf)
             {
                 Star5.SetActive(false);
-                Invoke(nameof(GameOverMover), 1f); 
+                GameOverMover();
             }
             reputationLost = true;
             Debug.Log($"NPC {gameObject.name} reputationLost set to true.");

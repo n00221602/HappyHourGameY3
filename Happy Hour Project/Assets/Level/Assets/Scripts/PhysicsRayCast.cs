@@ -144,7 +144,7 @@ public class PhysicsRayCast : MonoBehaviour
     void Update()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, 1.5f))
+        if (Physics.Raycast(transform.position, transform.forward, out hit, 3f))
         {
             //Handles left mouse clicks
             if (Input.GetMouseButtonDown(0))

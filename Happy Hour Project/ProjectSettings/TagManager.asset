@@ -21,6 +21,7 @@ TagManager:
   - Taken
   - Drunk
   - FighterHit
+  - Gaming
   layers:
   - Default
   - TransparentFX

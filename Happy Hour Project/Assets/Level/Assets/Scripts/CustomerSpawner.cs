@@ -65,11 +65,11 @@ public class CustomerSpawner : MonoBehaviour
 
         if (currentDay == 1f) { spawnRate = 12f; }
 
-        if (currentDay == 2f) { spawnRate = 12f; }
+        if (currentDay == 2f) { spawnRate = 11f; }
 
-        if (currentDay == 3) { spawnRate = 12f; }
+        if (currentDay == 3) { spawnRate = 11f; }
 
-        if (currentDay == 4) { spawnRate = 12f; }
+        if (currentDay == 4) { spawnRate = 10f; }
 
         if (currentDay == 5) { spawnRate = 10f; }
 

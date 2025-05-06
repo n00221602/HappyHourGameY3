@@ -22,7 +22,6 @@ public class CustomerSpawner : MonoBehaviour
 
     private ClockUI clockUI;
     private Purchasing purchases;
-    private bool spawnRateSet = false;
     private bool popularityUpgraded = false;
 
     public DayUI dayUI;
@@ -77,14 +76,13 @@ public class CustomerSpawner : MonoBehaviour
 
         if (currentDay == 10f) { spawnRate = 7.5f; }
 
-        spawnRateSet = true;
 
         if (popularityUpgraded)
         {
             spawnRate *= 0.5f;
             Debug.Log("Spawnrate halved");
         }
-        }
+        
 
 
         spawnTime += Time.deltaTime;
@@ -118,7 +116,6 @@ public class CustomerSpawner : MonoBehaviour
         currentDayTimer = currentDaySeconds;
         timerRunning = false;
         dayUI.transition = false;
-        spawnRateSet = false;
     }
 
     void GainPassiveIncome() {

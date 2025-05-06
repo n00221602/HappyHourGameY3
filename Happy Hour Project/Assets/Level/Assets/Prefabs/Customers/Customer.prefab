@@ -411,7 +411,7 @@ Transform:
   m_GameObject: {fileID: 925145542388358554}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.08023453, y: -0.13831425, z: -0.046081543}
+  m_LocalPosition: {x: -0.08023453, y: 0, z: -0.046081543}
   m_LocalScale: {x: 0.01, y: 0.001, z: 0.01}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -771,7 +771,7 @@ Transform:
   m_GameObject: {fileID: 1608279258250986450}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.23, y: -4.318, z: 3.075}
+  m_LocalPosition: {x: 0.23, y: -4.699, z: 3.075}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -810,7 +810,7 @@ Transform:
   m_GameObject: {fileID: 2061031436531953160}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.08123398, y: -0.14161432, z: -0.069869995}
+  m_LocalPosition: {x: -0.08123398, y: 0, z: -0.069869995}
   m_LocalScale: {x: 0.09, y: 0.001, z: 0.09}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1067,7 +1067,7 @@ Transform:
   m_GameObject: {fileID: 3709810454147900557}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.07923508, y: -0.13911426, z: -0.05508423}
+  m_LocalPosition: {x: -0.07923508, y: 0, z: -0.05508423}
   m_LocalScale: {x: 0.02, y: 0.003, z: 0.04}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1937,7 +1937,7 @@ Transform:
   m_GameObject: {fileID: 8122368799498015148}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 42.44, y: 0.0009908676, z: 39.36896}
+  m_LocalPosition: {x: 42.224415, y: 0.0009906292, z: 38.12}
   m_LocalScale: {x: 0.42, y: 0.42, z: 0.42}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -1983,6 +1983,7 @@ MonoBehaviour:
   table: {fileID: 0}
   messySound: {fileID: 0}
   fightSound: {fileID: 0}
+  bonkSound: {fileID: 0}
   waitTime: 30
   CustomerBeer: {fileID: 548193714787451922}
   CustomerRedWine: {fileID: 8627278238919973720}
@@ -2007,6 +2008,7 @@ MonoBehaviour:
   MessyWhiteWine: {fileID: 3934634045782759635, guid: a3b765d519138c34d98e41705f081c1d, type: 3}
   customerTimer: {fileID: 5467236133981523320}
   moneySystem: {fileID: 0}
+  customerSpawner: {fileID: 0}
 --- !u!114 &5948031574031185130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2171,7 +2173,7 @@ Transform:
   m_GameObject: {fileID: 8485675765448815831}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.08123398, y: -0.24791431, z: -0.069869995}
+  m_LocalPosition: {x: -0.08123398, y: 0, z: -0.069869995}
   m_LocalScale: {x: 0.102, y: 0.05, z: 0.102}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2278,7 +2280,7 @@ Transform:
   m_GameObject: {fileID: 8575662807691829634}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.0818367, y: -0.24091423, z: -0.069869995}
+  m_LocalPosition: {x: -0.0818367, y: 0, z: -0.069869995}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children: []

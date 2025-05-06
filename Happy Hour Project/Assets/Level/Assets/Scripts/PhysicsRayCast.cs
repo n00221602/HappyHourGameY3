@@ -59,6 +59,9 @@ public class PhysicsRayCast : MonoBehaviour
     private GameObject CustomerCan;
     private GameObject CustomerBottleBeer;
 
+    //Landlord
+    public GameObject Landlord;
+
     //CustomerNPC script
     private CustomerNPC customerNPC;
 
@@ -85,40 +88,7 @@ public class PhysicsRayCast : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
         customerSpawner = OpenSign.GetComponent<CustomerSpawner>();
-
-        //Player Hand
-        FullHand = GameObject.Find("FullHand");
-        //Sink
-        Waste = GameObject.Find("Waste");
-
-        //Beer
-        PlayerPint = GameObject.Find("PlayerPintGlass");
-        FullPlayerPint = GameObject.Find("FullPlayerPintGlass");
-        BeerFlow = GameObject.Find("flowingBeer");
-        PourPint = GameObject.Find("PlaceholderPint");
-
-        //Wine
-        PlayerWineGlass = GameObject.Find("PlayerWineGlass");
-        FullPlayerRedWine = GameObject.Find("FullPlayerWineGlassRed");
-        FullPlayerWhiteWine = GameObject.Find("FullPlayerWineGlassWhite");
-        RedWine = GameObject.Find("Red Wine");
-        WhiteWine = GameObject.Find("White Wine");
-        PouringRed = GameObject.Find("PouringRed");
-        PouringWhite = GameObject.Find("PouringWhite");
-        RedWineLiquid = GameObject.Find("RedWineLiquidPouring");
-        WhiteWineLiquid = GameObject.Find("WhiteWineLiquidPouring");
-        PourWineGlass = GameObject.Find("PlaceholderWineGlass");
-        timecube = GameObject.Find("timecube");
-        customerSpawner = timecube.GetComponent<CustomerSpawner>();
-
-        //Soft Drinks
-        PickupCan = GameObject.Find("PickupCan");
-        
-        //Bottle Beer
-        PlayerBottleBeer = GameObject.Find("PlayerBottle");
-        bottleBeerPickup = GameObject.Find("bottleBeerPickup");
 
         //Setting player active hand to false
         if (FullHand != null) FullHand.SetActive(false);
@@ -152,6 +122,11 @@ public class PhysicsRayCast : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetMouseButtonUp(0))
+        {
+            isMessyTable = false;
+            CancelInvoke(nameof(CompleteMessyEvent));
+        }
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, 3f))
         {
@@ -224,14 +199,12 @@ public class PhysicsRayCast : MonoBehaviour
                     }
                     currentMess = hit.collider.gameObject;
                     HandleMessyEvent();
+
+                   
                 }
 
                 //If the player lets go of the left mouse button, they will stop cleaning the table
-                if (Input.GetMouseButtonUp(0))
-                {
-                    isMessyTable = false;
-                    CancelInvoke(nameof(CompleteMessyEvent));
-                }
+                
 
                 //Handles the customer interaction
                 if (hit.collider.CompareTag("Customer"))
@@ -240,16 +213,16 @@ public class PhysicsRayCast : MonoBehaviour
                 }
 
                 //Waste
-                if (hit.collider.name == "Waste")
-                {
-                    DisposeOfDrink();
-                }
+                //if (hit.collider.name == "Waste")
+                //{
+                //    DisposeOfDrink();
+                //}
             }
 
            
 
             //Handles the Timer
-            if (Input.GetKeyDown(KeyCode.E) && !customerSpawner.timerRunning && hit.collider.name == "OpenSign")
+            if (Input.GetKeyDown(KeyCode.E) && !customerSpawner.timerRunning && hit.collider.name == "OpenSign" && !Landlord.activeSelf)
             {
                 HandleTimer();
             }

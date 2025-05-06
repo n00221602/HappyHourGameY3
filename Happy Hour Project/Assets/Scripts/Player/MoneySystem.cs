@@ -13,7 +13,6 @@ public class MoneySystem : MonoBehaviour
     void Start()
     {
         moneyBalanceText = this.gameObject.GetComponent<TextMeshProUGUI>();
-        moneyBalance = 100f;
         UpdateText();
     }
 

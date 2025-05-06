@@ -33,6 +33,7 @@ public class CustomerNPC : MonoBehaviour
     //Sound effects
     public AudioSource messySound;
     public AudioSource fightSound;
+    public AudioSource bonkSound;
     
 
     public float waitTime = 30f;
@@ -102,6 +103,7 @@ public class CustomerNPC : MonoBehaviour
         //Sound Effects
         messySound = GameObject.Find("MessyTableSound").GetComponent<AudioSource>();
         fightSound = GameObject.Find("FightSound").GetComponent<AudioSource>();
+        bonkSound = GameObject.Find("BonkSound").GetComponent<AudioSource>();
 
         // Reputation Objects
         Star1 = GameObject.Find("Player/PlayerUi/PlayerHealth/Star1").gameObject;
@@ -164,6 +166,7 @@ public class CustomerNPC : MonoBehaviour
 
         if (customerSpawner.timerRunning == false)
         {
+            agent.enabled = true;
             currentState = State.Leaving;
             allIcons.SetActive(false);
             CustomerDrinks.SetActive(false);
@@ -733,7 +736,7 @@ public class CustomerNPC : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if (currentState == State.Leaving && !reputationLost && this.gameObject.tag == "Customer")
+        if (currentState == State.Leaving && !reputationLost && customerSpawner.timerRunning && this.gameObject.tag == "Customer")
         {
          Debug.Log($"NPC {gameObject.name} is about to lose reputation.");
          BarReputation();
@@ -750,7 +753,7 @@ public class CustomerNPC : MonoBehaviour
         {
             eventTime = 0f;
             int eventInterval = 100;
-            int randomChoice = Random.Range(80, eventInterval);
+            int randomChoice = Random.Range(0, eventInterval);
             Debug.Log("Random choice: " + randomChoice);
 
             if (randomChoice <= 30) //30% chance for a customer to leave the bar
@@ -822,7 +825,6 @@ public class CustomerNPC : MonoBehaviour
             Vector3 targetVector = randomVictim.transform.position;
             agent.SetDestination(targetVector);
             agent.acceleration = 100f;
-            //agent.speed = 3f;
         }
 
         //Once the fighter is in range of the victim, the fighter will stop moving and start fighting
@@ -865,7 +867,7 @@ public class CustomerNPC : MonoBehaviour
                 }
             }
 
-            // If there is no victim, the fighter will leave the bar
+            //If there is no victim, the fighter will leave the bar
             if (randomVictim == null)
             {
                 Debug.Log("No victim found");
@@ -885,6 +887,7 @@ public class CustomerNPC : MonoBehaviour
             randomVictim = null;
             fightTime = 0f;
             fightSound.Stop();
+            bonkSound.Play();
         }
 
         //After being hit, the fighter leaves the bar
@@ -914,9 +917,9 @@ public class CustomerNPC : MonoBehaviour
                     float randomSpin = Random.Range(-20f, 20f);
                     transform.Rotate(0, randomSpin, 0);
                     animator.SetBool("isKnockedOut", true);
-                    //initialTable.tag = "Clean"; // This makes the table free for other customers to walk to
                     victimTime = 0f;
                     agent.enabled = false;
+                    BarReputation();
                 }
             }
         }
@@ -971,7 +974,7 @@ public class CustomerNPC : MonoBehaviour
      void BarReputation()
     {
 
-        if( !reputationLost && currentState == State.Leaving && !CustomerBeer.activeSelf && !CustomerRedWine.activeSelf  && !CustomerWhiteWine.activeSelf && !CustomerCan.activeSelf && !CustomerBottleBeer.activeSelf )
+        if(!reputationLost)
         {
             Debug.Log($"NPC {gameObject.name} is losing reputation.");
 

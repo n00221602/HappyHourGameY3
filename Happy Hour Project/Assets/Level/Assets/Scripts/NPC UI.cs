@@ -25,7 +25,7 @@ public class FloatingUI : MonoBehaviour
     {
         if (worldSpaceCanvas != null && target != null)
         {
-            // Update the canvas position to follow the target with the specified offset
+            //Updates the canvas position to follow the target
             worldSpaceCanvas.transform.position = target.position + offset;
 
             if (playerCamera != null)

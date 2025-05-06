@@ -16,6 +16,7 @@ public class PhysicsRayCast : MonoBehaviour
     public AudioSource moneySound;
     public AudioSource putDownSound;
     public AudioSource pouringSound;
+    public AudioSource swingSound;
 
 
     //Beer game objects
@@ -201,7 +202,7 @@ public class PhysicsRayCast : MonoBehaviour
                     HandleMessyEvent();
                 }
 
-                //if the player lets go of the left mouse button, they will stop cleaning the table
+                //If the player lets go of the left mouse button, they will stop cleaning the table
                 if (Input.GetMouseButtonUp(0))
                 {
                     isMessyTable = false;
@@ -236,6 +237,8 @@ public class PhysicsRayCast : MonoBehaviour
             if (animator != null)
             {
                 animator.SetTrigger("SwingBat");
+                swingSound.Play();
+                
             }
             
             //Handles FightEvent
@@ -476,7 +479,9 @@ public class PhysicsRayCast : MonoBehaviour
         {
             BaseballBat.SetActive(true);
             PlayerBaseballBat.SetActive(false);
-            PlayerBaseballBat.transform.localRotation = Quaternion.Euler(-8, -177.68f, 25); // This resets the rotation of the baseball bat
+
+            // This resets the rotation of the baseball bat, so that when the player picks it back up it's at its base position
+            PlayerBaseballBat.transform.localRotation = Quaternion.Euler(-8, -177.68f, 25);
             FullHand.SetActive(false);
         }
     }

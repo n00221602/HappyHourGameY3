@@ -21,11 +21,12 @@ public class CustomerSpawner : MonoBehaviour
     public bool timerRunning = false;
 
     private ClockUI clockUI;
+    public DayUI dayUI;
 
     private void Start()
     {
         clockUI = FindObjectOfType<ClockUI>();
-        currentDaySeconds = 60f;
+        currentDaySeconds = 140f;
         currentDayTimer = currentDaySeconds;
     }
     
@@ -39,37 +40,25 @@ public class CustomerSpawner : MonoBehaviour
 
         }
 
-        //Starts the timer on input. The bool is used so that the timer only starts once
-        //if (Input.GetKeyDown(KeyCode.E) && !timerRunning)
-        //{
-        //    OpenSign.SetActive(false);
-        //    timerRunning = true;
-        //}
-
         if (timerRunning)
         {
             StartTimer();
             clockUI.StartClock();
         }
-
-        
-
     }
 
 
     void StartTimer()
     {
 
-        ////Each statement defines the current day. Each day has a differnent spawn rate. It begins at day 0 which is the tutorial day.
-        //if (currentDay == 0f) { spawnRate = 12f; }
-
-        if (currentDay == 1f) { spawnRate = 12f; }
+        //Each statement defines the current day. Each day has a differnent spawn rate.
+        if (currentDay == 1f) { spawnRate = 11f; }
 
         if (currentDay == 2f) { spawnRate = 11f; }
 
         if (currentDay == 3) { spawnRate = 10f; }
 
-        if (currentDay == 4) { spawnRate = 10f; }
+        if (currentDay == 4) { spawnRate = 9.5f; }
 
         if (currentDay == 5) { spawnRate = 9f; }
 
@@ -85,7 +74,7 @@ public class CustomerSpawner : MonoBehaviour
 
         spawnTime += Time.deltaTime;
 
-        // Randomly spawns a customer from the customer index array once the interval is reached
+        //Randomly spawns a customer from the customer index array once the interval is reached
         if (spawnTime >= spawnRate)
         {
             spawnTime = 0f;
@@ -100,7 +89,6 @@ public class CustomerSpawner : MonoBehaviour
         {
             currentDayTimer -= Time.deltaTime;
             int seconds = Mathf.FloorToInt(currentDayTimer);
-            Debug.Log("Time: " + seconds);
         }
         else
         {
@@ -114,5 +102,6 @@ public class CustomerSpawner : MonoBehaviour
         OpenSign.GetComponent<Renderer>().material.DisableKeyword("_EMISSION");
         currentDayTimer = currentDaySeconds;
         timerRunning = false;
+        dayUI.transition = false;
     }
 }

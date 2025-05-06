@@ -12,6 +12,11 @@ public class PhysicsRayCast : MonoBehaviour
     //Sink - Dispose of unwanted drink
     private GameObject Sink;
 
+    //Sound effects
+    public AudioSource moneySound;
+    public AudioSource putDownSound;
+    public AudioSource pouringSound;
+
 
     //Beer game objects
     public GameObject PlayerPint;
@@ -66,7 +71,7 @@ public class PhysicsRayCast : MonoBehaviour
 
     //Customer Spawner script
     private CustomerSpawner customerSpawner;
-    public GameObject timecube;
+    public GameObject OpenSign;
 
     //Player Movement script
     public PlayerMovement playerMovement;
@@ -79,30 +84,9 @@ public class PhysicsRayCast : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //Player Hand
-        //FullHand = GameObject.Find("FullHand");
-        ////Sink
-        //Sink = GameObject.Find("Sink");
+        
+        customerSpawner = OpenSign.GetComponent<CustomerSpawner>();
 
-        ////Beer
-        //PlayerPint = GameObject.Find("PlayerPintGlass");
-        //FullPlayerPint = GameObject.Find("FullPlayerPintGlass");
-        //BeerFlow = GameObject.Find("flowingBeer");
-        //PourPint = GameObject.Find("PlaceholderPint");
-
-        ////Wine
-        //PlayerWineGlass = GameObject.Find("PlayerWineGlass");
-        //FullPlayerRedWine = GameObject.Find("FullPlayerWineGlassRed");
-        //FullPlayerWhiteWine = GameObject.Find("FullPlayerWineGlassWhite");
-        //RedWine = GameObject.Find("Red Wine");
-        //WhiteWine = GameObject.Find("White Wine");
-        //PouringRed = GameObject.Find("PouringRed");
-        //PouringWhite = GameObject.Find("PouringWhite");
-        //RedWineLiquid = GameObject.Find("RedWineLiquidPouring");
-        //WhiteWineLiquid = GameObject.Find("WhiteWineLiquidPouring");
-        //PourWineGlass = GameObject.Find("PlaceholderWineGlass");
-        //timecube = GameObject.Find("timecube");
-        customerSpawner = timecube.GetComponent<CustomerSpawner>();
 
         //Soft Drinks
         PickupCan = GameObject.Find("PickupCan");
@@ -240,7 +224,7 @@ public class PhysicsRayCast : MonoBehaviour
            
 
             //Handles the Timer
-            if (Input.GetKeyDown(KeyCode.E) && !customerSpawner.timerRunning && hit.collider.name == "timecube")
+            if (Input.GetKeyDown(KeyCode.E) && !customerSpawner.timerRunning && hit.collider.name == "OpenSign")
             {
                 HandleTimer();
             }
@@ -285,6 +269,8 @@ public class PhysicsRayCast : MonoBehaviour
             playerMovement.moveSpeed = 0f;
             Invoke(nameof(CompleteBeerPour), progressInterval);
             BeerProgressBar.FillProgressBar();
+            putDownSound.Play();
+            pouringSound.Play();
         }
     }
 
@@ -295,6 +281,7 @@ public class PhysicsRayCast : MonoBehaviour
         PlayerPint.SetActive(false);
         FullPlayerPint.SetActive(true);
         BeerFlow.SetActive(false);
+        pouringSound.Stop();
     }
 
     //Wine Functions
@@ -320,6 +307,8 @@ public class PhysicsRayCast : MonoBehaviour
             playerMovement.moveSpeed = 0f;
             Invoke(nameof(CompleteRedWinePour), progressInterval);
             WineProgressBar.FillProgressBar();
+            putDownSound.Play();
+            pouringSound.Play();
         }
     }
 
@@ -331,6 +320,7 @@ public class PhysicsRayCast : MonoBehaviour
         PouringRed.SetActive(false);
         RedWineLiquid.SetActive(false);
         RedWine.SetActive(true);
+        pouringSound.Stop();
     }
 
     private void PourWhiteWine()
@@ -346,6 +336,8 @@ public class PhysicsRayCast : MonoBehaviour
             playerMovement.moveSpeed = 0f;
             Invoke(nameof(CompleteWhiteWinePour), progressInterval);
             WineProgressBar.FillProgressBar();
+            putDownSound.Play();
+            pouringSound.Play();
         }
     }
 
@@ -358,6 +350,7 @@ public class PhysicsRayCast : MonoBehaviour
         WhiteWineLiquid.SetActive(false);
         WhiteWine.SetActive(true);
         FullHand.SetActive(true);
+        pouringSound.Stop();
     }
 
         //Soft Drink Functions
@@ -395,6 +388,7 @@ public class PhysicsRayCast : MonoBehaviour
             FullPlayerPint.SetActive(false);
             FullHand.SetActive(false);
             moneySystem.beerMoneyAddition();
+            moneySound.Play();
         }
 
         if (FullPlayerRedWine.activeSelf && customerNPC.iconRedWine.activeSelf)
@@ -403,6 +397,7 @@ public class PhysicsRayCast : MonoBehaviour
             FullPlayerRedWine.SetActive(false);
             FullHand.SetActive(false);
             moneySystem.redWineMoneyAddition();
+            moneySound.Play();
         }
 
         if (FullPlayerWhiteWine.activeSelf && customerNPC.iconWhiteWine.activeSelf)
@@ -411,6 +406,7 @@ public class PhysicsRayCast : MonoBehaviour
             FullPlayerWhiteWine.SetActive(false);
             FullHand.SetActive(false);
             moneySystem.whiteWineMoneyAddition();
+            moneySound.Play();
         }
 
         if (PlayerCan.activeSelf && customerNPC.iconCan.activeSelf)
@@ -419,6 +415,7 @@ public class PhysicsRayCast : MonoBehaviour
             PlayerCan.SetActive(false);
             FullHand.SetActive(false);
             moneySystem.canMoneyAddition();
+            moneySound.Play();
         }
 
         if (PlayerBottleBeer.activeSelf && customerNPC.iconBottleBeer.activeSelf)
@@ -427,6 +424,7 @@ public class PhysicsRayCast : MonoBehaviour
             PlayerBottleBeer.SetActive(false);
             FullHand.SetActive(false);
             moneySystem.bottleBeerMoneyAddition();
+            moneySound.Play();
         }
     }
 
@@ -487,6 +485,7 @@ public class PhysicsRayCast : MonoBehaviour
     private void HandleTimer()
     {
         Debug.Log("Timer started");
+        OpenSign.GetComponent<Renderer>().material.EnableKeyword("_EMISSION");
         customerSpawner.currentDay = customerSpawner.currentDay + 1f;
         customerSpawner.timerRunning = true;
     }

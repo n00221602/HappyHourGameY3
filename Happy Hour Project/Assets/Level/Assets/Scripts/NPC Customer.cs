@@ -29,6 +29,10 @@ public class CustomerNPC : MonoBehaviour
     Transform exit;
     Transform randomVictim;
     Transform facingBar;
+
+    //Sound effects
+    public AudioSource messySound;
+    public AudioSource fightSound;
     
 
     public float waitTime = 30f;
@@ -81,21 +85,23 @@ public class CustomerNPC : MonoBehaviour
 
     public CustomerTimer customerTimer;
     public MoneySystem moneySystem;
+    public CustomerSpawner customerSpawner;
 
     // private bool victimFound = false;
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
-        currentState = State.Moving;  // Starts the customer in the Moving state
+        currentState = State.Moving;
         MoveToCounter();
 
         //Money System
         moneySystem = GameObject.Find("MoneyBalance").GetComponent<MoneySystem>();
-        if (moneySystem != null)
-        {
-            Debug.Log("MoneySystem found");
-        }
+        customerSpawner = GameObject.Find("OpenSign").GetComponent<CustomerSpawner>();
+
+        //Sound Effects
+        messySound = GameObject.Find("MessyTableSound").GetComponent<AudioSource>();
+        fightSound = GameObject.Find("FightSound").GetComponent<AudioSource>();
 
         // Reputation Objects
         Star1 = GameObject.Find("Player/PlayerUi/PlayerHealth/Star1").gameObject;
@@ -155,6 +161,14 @@ public class CustomerNPC : MonoBehaviour
         {
             currentState = State.Victim;
         }
+
+        if (customerSpawner.timerRunning == false)
+        {
+            currentState = State.Leaving;
+            allIcons.SetActive(false);
+            CustomerDrinks.SetActive(false);
+        }
+
 
         // Runs code based on the current state of the customer
         switch (currentState)
@@ -736,7 +750,7 @@ public class CustomerNPC : MonoBehaviour
         {
             eventTime = 0f;
             int eventInterval = 100;
-            int randomChoice = Random.Range(0, eventInterval);
+            int randomChoice = Random.Range(80, eventInterval);
             Debug.Log("Random choice: " + randomChoice);
 
             if (randomChoice <= 30) //30% chance for a customer to leave the bar
@@ -818,10 +832,14 @@ public class CustomerNPC : MonoBehaviour
             animator.SetBool("isFighting", true);
             agent.isStopped = true;
             transform.LookAt(randomVictim.transform.position);
+            if (!fightSound.isPlaying)
+            {
+                fightSound.Play();
+            }
 
             fightTime += Time.deltaTime;
 
-            //Once the fight hits x seconds, the fighter will stop fighting and replay the fight state
+            //Once the fight hits x seconds, the fighter will stop fighting
             if (fightTime >= 18f)
             {
                 Debug.Log($"{gameObject.name} fight timer complete.");
@@ -830,10 +848,11 @@ public class CustomerNPC : MonoBehaviour
                 agent.isStopped = false;
                 randomVictim = null;
                 fightTime = 0f;
+                fightSound.Stop();
             }
         }
 
-        //Once the fighters done, it finds a new victim
+        //If victim is null, the fighter finds a new victim
         if (randomVictim == null)
         {
             GameObject[] newDrinkers = GameObject.FindGameObjectsWithTag("Drinker");
@@ -865,6 +884,7 @@ public class CustomerNPC : MonoBehaviour
             randomVictim.gameObject.tag = "Drinker";
             randomVictim = null;
             fightTime = 0f;
+            fightSound.Stop();
         }
 
         //After being hit, the fighter leaves the bar
@@ -886,7 +906,6 @@ public class CustomerNPC : MonoBehaviour
             {
                 animator.SetBool("isVictim", true);
                 CustomerDrinks.SetActive(false);
-
                 transform.LookAt(fighter.transform.position);
                 victimTime += Time.deltaTime;
                  int elapsedfight = Mathf.FloorToInt(victimTime);
@@ -943,6 +962,7 @@ public class CustomerNPC : MonoBehaviour
                 messyDrinkPrefab.transform.rotation = Quaternion.LookRotation(directionToTable);
                 
                 table.tag = "Dirty";
+                messySound.Play();
             }
         }
         currentState = State.Leaving;

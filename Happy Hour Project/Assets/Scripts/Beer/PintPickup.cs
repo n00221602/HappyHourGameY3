@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PintPickup : MonoBehaviour
 {
-
+    //gives the effect of picking up the glass, really sets the glass that is already in the hand but invisible as visible
 public GameObject PintOnPlayer;
     void Start()
     {

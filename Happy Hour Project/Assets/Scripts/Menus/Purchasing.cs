@@ -14,6 +14,7 @@ public class Purchasing : MonoBehaviour
     public GameObject BeerGarden;
     public GameObject Toilets;
 
+    //Games area destinations
     public GameObject GameDest1;
     public GameObject GameDest2;
     public GameObject GameDest3;
@@ -24,6 +25,16 @@ public class Purchasing : MonoBehaviour
     public GameObject GameDest8;
     public GameObject GameDest9;
     public GameObject GameDest10;
+
+    //Beer garden destinations
+    public GameObject GardenDest1;
+    public GameObject GardenDest2;
+    public GameObject GardenDest3;
+    public GameObject GardenDest4;
+    public GameObject GardenDest5;
+    public GameObject GardenDest6;
+    public GameObject GardenDest7;
+    public GameObject GardenDest8;
 
     public MoneySystem currentMoney;
     public PlayerMovement moveSpeed;
@@ -56,6 +67,14 @@ public class Purchasing : MonoBehaviour
         GameDest10.SetActive(false);
 
         //links this script to others that are rewuired for functionallity
+        GardenDest1.SetActive(false);
+        GardenDest2.SetActive(false);
+        GardenDest3.SetActive(false);
+        GardenDest4.SetActive(false);
+        GardenDest5.SetActive(false);
+        GardenDest6.SetActive(false);
+        GardenDest7.SetActive(false);
+        GardenDest8.SetActive(false);
 
         currentMoney = FindObjectOfType<MoneySystem>();
         moveSpeed = FindObjectOfType<PlayerMovement>();
@@ -209,19 +228,28 @@ public class Purchasing : MonoBehaviour
         }
     }
 
-    public void purchaseBeerGarden(){
+    public void purchaseBeerGarden()
+    {
 
-      if( currentMoney != null && currentMoney.moneyBalance >= 20f)
+        if (currentMoney != null && currentMoney.moneyBalance >= 20f)
         {
-        currentMoney.moneyBalance -=20f;
-        currentMoney.UpdateText();
-
-      BeerGarden.SetActive(false);
+            currentMoney.moneyBalance -= 20f;
+            currentMoney.UpdateText();
+            BeerGarden.SetActive(false);
         }
-        else
-        {
-            Debug.Log("Not enough money !");
 
+        if (!BeerGarden.activeSelf)
+        {
+            Debug.Log("Beer garden purchased!");
+            GardenDest1.SetActive(true);
+            GardenDest2.SetActive(true);
+            GardenDest3.SetActive(true);
+            GardenDest4.SetActive(true);
+            GardenDest5.SetActive(true);
+            GardenDest6.SetActive(true);
+            GardenDest7.SetActive(true);
+            GardenDest8.SetActive(true);
+            CustomerNPC.ManageGardenDestinations();
         }
     }
 

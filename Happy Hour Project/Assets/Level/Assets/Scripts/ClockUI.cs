@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class ClockUI : MonoBehaviour
 {
-    //private float realSeconds = 12f;
-
     private Transform clockHand;
     private float day;
 
@@ -21,7 +19,6 @@ public class ClockUI : MonoBehaviour
     public void StartClock()
     {
         day += Time.deltaTime / customerSpawner.currentDaySeconds;
-       // float dayNormal = day % 1f;
 
         clockHand.eulerAngles = new Vector3(0, 0, -day * 360f);
 
@@ -31,10 +28,9 @@ public class ClockUI : MonoBehaviour
         }
     }
 
-    // Reset the clock after it completes a full rotation
+    //Resets the clock after it completes a full rotation
     void StopClock()
     {
-        // Stop the clock hand rotation
         clockHand.eulerAngles = new Vector3(0, 0, 0);
         day = 0f;
     }

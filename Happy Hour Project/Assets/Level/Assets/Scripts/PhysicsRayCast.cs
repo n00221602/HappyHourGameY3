@@ -9,8 +9,14 @@ public class PhysicsRayCast : MonoBehaviour
     //Player Hand
     public GameObject FullHand;
 
-    //Waste - Dispose of unwanted drink
-    private GameObject Waste;
+    //Sink - Dispose of unwanted drink
+    private GameObject Sink;
+
+    //Sound effects
+    public AudioSource moneySound;
+    public AudioSource putDownSound;
+    public AudioSource pouringSound;
+    public AudioSource swingSound;
 
 
     //Beer game objects
@@ -65,8 +71,11 @@ public class PhysicsRayCast : MonoBehaviour
     public MoneySystem moneySystem;
 
     //Customer Spawner script
-    public CustomerSpawner customerSpawner;
-    public GameObject timecube;
+    private CustomerSpawner customerSpawner;
+    public GameObject OpenSign;
+
+    //Player Movement script
+    public PlayerMovement playerMovement;
 
     //Messy table prefab
     private GameObject currentMess;
@@ -76,6 +85,9 @@ public class PhysicsRayCast : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
+        customerSpawner = OpenSign.GetComponent<CustomerSpawner>();
+
         //Player Hand
         FullHand = GameObject.Find("FullHand");
         //Sink
@@ -135,11 +147,6 @@ public class PhysicsRayCast : MonoBehaviour
 
         //Setting the bottle beer game objects to false
         if (PlayerBottleBeer != null) PlayerBottleBeer.SetActive(false);
-
-        //progressBar = GameObject.Find("Progress Bar").GetComponent<ProgressBar>();
-
-
-
     }
 
     // Update is called once per frame
@@ -219,6 +226,13 @@ public class PhysicsRayCast : MonoBehaviour
                     HandleMessyEvent();
                 }
 
+                //If the player lets go of the left mouse button, they will stop cleaning the table
+                if (Input.GetMouseButtonUp(0))
+                {
+                    isMessyTable = false;
+                    CancelInvoke(nameof(CompleteMessyEvent));
+                }
+
                 //Handles the customer interaction
                 if (hit.collider.CompareTag("Customer"))
                 {
@@ -232,15 +246,10 @@ public class PhysicsRayCast : MonoBehaviour
                 }
             }
 
-            //if the player lets go of the left mouse button, they will stop cleaning the table
-            if (Input.GetMouseButtonUp(0)) 
-            {
-                isMessyTable = false; 
-                CancelInvoke(nameof(CompleteMessyEvent)); 
-            }
+           
 
             //Handles the Timer
-            if (Input.GetKeyDown(KeyCode.E) && !customerSpawner.timerRunning && hit.collider.name == "timecube")
+            if (Input.GetKeyDown(KeyCode.E) && !customerSpawner.timerRunning && hit.collider.name == "OpenSign")
             {
                 HandleTimer();
             }
@@ -252,6 +261,8 @@ public class PhysicsRayCast : MonoBehaviour
             if (animator != null)
             {
                 animator.SetTrigger("SwingBat");
+                swingSound.Play();
+                
             }
             
             //Handles FightEvent
@@ -282,17 +293,22 @@ public class PhysicsRayCast : MonoBehaviour
             PlayerPint.SetActive(false);
             BeerFlow.SetActive(true);
             progressInterval = 4f;
+            playerMovement.moveSpeed = 0f;
             Invoke(nameof(CompleteBeerPour), progressInterval);
             BeerProgressBar.FillProgressBar();
+            putDownSound.Play();
+            pouringSound.Play();
         }
     }
 
     void CompleteBeerPour()
     {
+        playerMovement.moveSpeed = 5f;
         PourPint.SetActive(false);
         PlayerPint.SetActive(false);
         FullPlayerPint.SetActive(true);
         BeerFlow.SetActive(false);
+        pouringSound.Stop();
     }
 
     //Wine Functions
@@ -315,18 +331,23 @@ public class PhysicsRayCast : MonoBehaviour
             RedWineLiquid.SetActive(true);
             RedWine.SetActive(false);
             progressInterval = 3f;
+            playerMovement.moveSpeed = 0f;
             Invoke(nameof(CompleteRedWinePour), progressInterval);
             WineProgressBar.FillProgressBar();
+            putDownSound.Play();
+            pouringSound.Play();
         }
     }
 
     void CompleteRedWinePour()
     {
+        playerMovement.moveSpeed = 5f;
         PourWineGlass.SetActive(false);
         FullPlayerRedWine.SetActive(true);
         PouringRed.SetActive(false);
         RedWineLiquid.SetActive(false);
         RedWine.SetActive(true);
+        pouringSound.Stop();
     }
 
     private void PourWhiteWine()
@@ -339,19 +360,24 @@ public class PhysicsRayCast : MonoBehaviour
             WhiteWineLiquid.SetActive(true);
             WhiteWine.SetActive(false);
             progressInterval = 3f;
+            playerMovement.moveSpeed = 0f;
             Invoke(nameof(CompleteWhiteWinePour), progressInterval);
             WineProgressBar.FillProgressBar();
+            putDownSound.Play();
+            pouringSound.Play();
         }
     }
 
     void CompleteWhiteWinePour()
     {
+        playerMovement.moveSpeed = 5f;
         PourWineGlass.SetActive(false);
         FullPlayerWhiteWine.SetActive(true);
         PouringWhite.SetActive(false);
         WhiteWineLiquid.SetActive(false);
         WhiteWine.SetActive(true);
         FullHand.SetActive(true);
+        pouringSound.Stop();
     }
 
         //Soft Drink Functions
@@ -375,7 +401,7 @@ public class PhysicsRayCast : MonoBehaviour
     }
     public void HandleCustomer(Collider customerCollider)
     {
-        CustomerNPC customerNPC = customerCollider.GetComponent<CustomerNPC>();
+        customerNPC = customerCollider.GetComponent<CustomerNPC>();
         if (customerNPC == null)
         {
             Debug.LogError("customerNPC is null");
@@ -389,6 +415,7 @@ public class PhysicsRayCast : MonoBehaviour
             FullPlayerPint.SetActive(false);
             FullHand.SetActive(false);
             moneySystem.beerMoneyAddition();
+            moneySound.Play();
         }
 
         if (FullPlayerRedWine.activeSelf && customerNPC.iconRedWine.activeSelf)
@@ -397,6 +424,7 @@ public class PhysicsRayCast : MonoBehaviour
             FullPlayerRedWine.SetActive(false);
             FullHand.SetActive(false);
             moneySystem.redWineMoneyAddition();
+            moneySound.Play();
         }
 
         if (FullPlayerWhiteWine.activeSelf && customerNPC.iconWhiteWine.activeSelf)
@@ -405,6 +433,7 @@ public class PhysicsRayCast : MonoBehaviour
             FullPlayerWhiteWine.SetActive(false);
             FullHand.SetActive(false);
             moneySystem.whiteWineMoneyAddition();
+            moneySound.Play();
         }
 
         if (PlayerCan.activeSelf && customerNPC.iconCan.activeSelf)
@@ -413,6 +442,7 @@ public class PhysicsRayCast : MonoBehaviour
             PlayerCan.SetActive(false);
             FullHand.SetActive(false);
             moneySystem.canMoneyAddition();
+            moneySound.Play();
         }
 
         if (PlayerBottleBeer.activeSelf && customerNPC.iconBottleBeer.activeSelf)
@@ -421,6 +451,7 @@ public class PhysicsRayCast : MonoBehaviour
             PlayerBottleBeer.SetActive(false);
             FullHand.SetActive(false);
             moneySystem.bottleBeerMoneyAddition();
+            moneySound.Play();
         }
     }
 
@@ -449,10 +480,8 @@ public class PhysicsRayCast : MonoBehaviour
 
     void CompleteMessyEvent()
     {
-        if (currentMess != null)
-        {
-            Destroy(currentMess);
-        }
+        Destroy(currentMess);
+        customerNPC.table.gameObject.tag = "Clean";
     }
 
     private void HandleFightEvent()
@@ -474,7 +503,9 @@ public class PhysicsRayCast : MonoBehaviour
         {
             BaseballBat.SetActive(true);
             PlayerBaseballBat.SetActive(false);
-            PlayerBaseballBat.transform.localRotation = Quaternion.Euler(-8, -177.68f, 25); // This resets the rotation of the baseball bat
+
+            // This resets the rotation of the baseball bat, so that when the player picks it back up it's at its base position
+            PlayerBaseballBat.transform.localRotation = Quaternion.Euler(-8, -177.68f, 25);
             FullHand.SetActive(false);
         }
     }
@@ -483,6 +514,7 @@ public class PhysicsRayCast : MonoBehaviour
     private void HandleTimer()
     {
         Debug.Log("Timer started");
+        OpenSign.GetComponent<Renderer>().material.EnableKeyword("_EMISSION");
         customerSpawner.currentDay = customerSpawner.currentDay + 1f;
         customerSpawner.timerRunning = true;
     }

@@ -686,8 +686,8 @@ Transform:
   m_GameObject: {fileID: 1536771860310935413}
   serializedVersion: 2
   m_LocalRotation: {x: 0.000000081460335, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 8.951287, y: -5.3957763, z: 45.854694}
-  m_LocalScale: {x: 0.23809522, y: 0.47619045, z: 0.23809522}
+  m_LocalPosition: {x: 0.05999974, y: -5, z: 2.942}
+  m_LocalScale: {x: 0.4, y: 0.6, z: 0.4}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 943069160506205263}
@@ -771,9 +771,9 @@ Transform:
   m_GameObject: {fileID: 1608279258250986450}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.032677, y: -4.810758, z: 45.928165}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0.23, y: -4.318, z: 3.075}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7141569431980441193}
   - {fileID: 5901784128642014490}
@@ -1564,7 +1564,7 @@ Transform:
   m_GameObject: {fileID: 6639234248916061007}
   serializedVersion: 2
   m_LocalRotation: {x: 2.4462038e-13, y: 1, z: 1.5701007e-15, w: -2.127883e-35}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.001}
   m_LocalScale: {x: 0.22000001, y: 0.22000001, z: 0.22000001}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1937,7 +1937,7 @@ Transform:
   m_GameObject: {fileID: 8122368799498015148}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 43.861706, y: 0.0020000935, z: 36.629128}
+  m_LocalPosition: {x: 42.44, y: 0.0009908676, z: 39.36896}
   m_LocalScale: {x: 0.42, y: 0.42, z: 0.42}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -1980,6 +1980,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 0
+  table: {fileID: 0}
+  messySound: {fileID: 0}
+  fightSound: {fileID: 0}
   waitTime: 30
   CustomerBeer: {fileID: 548193714787451922}
   CustomerRedWine: {fileID: 8627278238919973720}
@@ -2002,8 +2005,8 @@ MonoBehaviour:
   MessyBeer: {fileID: 6864014008860869754, guid: 81b3c20869071d444a25b0f238263f8c, type: 3}
   MessyRedWine: {fileID: 4769004891104046688, guid: e0b7cc0a06e9cee4c930d34c47e7df23, type: 3}
   MessyWhiteWine: {fileID: 3934634045782759635, guid: a3b765d519138c34d98e41705f081c1d, type: 3}
-  puddlePrefab: {fileID: 8614868225107757238, guid: 36d031652825014489d083f934fa6758, type: 3}
   customerTimer: {fileID: 5467236133981523320}
+  moneySystem: {fileID: 0}
 --- !u!114 &5948031574031185130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2468,7 +2471,7 @@ Transform:
   m_GameObject: {fileID: 8695683530985812259}
   serializedVersion: 2
   m_LocalRotation: {x: 2.4462038e-13, y: 1, z: 1.5701007e-15, w: -2.127883e-35}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.001}
   m_LocalScale: {x: 1.2000003, y: 1.2, z: 1.2000003}
   m_ConstrainProportionsScale: 1
   m_Children: []

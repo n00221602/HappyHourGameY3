@@ -3,15 +3,15 @@ using UnityEngine.UI;
 
 public class FloatingUI : MonoBehaviour
 {
-    public Canvas worldSpaceCanvas; // Reference to the world-space canvas
-    public Vector3 offset; // Offset from the GameObject's position
+    public Canvas worldSpaceCanvas;
+    public Vector3 offset; 
 
-    private Transform target; // The target GameObject
+    private Transform target; 
     public GameObject playerCamera;
 
     void Start()
     {
-        target = this.transform; // Set the target to the GameObject this script is attached to
+        target = this.transform;
 
         if (worldSpaceCanvas == null)
         {
@@ -25,10 +25,9 @@ public class FloatingUI : MonoBehaviour
     {
         if (worldSpaceCanvas != null && target != null)
         {
-            // Update the canvas position to follow the target with the specified offset
+            //Updates the canvas position to follow the target
             worldSpaceCanvas.transform.position = target.position + offset;
 
-            // Optionally, make the canvas face the camera
             if (playerCamera != null)
             {
                 worldSpaceCanvas.transform.LookAt(playerCamera.transform);

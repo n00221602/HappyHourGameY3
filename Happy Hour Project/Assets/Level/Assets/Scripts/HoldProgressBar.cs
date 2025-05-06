@@ -6,12 +6,10 @@ using UnityEngine.UI;
 public class HoldProgressBar : MonoBehaviour
 {
     private float progressTime;
-    //public float progressInterval;
     public Image mask;
     public GameObject progressBar;
 
     private PhysicsRayCast physicsRayCast;
-    //private CustomerNPC customerNPC;
     void Start()
     {
         physicsRayCast = GameObject.Find("PlayerCam").GetComponent<PhysicsRayCast>();
@@ -45,7 +43,5 @@ public class HoldProgressBar : MonoBehaviour
             progressTime = 0f;
             mask.fillAmount = 0f;
         }
-
-
     }
 }

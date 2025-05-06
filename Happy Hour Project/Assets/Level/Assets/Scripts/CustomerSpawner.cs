@@ -6,7 +6,7 @@ using UnityEngine;
 public class CustomerSpawner : MonoBehaviour
 {
     public GameObject[] customers;
-    public GameObject timecube;
+    public GameObject OpenSign;
 
 
     public float currentDay = 0f;
@@ -15,7 +15,7 @@ public class CustomerSpawner : MonoBehaviour
     public float currentDaySeconds;
     public float currentDayTimer;
 
-    private float spawnTime = 0f;
+    private float spawnTime = 5f;
     private float spawnRate;
 
     public bool timerRunning = false;
@@ -25,6 +25,7 @@ public class CustomerSpawner : MonoBehaviour
     private bool spawnRateSet = false;
     private bool popularityUpgraded = false;
 
+    public DayUI dayUI;
 
     private void Start()
     {
@@ -44,50 +45,37 @@ public class CustomerSpawner : MonoBehaviour
 
         }
 
-        //Starts the timer on input. The bool is used so that the timer only starts once
-        //if (Input.GetKeyDown(KeyCode.E) && !timerRunning)
-        //{
-        //    timecube.SetActive(false);
-        //    timerRunning = true;
-        //}
-
         if (timerRunning)
         {
             StartTimer();
             clockUI.StartClock();
         }
-
-        
-
     }
 
 
     void StartTimer()
     {
-        if(!spawnRateSet)
-        {
-        //Each statement defines the current day. Each day has a differnent spawn rate. It begins at day 0 which is the tutorial day.
-        if (currentDay == 0f) { spawnRate = 12f; }
 
-        if (currentDay == 1f) { spawnRate = 12f; }
+        //Each statement defines the current day. Each day has a differnent spawn rate.
+        if (currentDay == 1f) { spawnRate = 11f; }
 
-        if (currentDay == 2f) { spawnRate = 12f; }
+        if (currentDay == 2f) { spawnRate = 11f; }
 
-        if (currentDay == 3) { spawnRate = 12f; }
+        if (currentDay == 3) { spawnRate = 10f; }
 
-        if (currentDay == 4) { spawnRate = 12f; }
+        if (currentDay == 4) { spawnRate = 9.5f; }
 
-        if (currentDay == 5) { spawnRate = 10f; }
+        if (currentDay == 5) { spawnRate = 9f; }
 
-        if (currentDay == 6) { spawnRate = 10f; }
+        if (currentDay == 6) { spawnRate = 9f; }
 
-        if (currentDay == 7) { spawnRate = 10f; }
+        if (currentDay == 7) { spawnRate = 8.5f; }
 
-        if (currentDay == 8) { spawnRate = 10f; }
+        if (currentDay == 8) { spawnRate = 8f; }
 
         if (currentDay == 9) { spawnRate = 8f; }
 
-        if (currentDay == 10f) { spawnRate = 8f; }
+        if (currentDay == 10f) { spawnRate = 7.5f; }
 
         spawnRateSet = true;
 
@@ -101,7 +89,7 @@ public class CustomerSpawner : MonoBehaviour
 
         spawnTime += Time.deltaTime;
 
-        // Randomly spawns a customer from the customer index array once the interval is reached
+        //Randomly spawns a customer from the customer index array once the interval is reached
         if (spawnTime >= spawnRate)
         {
             spawnTime = 0f;
@@ -116,7 +104,6 @@ public class CustomerSpawner : MonoBehaviour
         {
             currentDayTimer -= Time.deltaTime;
             int seconds = Mathf.FloorToInt(currentDayTimer);
-            Debug.Log("Time: " + seconds);
         }
         else
         {
@@ -127,9 +114,10 @@ public class CustomerSpawner : MonoBehaviour
     {
         Debug.Log("Timer ended");
         Debug.Log("current day: " + currentDay);
-        //timecube.SetActive(true);
+        OpenSign.GetComponent<Renderer>().material.DisableKeyword("_EMISSION");
         currentDayTimer = currentDaySeconds;
         timerRunning = false;
+        dayUI.transition = false;
         spawnRateSet = false;
     }
 
@@ -144,4 +132,5 @@ public class CustomerSpawner : MonoBehaviour
         popularityUpgraded = true;
         Debug.Log("Popularity Purchased!!");
     }
+
 }

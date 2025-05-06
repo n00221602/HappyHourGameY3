@@ -752,8 +752,8 @@ public class CustomerNPC : MonoBehaviour
         if (eventTime >= 20f)
         {
             eventTime = 0f;
-            int eventInterval = 75;
-            int randomChoice = Random.Range(45, eventInterval);
+            int eventInterval = 100;
+            int randomChoice = Random.Range(0, eventInterval);
             Debug.Log("Random choice: " + randomChoice);
 
             if (randomChoice <= 30) //30% chance for a customer to leave the bar

@@ -28,6 +28,7 @@ public class Shops : MonoBehaviour
    public GameObject KaraokeButton;
    public GameObject KaraokeState;
 
+   //sets the default shop page
     void Start()
     {
         DrinksShop.SetActive(false);
@@ -35,7 +36,7 @@ public class Shops : MonoBehaviour
         BarmanShop.SetActive(false);
         ExtrasShop.SetActive(false);
     }
-
+    //all of the following functions set the page the player wants to move to as active and all others as inactive
 public void MoveToDrinks()
 {
         DrinksShop.SetActive(true);
@@ -75,13 +76,5 @@ public void CloseShop(){
         ExtrasShop.SetActive(false);
 }
 
-public void ButtonDeactivation()
-{
-    if(PooltableState.activeSelf)
-    {
-      PooltableButton.SetActive(false);
 
-    }
-
-}
 }

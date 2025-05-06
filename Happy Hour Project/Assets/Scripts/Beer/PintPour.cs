@@ -23,6 +23,7 @@ public class PintPour : MonoBehaviour
         pintCountdown /= 1.5f;
     }
 
+    //this is the same logic as the beer pouring script
     private void OnTriggerStay(Collider other)
     {
         if ((other.gameObject.CompareTag("Player")) && PintOnPlayer.activeSelf)  

@@ -22,6 +22,9 @@ public class CustomerSpawner : MonoBehaviour
 
     private ClockUI clockUI;
     private Purchasing purchases;
+    private bool spawnRateSet = false;
+    private bool popularityUpgraded = false;
+
 
     private void Start()
     {
@@ -61,7 +64,8 @@ public class CustomerSpawner : MonoBehaviour
 
     void StartTimer()
     {
-
+        if(!spawnRateSet)
+        {
         //Each statement defines the current day. Each day has a differnent spawn rate. It begins at day 0 which is the tutorial day.
         if (currentDay == 0f) { spawnRate = 12f; }
 
@@ -84,6 +88,16 @@ public class CustomerSpawner : MonoBehaviour
         if (currentDay == 9) { spawnRate = 8f; }
 
         if (currentDay == 10f) { spawnRate = 8f; }
+
+        spawnRateSet = true;
+
+        if (popularityUpgraded)
+        {
+            spawnRate *= 0.5f;
+            Debug.Log("Spawnrate halved");
+        }
+        }
+
 
         spawnTime += Time.deltaTime;
 
@@ -116,6 +130,7 @@ public class CustomerSpawner : MonoBehaviour
         //timecube.SetActive(true);
         currentDayTimer = currentDaySeconds;
         timerRunning = false;
+        spawnRateSet = false;
     }
 
     void GainPassiveIncome() {
@@ -123,5 +138,10 @@ public class CustomerSpawner : MonoBehaviour
         {
             purchases.PassiveIncome();
         }
+    }
+
+    public void PopularityPurchased() {
+        popularityUpgraded = true;
+        Debug.Log("Popularity Purchased!!");
     }
 }

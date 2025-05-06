@@ -27,13 +27,14 @@ public class Purchasing : MonoBehaviour
 
     public MoneySystem currentMoney;
     public PlayerMovement moveSpeed;
-
+   
     public CustomerNPC customerNPC;
 
-    private CustomerSpawner spawner;
+    public CustomerSpawner spawnRate;
 
     void Start()
     {
+        //sets all purchasable items as inactive on default
         AirHockeyTable.SetActive(false);
         PoolTable.SetActive(false);
         DartsBoard.SetActive(false);
@@ -54,13 +55,14 @@ public class Purchasing : MonoBehaviour
         GameDest9.SetActive(false);
         GameDest10.SetActive(false);
 
-
+        //links this script to others that are rewuired for functionallity
 
         currentMoney = FindObjectOfType<MoneySystem>();
-        moveSpeed = GetComponent<PlayerMovement>();
+        moveSpeed = FindObjectOfType<PlayerMovement>();
+        spawnRate = FindObjectOfType<CustomerSpawner>();
 
        // customerNPC = FindObjectOfType<CustomerNPC>();
-       spawner = FindObjectOfType<CustomerSpawner>();
+       spawnRate = FindObjectOfType<CustomerSpawner>();
 
     }
 
@@ -69,7 +71,7 @@ public class Purchasing : MonoBehaviour
     }
 
     public void purchaseAirHockeyTable(){
-
+        //checks if you have enough money and if you do, deducts it and sets the product to active
         if ( currentMoney != null && currentMoney.moneyBalance >= 5f)
         {
         currentMoney.moneyBalance -=5f;
@@ -87,7 +89,9 @@ public class Purchasing : MonoBehaviour
             Debug.Log("Air hockey purchased!");
             GameDest6.SetActive(true);
             GameDest7.SetActive(true);
+            //makes this a location NPC's are able to go to'
             CustomerNPC.ManageGameDestinations();
+            //allows the player to gain passive income from this product
             PassiveIncome();
         }
     }
@@ -110,6 +114,8 @@ public class Purchasing : MonoBehaviour
           GameDest8.SetActive(true);
           GameDest9.SetActive(true);
           CustomerNPC.ManageGameDestinations();
+                      PassiveIncome();
+
         }
     }
 
@@ -133,6 +139,8 @@ public class Purchasing : MonoBehaviour
             Debug.Log("Dartboard purchased!");
             GameDest10.SetActive(true);
             CustomerNPC.ManageGameDestinations();
+                        PassiveIncome();
+
         }
     }
 
@@ -161,6 +169,8 @@ public class Purchasing : MonoBehaviour
             GameDest4.SetActive(true);
             GameDest5.SetActive(true);
             CustomerNPC.ManageGameDestinations();
+                        PassiveIncome();
+
         }
     }
 
@@ -187,6 +197,7 @@ public class Purchasing : MonoBehaviour
         {
         currentMoney.moneyBalance -=5f;
         currentMoney.UpdateText();
+                    PassiveIncome();
 
       Karaoke.SetActive(true);
         }
@@ -231,6 +242,7 @@ public class Purchasing : MonoBehaviour
         }
     }
 
+    //the player gains money passively as a result of purchasing certain products
     public void PassiveIncome(){
         currentMoney.moneyBalance +=10;
         currentMoney.UpdateText();
@@ -239,5 +251,39 @@ public class Purchasing : MonoBehaviour
 
     //---------------------PERKS-----------------------
 
+    //makes the player move faster
+        public void purchaseMoveSpeed(){
+
+          if( currentMoney != null && currentMoney.moneyBalance >= 10f)
+        {
+        currentMoney.moneyBalance -=10f;
+        currentMoney.UpdateText();
+
+        moveSpeed.IncreaseSpeedPurchased();
+        }
+        else
+        {
+      
+            Debug.Log("Not enough money !");
+
+        }
+    }
+    //increases the amount of customers per day
+            public void purchasePopularity(){
+
+          if( currentMoney != null && currentMoney.moneyBalance >= 10f)
+        {
+        currentMoney.moneyBalance -=10f;
+        currentMoney.UpdateText();
+
+        spawnRate.PopularityPurchased();
+        }
+        else
+        {
+      
+            Debug.Log("Not enough money !");
+
+        }
+    }
     
 }

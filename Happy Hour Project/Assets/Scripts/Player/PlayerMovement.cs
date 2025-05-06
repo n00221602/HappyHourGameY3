@@ -59,12 +59,15 @@ public class PlayerMovement : MonoBehaviour
 
      private void Update()
     {
+        //checks if the player is touching the ground
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
 
+        //constantly checks if the player is attempting to move and also measures speed
       MyInput();  
       SpeedControl();
       //NoMenu();
 
+      //creates friction
       if(grounded)
             rb.drag = groundDrag;
       else
@@ -82,6 +85,7 @@ public class PlayerMovement : MonoBehaviour
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
+        //allows access to the exit/settings menu
         if (Input.GetKeyDown(exitKey) && !ShopMenu.activeSelf)
         {
             if(!ExitMenu.activeSelf)
@@ -96,6 +100,7 @@ public class PlayerMovement : MonoBehaviour
                 Cursor.lockState = CursorLockMode.Locked;
             }
         }
+                //allows access to the shop menu
 
         if (Input.GetKeyDown(shopKey) && !ExitMenu.activeSelf)
         {
@@ -112,7 +117,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-
+        // if the player is grounded then allows acccess to the jumping function
 
         if (Input.GetKey(jumpKey) && readyToJump && grounded)
         {
@@ -122,14 +127,14 @@ public class PlayerMovement : MonoBehaviour
 
             Invoke(nameof(ResetJump), jumpCooldown);
         }
-
+        //if the player is grounded multiplies their speed, allowing for sprinting
         if(Input.GetKey(sprintKey) && grounded)
         {
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f * 1.1f, ForceMode.Force);
         }
 
      }
-
+     //if the menu is already active, wont let the player open another menu
      private void NoMenu()
      {
                 
@@ -138,7 +143,7 @@ public class PlayerMovement : MonoBehaviour
             ExitMenu.SetActive(false);
         }
      }
-
+     //checks what direction the player is moving and then propells them in the appropriate direction relevant to that orientation
      private void MovePlayer()
      {
          moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
@@ -149,7 +154,7 @@ public class PlayerMovement : MonoBehaviour
          else if(!grounded)
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
      }
-
+     //makes sure the player is moving at the appropriate speed
      private void SpeedControl()
      {
          Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
@@ -161,6 +166,7 @@ public class PlayerMovement : MonoBehaviour
          }
      }
 
+     //adds velocity in the y direction, resulting in jumping
      private void Jump(){
          rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
@@ -195,9 +201,11 @@ public class PlayerMovement : MonoBehaviour
          
      //}
 
+     //if player has purchased the speed upgrade from the shop, this increased their speed
      public void IncreaseSpeedPurchased()
      {
-         moveSpeed *= 1.3f;
+         //invalid
+         moveSpeed *= 1.5f;
      }
          
 

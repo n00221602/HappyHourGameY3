@@ -13,10 +13,13 @@ public class MoneySystem : MonoBehaviour
     void Start()
     {
         moneyBalanceText = this.gameObject.GetComponent<TextMeshProUGUI>();
-        moneyBalance = 100f;
+        //sets the players initial money to 0
+        moneyBalance = 0f;
+        //updates the players money in the UI
         UpdateText();
     }
 
+    //adds money depending on what drink the players serves
     public void beerMoneyAddition()
     {
         if (!moneyGiven)
@@ -67,6 +70,7 @@ public class MoneySystem : MonoBehaviour
         }
     }
 
+    //constantly updates the players UI with the appropriate balance
     public void UpdateText()
     {
         moneyBalanceText.text = "$" + moneyBalance;
